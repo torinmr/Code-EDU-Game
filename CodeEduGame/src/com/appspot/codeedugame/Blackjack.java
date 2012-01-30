@@ -1,13 +1,10 @@
 package com.appspot.codeedugame;
 
-<<<<<<< HEAD
-import com.appspot.codeedugame.deck.PokerDeck;
-=======
+import java.util.Iterator;
 import java.util.List;
 
 import com.appspot.codeedugame.deck.PokerDeck;
 import com.appspot.codeedugame.deck.PokerCard;
->>>>>>> branch 'master' of https://github.com/torinmr/Code-EDU-Game.git
 import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -46,14 +43,14 @@ public class Blackjack {
 		this.playerMoney = playerMoney;
 		this.bid = 0;
 		
-		this.deck = PokerDeck();
+		this.deck = new PokerDeck();
 		this.deck.constructStandardDeck();
 		this.deck.shuffle();
 		
-		this.playerCards = PokerDeck();
-		this.dealerCards = PokerDeck();
-		this.discardPile = PokerDeck();
-		this.roundOver = false;
+		this.playerCards = new PokerDeck();
+		this.dealerCards = new PokerDeck();
+		this.discardPile = new PokerDeck();
+		this.roundOver = true;
 	}
 	
 	// Accessors.
@@ -81,35 +78,43 @@ public class Blackjack {
 		return bid;
 	}
 	
-	public boolean isOver() {
+	public boolean roundIsOver() {
 		return roundOver;
 	}
 
 	// real methods
 	
+	public boolean startNextRound() {
+		if (!roundOver) {
+			return false;
+		}
+	}
+	
 	// updates the game state to reflect a move of "hit"
 	// returns true if successful, returns false in case of illegal play.
+	// if player hits without bidding, will automatically bid 0 for them.
 	public boolean hit() {
 		if (roundOver) {
 			return false;
 		}
-		if (playerCards.getSize == 0) {
+		if (playerCards.getSize() == 0) {
 			makeBid(0);
 		}
 		
 		dealPlayerCard();
-		if (isBust()) {
+		if (isBust(playerCards)) {
 			playerLose();
 		}
 	}
 	
 	// updates the game state to reflect a move of "stand"
 	// returns false in case of illegal play, true otherwise.
+	// if player hits without bidding, will automatically bid 0 for them.
 	public boolean stand() {
 		if (roundOver) {
 			return false;
 		}
-		if (playerCards.getSize == 0) {
+		if (playerCards.getSize() == 0) {
 			makeBid(0);
 		}
 		
@@ -119,6 +124,7 @@ public class Blackjack {
 	
 	// updates the game state to reflect a move of "double down"
 	// returns false in case of illegal play, true otherwise.
+	// if player hits without bidding, will automatically bid 0 for them.
 	public boolean doubleDown() {
 		if (roundOver) {
 			return false;
@@ -146,6 +152,9 @@ public class Blackjack {
 	// sets the bid amount to the given value. Returns false in case of
 	// illegal play, true otherwise.
 	public boolean makeBid(int bidAmount) {
+		if (roundOver) {
+			return false;
+		}
 		if (playerCards.getSize() > 0) {
 			return false;
 		}
@@ -162,12 +171,57 @@ public class Blackjack {
 		dealDealerCard();
 		return true;
 	}
-}
 
 // private methods
-private void dealPlayerCard() {
-	if (deck.draw(card) == null) {
-		
+	private void shuffleDeck() {
+		PokerDeck dummy;
+		dummy = discardPile;
+		discardPile = deck;
+		deck = dummy;
+		deck.shuffle();
 	}
-	return;
+
+	private void dealPlayerCard() {
+		PokerCard card = deck.draw();
+		if (card == null) {
+			shuffleDeck();
+			card = deck.draw();
+		}
+		playerCards.discard(card);
+		return;
+	}
+	
+	private void dealDealerCard() {
+		PokerCard card = deck.draw();
+		if (card == null) {
+			shuffleDeck();
+			card = deck.draw();
+		}
+		dealerCards.discard(card);
+		return;
+	}
+	
+	private int handvalue(PokerDeck hand) {
+		Iterator<PokerCard> it = hand.iterator();
+		int value = 0;
+		int numAce = 0;
+		while (it.hasNext()) {
+			PokerCard card = it.next();
+			value += getCardValue(card);
+			if (card.getRank() == 14) {
+				numAce++;
+			}
+		}
+		
+		while (value > 21 && numAce > 0) {
+			value -= 10;
+			numAce -= 1;
+		}
+		
+		return value;
+	}
+	
+	private int getCardValue(PokerCard card) {
+		if
+	}
 }

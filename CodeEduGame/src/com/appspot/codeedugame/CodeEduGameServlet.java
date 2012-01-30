@@ -27,8 +27,10 @@ public class CodeEduGameServlet extends HttpServlet {
             attemptStand(game, req, resp);
         } else if (rpcName.equals("doubleDown")) {
             attemptDoubleDown(game, req, resp);
+        } else if (rpcName.equals("startNextRound")) {
+            attemptStartNextRound(game, req, resp);
         } else {
-            sendError(resp, req);
+            sendError(req.getParameter("rpcName") + " is an invalid move.", resp);
         }
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
@@ -38,28 +40,64 @@ public class CodeEduGameServlet extends HttpServlet {
         }
     }
 
+    private void attemptStartNextRound(Blackjack game, HttpServletRequest req,
+            HttpServletResponse resp) {
+        // TODO Auto-generated method stub
+        
+    }
+
     private void attemptDoubleDown(Blackjack game, HttpServletRequest req,
             HttpServletResponse resp) {
-        boolean success;
         
     }
 
     private void attemptStand(Blackjack game, HttpServletRequest req,
             HttpServletResponse resp) {
-        // TODO Auto-generated method stub
-        
+        if (game.stand()) {
+            sendSuccess(game, resp, req);
+        } else if (game.isOver()) {
+            sendError("You may not stand because the round is over.", resp);
+        } else {
+            sendError("UNKNOWN STANDING ERROR!!!!!!!", resp);
+        }
     }
 
     private void attemptHit(Blackjack game, HttpServletRequest req,
             HttpServletResponse resp) {
-        // TODO Auto-generated method stub
-        
+        if (game.hit()) {
+            sendSuccess(game, resp, req);
+        } else if (game.isOver()) {
+            sendError("You may not hit because the round is over.", resp);
+        } else {
+            sendError("UNKNOWN HITTING ERROR!!!!!!!", resp);
+        }
     }
 
     private void attemptBid(Blackjack game, HttpServletRequest req,
             HttpServletResponse resp) {
-        // TODO Auto-generated method stub
-        
+        String amt = req.getParameter("amount");
+        if (amt == null) {
+            sendError("You forgot to specify a bidding amount.", resp);
+        } else {
+            int amount = Integer.parseInt(amt);
+            boolean success = game.makeBid(amount);
+            if (success) {
+                sendSuccess(game, resp, req);
+            } else if (game.isOver()) {
+                sendError("You may not bid because the round is over.", resp);
+            } else if (!game.getPlayerCards().isEmpty()) {
+                sendError("You are trying to bid during a turn.", resp);
+            } else if (amount < 0) {
+                sendError("You specified a negative bid of " + amount + ".", resp);
+            } else if (amount > game.getPlayerMoney()) {
+                sendError(
+                    "You bid " + amount + " > " + game.getPlayerMoney() + ", your stash.", resp);
+            } else if (amount == 0) {
+                sendError("You bid nothing at the wrong time.", resp);
+            } else {
+                sendError("UNKNOWN BIDDING ERROR!!!!!!!", resp);
+            }
+        }
     }
 
     private Blackjack getGame(String id) {
@@ -72,7 +110,7 @@ public class CodeEduGameServlet extends HttpServlet {
         }
     }
 
-    private void sendError(HttpServletResponse resp, HttpServletRequest req) {
+    private void sendError(String error, HttpServletResponse resp) {
         
     }
     

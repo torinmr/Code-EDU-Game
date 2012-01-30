@@ -14,7 +14,7 @@ public class PokerCard implements Comparable<PokerCard> {
     private Key key;
     
     @Persistent
-    private int rank;//0 through 12, 2 is 2, 3 is 3, ..., 14 is Ace
+    private int rank;// 2 through 14, 2 is 2, 3 is 3, ..., 14 is Ace
     
     @Persistent
     private int suit;//0 through 3, clubs diamonds hearts spades
