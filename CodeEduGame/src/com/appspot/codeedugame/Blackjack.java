@@ -186,10 +186,14 @@ public class Blackjack {
 		dealCard(dealerCards);
 		dealCard(playerCards);
 		dealCard(dealerCards);
-		
-		if (handValue(dealerCards) == 21) {
+
+		int dealerValue = handValue(dealerCards);
+		int playerValue = handValue(playerCards);
+		if (dealerValue == 21 && playerValue == 21) {
+			tie();		
+		} else if (dealerValue == 21) {
 			playerLose();
-		} else if (handValue(playerCards) == 21) {
+		} else if (playerValue == 21) {
 			playerBlackjack();
 		}
 		
@@ -269,6 +273,11 @@ public class Blackjack {
 	
 	private void playerBlackjack() {
 		playerMoney += 2.5*bid;
+		roundOver = true;
+	}
+	
+	private void tie() {
+		playerMoney += bid;
 		roundOver = true;
 	}
 	
