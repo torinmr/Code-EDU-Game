@@ -50,7 +50,7 @@ public class Blackjack {
 		this.playerCards = new PokerDeck();
 		this.dealerCards = new PokerDeck();
 		this.discardPile = new PokerDeck();
-		this.roundOver = false;
+		this.roundOver = true;
 	}
 	
 	// Accessors.
@@ -78,14 +78,21 @@ public class Blackjack {
 		return bid;
 	}
 	
-	public boolean isOver() {
+	public boolean roundIsOver() {
 		return roundOver;
 	}
 
 	// real methods
 	
+	public boolean startNextRound() {
+		if (!roundOver) {
+			return false;
+		}
+	}
+	
 	// updates the game state to reflect a move of "hit"
 	// returns true if successful, returns false in case of illegal play.
+	// if player hits without bidding, will automatically bid 0 for them.
 	public boolean hit() {
 		if (roundOver) {
 			return false;
@@ -102,6 +109,7 @@ public class Blackjack {
 	
 	// updates the game state to reflect a move of "stand"
 	// returns false in case of illegal play, true otherwise.
+	// if player hits without bidding, will automatically bid 0 for them.
 	public boolean stand() {
 		if (roundOver) {
 			return false;
@@ -116,6 +124,7 @@ public class Blackjack {
 	
 	// updates the game state to reflect a move of "double down"
 	// returns false in case of illegal play, true otherwise.
+	// if player hits without bidding, will automatically bid 0 for them.
 	public boolean doubleDown() {
 		if (roundOver) {
 			return false;
@@ -143,6 +152,9 @@ public class Blackjack {
 	// sets the bid amount to the given value. Returns false in case of
 	// illegal play, true otherwise.
 	public boolean makeBid(int bidAmount) {
+		if (roundOver) {
+			return false;
+		}
 		if (playerCards.getSize() > 0) {
 			return false;
 		}
@@ -197,8 +209,13 @@ public class Blackjack {
 			PokerCard card = it.next();
 			value += getCardValue(card);
 			if (card.getRank() == 14) {
-				
+				numAce++;
 			}
+		}
+		
+		while (value > 21 && numAce > 0) {
+			value -= 10;
+			numAce -= 1;
 		}
 		
 		return value;
