@@ -19,25 +19,25 @@ public class Blackjack {
     private Key key;
 
 	@Persistent
-	PokerDeck deck;
+	private PokerDeck deck;
 	
 	@Persistent
-	PokerDeck discardPile;
+	private PokerDeck discardPile;
 	
 	@Persistent
-	PokerDeck playerCards;
+	private PokerDeck playerCards;
 	
 	@Persistent
-	PokerDeck dealerCards;
+	private PokerDeck dealerCards;
 	
 	@Persistent
-	int playerMoney;
+	private int playerMoney;
 	
 	@Persistent
-	int bid;
+	private int bid;
 	
 	@Persistent
-	boolean roundOver;
+	private boolean roundOver;
 	
 	public Blackjack(int playerMoney) {
 		this.playerMoney = playerMoney;
@@ -84,10 +84,18 @@ public class Blackjack {
 
 	// real methods
 	
+	// starts a new round. Returns false if this is illegal (i.e. if
+	// in the middle of a round.), returns true otherwise.
 	public boolean startNextRound() {
 		if (!roundOver) {
 			return false;
 		}
+		
+		bid = 0;
+		discardHand(playerCards);
+		discardHand(dealerCards);
+		roundOver = false;
+		return true;
 	}
 	
 	// updates the game state to reflect a move of "hit"
@@ -101,10 +109,11 @@ public class Blackjack {
 			makeBid(0);
 		}
 		
-		dealPlayerCard();
-		if (isBust(playerCards)) {
+		dealCard(playerCards);
+		if (handValue(playerCards) > 21) {
 			playerLose();
 		}
+		return true;
 	}
 	
 	// updates the game state to reflect a move of "stand"
@@ -165,10 +174,10 @@ public class Blackjack {
 		bid = bidAmount;
 		playerMoney -= bidAmount;
 
-		dealPlayerCard();
-		dealDealerCard();
-		dealPlayerCard();
-		dealDealerCard();
+		dealCard(playerCards);
+		dealCard(dealerCards);
+		dealCard(playerCards);
+		dealCard(dealerCards);
 		return true;
 	}
 
@@ -181,27 +190,17 @@ public class Blackjack {
 		deck.shuffle();
 	}
 
-	private void dealPlayerCard() {
+	private void dealCard(PokerDeck hand) {
 		PokerCard card = deck.draw();
 		if (card == null) {
 			shuffleDeck();
 			card = deck.draw();
 		}
-		playerCards.discard(card);
+		hand.discard(card);
 		return;
 	}
 	
-	private void dealDealerCard() {
-		PokerCard card = deck.draw();
-		if (card == null) {
-			shuffleDeck();
-			card = deck.draw();
-		}
-		dealerCards.discard(card);
-		return;
-	}
-	
-	private int handvalue(PokerDeck hand) {
+	private int handValue(PokerDeck hand) {
 		Iterator<PokerCard> it = hand.iterator();
 		int value = 0;
 		int numAce = 0;
@@ -212,16 +211,42 @@ public class Blackjack {
 				numAce++;
 			}
 		}
-		
 		while (value > 21 && numAce > 0) {
 			value -= 10;
 			numAce -= 1;
 		}
-		
 		return value;
 	}
 	
+	private void discardHand(PokerDeck hand) {
+		PokerCard card = hand.draw();
+		while (card != null) {
+			discardPile.discard(card);
+			card = hand.draw();
+		}
+	}
+	
 	private int getCardValue(PokerCard card) {
-		if
+		int rank = card.getRank();
+		if (rank >= 2 && rank <= 10) {
+			return rank;
+		}
+		if (rank >= 11 && rank <= 13) {
+			return 10;
+		}
+		if (rank == 14) {
+			return 11;
+		}
+		return 0;
+	}
+	
+	private void playerLose() {
+		playerMoney -= bid;
+		roundOver = true;
+	}
+	
+	private void playerWin() {
+		playerMoney += bid;
+		roundOver = true;
 	}
 }
