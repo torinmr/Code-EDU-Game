@@ -12,15 +12,21 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
+
 /**
  * @author aschild
  *
  */
 @PersistenceCapable
 public class PokerDeck {
+    private static final int SUITS = 4;
+    private static final int MIN_RANK = 2;
+    private static final int MAX_RANK = 14;
+
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private int key;
+    private Key key;
     
     @Persistent
     private Map<String, Integer> quantityMap;
@@ -35,6 +41,11 @@ public class PokerDeck {
         this.quantityMap = new HashMap<String, Integer>();
         this.deckList = new ArrayList<PokerCard>();
         this.size = 0;
+        for (int rank = MIN_RANK; rank < MAX_RANK + 1; rank++) {
+            for (int suit = 0; suit < SUITS; suit++) {
+                this.discard(new PokerCard(rank, suit));
+            }
+        }
     }
     
     public void discard(PokerCard card) {

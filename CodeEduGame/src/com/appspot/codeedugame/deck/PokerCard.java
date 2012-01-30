@@ -5,14 +5,16 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
+
 @PersistenceCapable
 public class PokerCard implements Comparable<PokerCard> {
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private int key;
+    private Key key;
     
     @Persistent
-    private int rank;//0 through 12, 0 is 2, 1 is 3, ..., 12 is Ace
+    private int rank;//0 through 12, 2 is 2, 3 is 3, ..., 14 is Ace
     
     @Persistent
     private int suit;//0 through 3, clubs diamonds hearts spades
