@@ -285,4 +285,4 @@ public class Blackjack {
 			playerWin();
 		}
 	}
-}	
+}
