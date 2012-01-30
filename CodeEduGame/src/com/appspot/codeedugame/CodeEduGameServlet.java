@@ -1,7 +1,6 @@
 package com.appspot.codeedugame;
 
 import java.io.IOException;
-import java.util.Collection;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.*;
@@ -182,7 +181,7 @@ public class CodeEduGameServlet extends HttpServlet {
             
             gameObj.put("roundIsOver", game.roundIsOver());
             gameObj.put("isDeck", game.deckSize() != 0);
-            gameObj.put("hasJustReshuffled", game.getHasJustReshuffled());
+            gameObj.put("hasJustReshuffled", game.getHasReshuffled());
             return gameObj;
         } catch (JSONException e) {
             throw new RuntimeException(e.getMessage());
