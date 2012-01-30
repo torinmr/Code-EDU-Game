@@ -190,7 +190,7 @@ public class Blackjack {
 		if (handValue(dealerCards) == 21) {
 			playerLose();
 		} else if (handValue(playerCards) == 21) {
-			playerWin();
+			playerBlackjack();
 		}
 		
 		hasReshuffled = false;
@@ -263,7 +263,12 @@ public class Blackjack {
 	}
 	
 	private void playerWin() {
-		playerMoney += bid;
+		playerMoney += 2*bid;
+		roundOver = true;
+	}
+	
+	private void playerBlackjack() {
+		playerMoney += 2.5*bid;
 		roundOver = true;
 	}
 	
