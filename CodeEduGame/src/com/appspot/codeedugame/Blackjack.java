@@ -39,6 +39,9 @@ public class Blackjack {
 	@Persistent
 	private boolean roundOver;
 	
+	@Persistent
+	private boolean hasReshuffled;
+	
 	public Blackjack(int playerMoney) {
 		this.playerMoney = playerMoney;
 		this.bid = 0;
@@ -51,6 +54,7 @@ public class Blackjack {
 		this.dealerCards = new PokerDeck();
 		this.discardPile = new PokerDeck();
 		this.roundOver = true;
+		this.hasReshuffled = true;
 	}
 	
 	// Accessors.
@@ -81,6 +85,10 @@ public class Blackjack {
 	public boolean roundIsOver() {
 		return roundOver;
 	}
+	
+	public boolean getHasReshuffled() {
+		return hasReshuffled;
+	}
 
 	// real methods
 	
@@ -101,7 +109,7 @@ public class Blackjack {
 	// updates the game state to reflect a move of "hit"
 	// returns true if successful, returns false in case of illegal play.
 	// if player hits without bidding, will automatically bid 0 for them.
-	public boolean hit() {
+	public boolean hit() {	
 		if (roundOver) {
 			return false;
 		}
@@ -113,6 +121,10 @@ public class Blackjack {
 		if (handValue(playerCards) > 21) {
 			playerLose();
 		}
+		if (playerCards.getSize() >= 5) {
+			playerWin();
+		}
+	
 		return true;
 	}
 	
@@ -178,6 +190,14 @@ public class Blackjack {
 		dealCard(dealerCards);
 		dealCard(playerCards);
 		dealCard(dealerCards);
+		
+		if (handValue(dealerCards) == 21) {
+			playerLose();
+		} else if (handValue(playerCards) == 21) {
+			playerWin();
+		}
+		
+		hasReshuffled = false;
 		return true;
 	}
 
@@ -188,6 +208,7 @@ public class Blackjack {
 		discardPile = deck;
 		deck = dummy;
 		deck.shuffle();
+		hasReshuffled = true;
 	}
 
 	private void dealCard(PokerDeck hand) {
@@ -248,5 +269,20 @@ public class Blackjack {
 	private void playerWin() {
 		playerMoney += bid;
 		roundOver = true;
+	}
+	
+	private void dealerFinish() {
+		while (handValue(dealerCards) < 17) {
+			dealCard(dealerCards);
+		}
+		if (handValue(dealerCards) > 21) {
+			playerWin();
+			return;
+		}
+		if (handValue(dealerCards) >= handValue(playerCards)) {
+			playerLose();
+		} else {
+			playerWin();
+		}
 	}
 }	
