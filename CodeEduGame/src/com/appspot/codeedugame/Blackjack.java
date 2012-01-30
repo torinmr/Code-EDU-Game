@@ -175,6 +175,9 @@ public class Blackjack {
 		if (playerCards.getSize() > 0) {
 			return false;
 		}
+		if (bidAmount < 0) {
+			return false;
+		}
 		if (bidAmount > playerMoney) {
 			return false;
 		}
