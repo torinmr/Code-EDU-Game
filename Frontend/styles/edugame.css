@@ -11,13 +11,14 @@ h1 {
 h2 {
 	font-weight: bold;
 	border-bottom: 1px solid #cccccc;
+	margin-bottom: 0.5em;
 }
 h3 {
 	font-weight: bold;
 	
 }
 p {
-	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 } 
 ul {
 	padding-top: 0.5em;
@@ -52,24 +53,27 @@ pre {
 }
 #titlebar {
 	width: 100%;
-	margin: 10px;
+	margin: 5px;
 }
 #sidebar {
-	float: left;
-	width: 250px;
+	position:absolute;
+	width: 200px;
+	height: 290px;
+	background-color: #cccccc;
+}
+#instructions {
 	padding: 0.5em;
 }
 #inout {
 	float: right;
+	position: relative;
 }
 #output {
 	font-family: Georgia;
-	border: 2px solid #cccccc;
 	background-color: #eeeeee;
-	width: 505px;
-	height: 280px;
-	margin-bottom: 5px;
-	padding: 10px;
+	width: 580px;
+	height: 290px;
+	padding-left: 220px;
 }
 #money { 
 	text-align: right;
@@ -82,7 +86,7 @@ pre {
 	text-align:center;
 }
 .codebox {
-	width: 525px;
+	width: 800px;
 	height: 200px;
 	background-color: #eeeeee;
 }
@@ -90,4 +94,12 @@ pre {
 	text-align: center;
 	font-weight: bold;
 	clear: both;
+}
+.obnox {
+	font-size: 70px;
+	text-align:center;
+	margin-bottom: 20px;
+}
+.spacer {
+	padding: 0.5em;
 }

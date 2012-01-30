@@ -9,7 +9,12 @@
         <script type="text/javascript" src="./scripts/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="./scripts/jquery-linedtextarea.js"></script>
         <script type="text/javascript" src="./scripts/jquery-tabs.js"></script>
-        <script type="text/javascript" src="./scripts/edugame.js"></script>
+        <script type="text/javascript" src="./scripts/cards.js"></script>
+        <script type="text/javascript" src="./scripts/callbacks.js"></script>
+        <script type="text/javascript" src="./scripts/lessons.js"></script>
+        <script type="text/javascript" src="./scripts/frontendgame.js"></script>
+        <script type="text/javascript" src="./scripts/remote.js"></script>
+        <script type="text/javascript" src="./scripts/ui.js"></script>
     </head>
     <body id="game">
         <div id="wrapper">
@@ -17,52 +22,59 @@
                 <h1>CodeGame</h1>
             </div>
             <div id="content">
-                <div id="sidebar">
-                    <h2>Instructions</h2>
-                    <p>
-                        Current API:
-                    </p>
-                    <p>
-                        <h3>Variables:</h3>
-                        <ul>
-                            <li>
-                                <em>name</em> - player name
-                            </li>
-                            <li>
-                                <em>value</em> - value of current cards
-                            </li>
-                        </ul>
-                    </p>
-                    <p>
-                        <h3>Methods:</h3>
-                        <ul>
-                            <li>
-                                <em>hit()</em> - hit
-                            </li>
-                            <li>
-                                <em>stand()</em> - stand
-                            </li>
-                        </ul>
-                    </p>
-                    <p>
-                        <h3>Example:</h3>
-<pre>name = "Channing";
+                <div id="inout">
+                    <div id="sidebarwrap">
+                        <div id="sidebar">
+                            <div id="instructions">
+                                <h2>Instructions</h2>
+                                <p>
+                                    Current API:
+                                </p>
+                                <p>
+                                    <h3>Variables:</h3>
+                                    <ul>
+                                        <li>
+                                            <em>name</em> - player name
+                                        </li>
+                                        <li>
+                                            <em>value</em> - value of current cards
+                                        </li>
+                                    </ul>
+                                </p>
+                                <p>
+                                    <h3>Methods:</h3>
+                                    <ul>
+                                        <li>
+                                            <em>hit()</em> - hit
+                                        </li>
+                                        <li>
+                                            <em>stand()</em> - stand
+                                        </li>
+                                    </ul>
+                                </p>
+                                <p>
+                                    <h3>Example:</h3>
+                                    <pre>name = "Channing";
 if (value < 15) {
     hit();
 } else {
     stand();
-}</pre></p>
-                </div>
-                <div id="inout">
-                    <div id="output">
-                        <div id="money" style="float:right"></div>
-                        <div id="debug"></div>
-                        <div class="playerLabel">
-                            Dealer
+}</pre>
+                                </p>
+                            </div>
                         </div>
-                        <table id="display"></table>
-                        <div class="playerLabel" id="playerName">
-                            Player
+                    </div>
+                    <div id="output">
+                        <div class="spacer">
+                            <div id="money" style="float:right"></div>
+                            <div id="debug"></div>
+                            <div class="playerLabel">
+                                Dealer
+                            </div>
+                            <table id="display"></table>
+                            <div class="playerLabel" id="playerName">
+                                Player
+                            </div>
                         </div>
                     </div>
                     <div id="buttons" style="text-align:center"></div>
