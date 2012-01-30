@@ -116,7 +116,6 @@ public class Blackjack {
 		if (playerCards.getSize() == 0) {
 			makeBid(0);
 		}
-		
 		dealCard(playerCards);
 		if (handValue(playerCards) > 21) {
 			playerLose();
@@ -150,15 +149,12 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		
 		if (playerCards.getSize() > 2) {
 			return false;
 		}
-		
 		if (playerCards.getSize() == 0) {
 			makeBid(0);
-		}
-		
+		}		
 		if (bid > playerMoney) {
 			return false;
 		}
