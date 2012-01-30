@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.appspot.codeedugame.deck.PokerDeck;
 import com.appspot.codeedugame.deck.PokerCard;
-import com.google.appengine.api.datastore.Key;
-
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -16,7 +14,7 @@ import javax.jdo.annotations.PrimaryKey;
 public class Blackjack {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+    private String key;
 
 	@Persistent
 	private PokerDeck deck;
@@ -42,9 +40,10 @@ public class Blackjack {
 	@Persistent
 	private boolean hasReshuffled;
 	
-	public Blackjack(int playerMoney) {
+	public Blackjack(int playerMoney, String id) {
 		this.playerMoney = playerMoney;
 		this.bid = 0;
+		this.key = id;
 		
 		this.deck = new PokerDeck();
 		this.deck.constructStandardDeck();
@@ -58,7 +57,7 @@ public class Blackjack {
 	}
 	
 	// Accessors.
-	public Key getKey() {
+	public String getKey() {
 		return key;
 	}
 	

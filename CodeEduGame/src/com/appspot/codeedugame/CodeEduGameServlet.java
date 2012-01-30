@@ -21,24 +21,24 @@ public class CodeEduGameServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         String rpcName = req.getParameter("rpcName");
-        Blackjack game = getGame(ID);
-        
-        if (rpcName.equals("bid")) {
-            attemptBid(game, req, resp);
-        } else if (rpcName.equals("hit")) {
-            attemptHit(game, req, resp);
-        } else if (rpcName.equals("stand")) {
-            attemptStand(game, req, resp);
-        } else if (rpcName.equals("doubleDown")) {
-            attemptDoubleDown(game, req, resp);
-        } else if (rpcName.equals("startNextRound")) {
-            attemptStartNextRound(game, req, resp);
-        } else {
-            sendError(req.getParameter("rpcName") + " is an invalid move.", resp);
-        }
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
-            pm.makePersistent(game);
+            Blackjack game = getGame(ID, pm);
+        
+            if (rpcName.equals("bid")) {
+                attemptBid(game, req, resp);
+            } else if (rpcName.equals("hit")) {
+                attemptHit(game, req, resp);
+            } else if (rpcName.equals("stand")) {
+                attemptStand(game, req, resp);
+            } else if (rpcName.equals("doubleDown")) {
+                attemptDoubleDown(game, req, resp);
+            } else if (rpcName.equals("startNextRound")) {
+                attemptStartNextRound(game, req, resp);
+            } else {
+                sendError(req.getParameter("rpcName")
+                        + " is an invalid move.", resp);
+            }
         } finally {
             pm.close();
         }
@@ -120,13 +120,14 @@ public class CodeEduGameServlet extends HttpServlet {
         }
     }
 
-    private Blackjack getGame(String id) {
+    private Blackjack getGame(String id, PersistenceManager pm) {
         Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
         try {
-            return PMF.get().getPersistenceManager().getObjectById(
-                    Blackjack.class, k);
+            return pm.getObjectById(Blackjack.class, k);
         } catch (JDOObjectNotFoundException e) {
-            return new Blackjack(STARTING_MONEY);
+            Blackjack game = new Blackjack(STARTING_MONEY, id);
+            pm.makePersistent(game);
+            return game;
         }
     }
 

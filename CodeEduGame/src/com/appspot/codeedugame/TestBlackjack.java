@@ -9,7 +9,7 @@ import com.appspot.codeedugame.deck.PokerCard;
 
 public class TestBlackjack {
 	public static void main(String[] args) {
-		Blackjack game = new Blackjack(100);
+		Blackjack game = new Blackjack(100, "BLDSFKO:JF:LDJF");
 		InputStreamReader istream = new InputStreamReader(System.in);
 		BufferedReader bufRead = new BufferedReader(istream);
 		
