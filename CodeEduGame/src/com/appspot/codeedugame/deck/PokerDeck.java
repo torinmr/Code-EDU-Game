@@ -28,7 +28,7 @@ public class PokerDeck {
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
     
-    @Persistent
+    @Persistent(serialized = "true")
     private Map<String, Integer> quantityMap;
     
     @Persistent

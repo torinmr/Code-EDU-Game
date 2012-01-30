@@ -11,7 +11,7 @@
        <property name="javax.jdo.option.NontransactionalWrite" value="true"/>
        <property name="javax.jdo.option.RetainValues" value="true"/>
        <property name="datanucleus.appengine.autoCreateDatastoreTxns" value="true"/>
-       <property name="datanucleus.appengine.multipleRelationsOfSameTypeAreErrors" 
+       <property name="datanucleus.appengine.allowMultipleRelationsOfSameType" 
            value="true"/> 
    </persistence-manager-factory>
 </jdoconfig>
