@@ -1,5 +1,6 @@
 package com.appspot.codeedugame;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.appspot.codeedugame.deck.PokerDeck;
@@ -94,7 +95,7 @@ public class Blackjack {
 		}
 		
 		dealPlayerCard();
-		if (isBust()) {
+		if (isBust(playerCards)) {
 			playerLose();
 		}
 	}
@@ -158,23 +159,52 @@ public class Blackjack {
 		dealDealerCard();
 		return true;
 	}
-}
 
 // private methods
-private void shuffleDeck() {
-	PokerDeck dummy;
-	dummy = discardPile;
-	discardPile = deck;
-	deck = dummy;
-	deck.shuffle();
-}
+	private void shuffleDeck() {
+		PokerDeck dummy;
+		dummy = discardPile;
+		discardPile = deck;
+		deck = dummy;
+		deck.shuffle();
+	}
 
-private void dealPlayerCard() {
-	PokerCard card = deck.draw();
-	
-	if (deck.draw() == null) {
-		shuffleDeck();
+	private void dealPlayerCard() {
+		PokerCard card = deck.draw();
+		if (card == null) {
+			shuffleDeck();
+			card = deck.draw();
+		}
+		playerCards.discard(card);
+		return;
 	}
 	
-	return;
-}
+	private void dealDealerCard() {
+		PokerCard card = deck.draw();
+		if (card == null) {
+			shuffleDeck();
+			card = deck.draw();
+		}
+		dealerCards.discard(card);
+		return;
+	}
+	
+	private int handvalue(PokerDeck hand) {
+		Iterator<PokerCard> it = hand.iterator();
+		int value = 0;
+		int numAce = 0;
+		while (it.hasNext()) {
+			PokerCard card = it.next();
+			value += getCardValue(card);
+			if (card.getRank() == 14) {
+				
+			}
+		}
+		
+		return value;
+	}
+	
+	private int getCardValue(PokerCard card) {
+		if
+	}
+}	
