@@ -116,7 +116,6 @@ public class Blackjack {
 		if (playerCards.getSize() == 0) {
 			makeBid(0);
 		}
-		
 		dealCard(playerCards);
 		if (handValue(playerCards) > 21) {
 			playerLose();
@@ -150,15 +149,12 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		
 		if (playerCards.getSize() > 2) {
 			return false;
 		}
-		
 		if (playerCards.getSize() == 0) {
 			makeBid(0);
-		}
-		
+		}		
 		if (bid > playerMoney) {
 			return false;
 		}
@@ -190,11 +186,15 @@ public class Blackjack {
 		dealCard(dealerCards);
 		dealCard(playerCards);
 		dealCard(dealerCards);
-		
-		if (handValue(dealerCards) == 21) {
+
+		int dealerValue = handValue(dealerCards);
+		int playerValue = handValue(playerCards);
+		if (dealerValue == 21 && playerValue == 21) {
+			tie();		
+		} else if (dealerValue == 21) {
 			playerLose();
-		} else if (handValue(playerCards) == 21) {
-			playerWin();
+		} else if (playerValue == 21) {
+			playerBlackjack();
 		}
 		
 		hasReshuffled = false;
@@ -267,6 +267,16 @@ public class Blackjack {
 	}
 	
 	private void playerWin() {
+		playerMoney += 2*bid;
+		roundOver = true;
+	}
+	
+	private void playerBlackjack() {
+		playerMoney += 2.5*bid;
+		roundOver = true;
+	}
+	
+	private void tie() {
 		playerMoney += bid;
 		roundOver = true;
 	}
