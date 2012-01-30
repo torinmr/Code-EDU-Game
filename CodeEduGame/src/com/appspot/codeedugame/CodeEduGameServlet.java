@@ -1,12 +1,16 @@
 package com.appspot.codeedugame;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.*;
 
+import com.appspot.codeedugame.deck.PokerCard;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.repackaged.org.json.JSONArray;
+import com.google.appengine.repackaged.org.json.JSONException;
 import com.google.appengine.repackaged.org.json.JSONObject;
 
 @SuppressWarnings("serial")
@@ -42,20 +46,36 @@ public class CodeEduGameServlet extends HttpServlet {
 
     private void attemptStartNextRound(Blackjack game, HttpServletRequest req,
             HttpServletResponse resp) {
-        // TODO Auto-generated method stub
-        
+        if (game.startNextRound()) {
+            sendSuccess(game, resp, req);
+        } else if (!game.roundIsOver()) {
+            sendError("You may not start a round that isn't over.", resp);
+        } else {
+            sendError("UNKNOWN ROUND STARTING ERROR!!!!!!!", resp);
+        }
     }
 
     private void attemptDoubleDown(Blackjack game, HttpServletRequest req,
             HttpServletResponse resp) {
-        
+        if (game.doubleDown()) {
+            sendSuccess(game, resp, req);
+        } else if (game.roundIsOver()) {
+            sendError("You may not double down because the round is over.", resp);
+        } else if (game.getPlayerCards().size() > 2) {
+            sendError("You tried to double down after hitting.", resp);
+        } else if (game.getBid() > game.getPlayerMoney()) {
+            sendError("You bid " + game.getBid() + " but you have "
+                    + game.getPlayerMoney() + ", so you may not double down.", resp);
+        } else {
+            sendError("UNKNOWN DOUBLE DOWN ERROR!!!!!!!", resp);
+        }
     }
 
     private void attemptStand(Blackjack game, HttpServletRequest req,
             HttpServletResponse resp) {
         if (game.stand()) {
             sendSuccess(game, resp, req);
-        } else if (game.isOver()) {
+        } else if (game.roundIsOver()) {
             sendError("You may not stand because the round is over.", resp);
         } else {
             sendError("UNKNOWN STANDING ERROR!!!!!!!", resp);
@@ -66,7 +86,7 @@ public class CodeEduGameServlet extends HttpServlet {
             HttpServletResponse resp) {
         if (game.hit()) {
             sendSuccess(game, resp, req);
-        } else if (game.isOver()) {
+        } else if (game.roundIsOver()) {
             sendError("You may not hit because the round is over.", resp);
         } else {
             sendError("UNKNOWN HITTING ERROR!!!!!!!", resp);
@@ -83,7 +103,7 @@ public class CodeEduGameServlet extends HttpServlet {
             boolean success = game.makeBid(amount);
             if (success) {
                 sendSuccess(game, resp, req);
-            } else if (game.isOver()) {
+            } else if (game.roundIsOver()) {
                 sendError("You may not bid because the round is over.", resp);
             } else if (!game.getPlayerCards().isEmpty()) {
                 sendError("You are trying to bid during a turn.", resp);
@@ -111,11 +131,61 @@ public class CodeEduGameServlet extends HttpServlet {
     }
 
     private void sendError(String error, HttpServletResponse resp) {
-        
+        JSONObject respObj = new JSONObject();
+        try {
+            respObj.put("msg", error);
+            respObj.put("isSuccess", false);
+            resp.getWriter().print(respObj.toString());
+        } catch (JSONException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
     
     private void sendSuccess(
             Blackjack game, HttpServletResponse resp, HttpServletRequest req) {
-        
+        JSONObject respObj = new JSONObject();
+        try {
+            respObj.put("gameObj", assembleGameObj(game));
+            respObj.put("isSuccess", true);
+            resp.getWriter().print(respObj.toString());
+        } catch (JSONException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    private JSONObject assembleGameObj(Blackjack game) {
+        JSONObject gameObj = new JSONObject();
+        try {
+            gameObj.put("money", game.getPlayerMoney());
+            gameObj.put("inPot", game.getBid());
+            
+            JSONArray playerSuits = new JSONArray();
+            JSONArray playerValues = new JSONArray();
+            for (PokerCard c : game.getPlayerCards()) {
+                playerSuits.put(c.getSuit());
+                playerValues.put(c.getRank());
+            }
+            JSONArray dealerSuits = new JSONArray();
+            JSONArray dealerValues = new JSONArray();
+            for (PokerCard c : game.getDealerCards()) {
+                dealerSuits.put(c.getSuit());
+                dealerValues.put(c.getRank());
+            }
+            gameObj.put("playerSuits", playerSuits);
+            gameObj.put("playerValues", playerValues);
+            gameObj.put("dealerSuits", dealerSuits);
+            gameObj.put("dealerValues", dealerValues);
+            
+            gameObj.put("roundIsOver", game.roundIsOver());
+            gameObj.put("isDeck", game.deckSize() != 0);
+            gameObj.put("hasJustReshuffled", game.getHasJustReshuffled());
+            return gameObj;
+        } catch (JSONException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
