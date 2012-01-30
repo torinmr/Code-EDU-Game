@@ -42,13 +42,13 @@ public class Blackjack {
 		this.playerMoney = playerMoney;
 		this.bid = 0;
 		
-		this.deck = PokerDeck();
+		this.deck = new PokerDeck();
 		this.deck.constructStandardDeck();
 		this.deck.shuffle();
 		
-		this.playerCards = PokerDeck();
-		this.dealerCards = PokerDeck();
-		this.discardPile = PokerDeck();
+		this.playerCards = new PokerDeck();
+		this.dealerCards = new PokerDeck();
+		this.discardPile = new PokerDeck();
 		this.roundOver = false;
 	}
 	
@@ -89,7 +89,7 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (playerCards.getSize == 0) {
+		if (playerCards.getSize() == 0) {
 			makeBid(0);
 		}
 		
@@ -105,7 +105,7 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (playerCards.getSize == 0) {
+		if (playerCards.getSize() == 0) {
 			makeBid(0);
 		}
 		
@@ -161,9 +161,20 @@ public class Blackjack {
 }
 
 // private methods
+private void shuffleDeck() {
+	PokerDeck dummy;
+	dummy = discardPile;
+	discardPile = deck;
+	deck = dummy;
+	deck.shuffle();
+}
+
 private void dealPlayerCard() {
-	if (deck.draw(card) == null) {
-		
+	PokerCard card = deck.draw();
+	
+	if (deck.draw() == null) {
+		shuffleDeck();
 	}
+	
 	return;
 }
