@@ -2,6 +2,7 @@ package com.appspot.codeedugame;
 
 import java.io.IOException;
 
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.*;
 
@@ -121,10 +122,10 @@ public class CodeEduGameServlet extends HttpServlet {
 
     private Blackjack getGame(String id) {
         Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
-        Blackjack game = PMF.get().getPersistenceManager().getObjectById(Blackjack.class, k);
-        if (game != null) {
-            return game;
-        } else {
+        try {
+            return PMF.get().getPersistenceManager().getObjectById(
+                    Blackjack.class, k);
+        } catch (JDOObjectNotFoundException e) {
             return new Blackjack(STARTING_MONEY);
         }
     }

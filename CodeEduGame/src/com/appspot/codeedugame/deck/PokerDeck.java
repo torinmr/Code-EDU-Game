@@ -43,6 +43,10 @@ public class PokerDeck {
         this.size = 0;
     }
     
+    public Key getKey() {
+        return key;
+    }
+    
     public void constructStandardDeck() {
         for (int rank = MIN_RANK; rank < MAX_RANK + 1; rank++) {
             for (int suit = 0; suit < SUITS; suit++) {
