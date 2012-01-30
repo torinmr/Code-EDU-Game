@@ -19,6 +19,7 @@ public class PokerCard implements Comparable<PokerCard> {
     @Persistent
     private int suit;//0 through 3, clubs diamonds hearts spades
     
+    private PokerCard() {}
     public PokerCard(int rank, int suit) {
         this.rank = rank;
         this.suit = suit;

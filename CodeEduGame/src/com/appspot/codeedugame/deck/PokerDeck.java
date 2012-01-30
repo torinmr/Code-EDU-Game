@@ -41,6 +41,9 @@ public class PokerDeck {
         this.quantityMap = new HashMap<String, Integer>();
         this.deckList = new ArrayList<PokerCard>();
         this.size = 0;
+    }
+    
+    public void constructStandardDeck() {
         for (int rank = MIN_RANK; rank < MAX_RANK + 1; rank++) {
             for (int suit = 0; suit < SUITS; suit++) {
                 this.discard(new PokerCard(rank, suit));
