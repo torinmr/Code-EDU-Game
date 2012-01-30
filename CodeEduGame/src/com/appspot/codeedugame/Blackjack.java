@@ -262,7 +262,6 @@ public class Blackjack {
 	}
 	
 	private void playerLose() {
-		playerMoney -= bid;
 		roundOver = true;
 	}
 	

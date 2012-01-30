@@ -9,6 +9,10 @@ import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable
 public class PokerCard implements Comparable<PokerCard> {
+	private static final String SUIT_NAMES[] = {"C", "D", "H", "S"};
+	private static final String RANK_NAMES[] = {"","","2","3","4","5",
+												"6","7","8","9","10",
+												"J","Q","K","A"};
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
@@ -65,7 +69,7 @@ public class PokerCard implements Comparable<PokerCard> {
     
     @Override
     public String toString() {
-        String result = "Suit: " + this.suit + "\nRank: " + this.rank;
+        String result = SUIT_NAMES[this.suit] + RANK_NAMES[this.rank];
         return result;
     }
 }
