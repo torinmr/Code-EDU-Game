@@ -1,6 +1,7 @@
 package com.appspot.codeedugame;
 
 import java.io.IOException;
+
 import javax.servlet.http.*;
 
 @SuppressWarnings("serial")
@@ -9,5 +10,6 @@ public class CodeEduGameServlet extends HttpServlet {
             throws IOException {
         resp.setContentType("text/plain");
         resp.getWriter().println("Hello, world");
+        
     }
 }
