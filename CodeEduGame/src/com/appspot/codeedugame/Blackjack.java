@@ -1,5 +1,6 @@
 package com.appspot.codeedugame;
 
+import com.appspot.codeedugame.deck.PokerDeck;
 import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -14,13 +15,13 @@ public class Blackjack {
     private Key key;
 
 	@Persistent
-	Deck deck;
+	PokerDeck deck;
 	
 	@Persistent
-	Deck playerCards;
+	PokerDeck playerCards;
 	
 	@Persistent
-	Deck dealerCards;
+	PokerDeck dealerCards;
 	
 	@Persistent
 	int playerMoney;
