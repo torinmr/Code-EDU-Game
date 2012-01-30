@@ -1,0 +1,93 @@
+body {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	color: #111111;
+}
+h1 {
+	font-size: 180%;
+	font-weight: bold;
+	color:black;
+}
+h2 {
+	font-weight: bold;
+	border-bottom: 1px solid #cccccc;
+}
+h3 {
+	font-weight: bold;
+	
+}
+p {
+	padding-top: 0.5em;
+} 
+ul {
+	padding-top: 0.5em;
+}
+li {
+	padding-bottom: 0.5em;
+}
+em {
+	font-style: italic;
+}
+pre {
+	padding-top:1em;
+	font-family: monospace;
+}
+#start {
+	display: block;
+	background-color: #158519;
+	width: 200px;
+	height: 50px;
+	line-height: 50px;
+	text-align:center;
+	font-size: 20px;
+	color: white;
+	text-decoration: none;
+	margin: 0px auto 0px auto;
+}
+
+#wrapper {
+	width: 800px;
+	height: 100%;
+	margin: 0px auto 0px auto;
+}
+#titlebar {
+	width: 100%;
+	margin: 10px;
+}
+#sidebar {
+	float: left;
+	width: 250px;
+	padding: 0.5em;
+}
+#inout {
+	float: right;
+}
+#output {
+	font-family: Georgia;
+	border: 2px solid #cccccc;
+	background-color: #eeeeee;
+	width: 505px;
+	height: 280px;
+	margin-bottom: 5px;
+	padding: 10px;
+}
+#money { 
+	text-align: right;
+}
+#display {
+	width: 100%;
+	height: 230px;
+}
+#evalButton {
+	text-align:center;
+}
+.codebox {
+	width: 525px;
+	height: 200px;
+	background-color: #eeeeee;
+}
+.playerLabel {
+	text-align: center;
+	font-weight: bold;
+	clear: both;
+}
