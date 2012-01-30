@@ -1,0 +1,65 @@
+package com.appspot.codeedugame.deck;
+
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+@PersistenceCapable
+public class PokerCard implements Comparable<PokerCard> {
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private int key;
+    
+    @Persistent
+    private int rank;//0 through 12, 0 is 2, 1 is 3, ..., 12 is Ace
+    
+    @Persistent
+    private int suit;//0 through 3, clubs diamonds hearts spades
+    
+    public PokerCard(int rank, int suit) {
+        this.rank = rank;
+        this.suit = suit;
+    }
+    
+    public int getRank() {
+        return rank;
+    }
+    
+    public int getSuit() {
+        return suit;
+    }
+    
+    @Override
+    public int compareTo(PokerCard o) {
+        return o.rank - this.rank;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        } if (!(o instanceof PokerCard)) {
+            return false;
+        }
+        
+        PokerCard that = (PokerCard) o;
+        if (this.rank != that.rank) {
+            return false;
+        } if (this.suit != that.suit) {
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public int hashCode() {
+        return 31 * suit + rank;
+    }
+    
+    @Override
+    public String toString() {
+        String result = "Suit: " + this.suit + "\nRank: " + this.rank;
+        return result;
+    }
+}
