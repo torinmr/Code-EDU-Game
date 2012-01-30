@@ -19,6 +19,8 @@ public class TestBlackjack {
 			System.out.printf("Funds: %d Bid: %d\n", game.getPlayerMoney(),
 					game.getBid());
 	
+			System.out.printf("Cards in deck: %d\n", game.deckSize());
+			
 			System.out.print("Dealer cards: ");
 			List<PokerCard> dealerCards = game.getDealerCards();
 			Iterator<PokerCard>dealerIt = dealerCards.iterator();
