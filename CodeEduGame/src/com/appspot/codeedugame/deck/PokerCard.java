@@ -2,20 +2,12 @@ package com.appspot.codeedugame.deck;
 
 import java.io.Serializable;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
-import com.google.appengine.api.datastore.Key;
-
 public class PokerCard implements Comparable<PokerCard>, Serializable {
     private static final long serialVersionUID = 1L;
     private static final String SUIT_NAMES[] = {"C", "D", "H", "S"};
 	private static final String RANK_NAMES[] = {"","","2","3","4","5",
 												"6","7","8","9","10",
 												"J","Q","K","A"};
-	private Key key;
 
     private int rank;// 2 through 14, 2 is 2, 3 is 3, ..., 14 is Ace
 

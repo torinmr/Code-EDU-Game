@@ -8,7 +8,6 @@ import com.appspot.codeedugame.deck.PokerCard;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -21,7 +20,7 @@ public class Blackjack {
     private Key key;
 
 	@Persistent(serialized = "true")
-	private ArrayList<PokerDeck> decks = new ArrayList<PokerDeck>();
+	private ArrayList<PokerDeck> decks;
 	// 0 = deck, 1 = discard pile, 2 = dealer hand, 3 = player hand.
 	
 	@Persistent
@@ -41,6 +40,7 @@ public class Blackjack {
 		this.bid = 0;
 		this.key = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
 		
+		this.decks = new ArrayList<PokerDeck>(4);
 		this.decks.add(PokerDeck.make());
 		this.decks.add(PokerDeck.make());
 		this.decks.add(PokerDeck.make());
