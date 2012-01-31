@@ -179,9 +179,27 @@ public class CodeEduGameServlet extends HttpServlet {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
     
+    // sends the current user's nickname if logged in, sends "Anonymous" otherwise.
+    private void sendName(HttpServletResponse resp) {
+    	JSONObject respObj = new JSONObject();
+    	User user = getUser();
+    	try {
+    		if (user != null) {
+    			respObj.put("name", user.getNickname());
+    		} else {
+    			respObj.put("name", "anonymous");
+    		}
+    		resp.getWriter().print(respObj.toString());
+    	} catch (JSONException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {UserService userService = UserServiceFactory.getUserService();
+            throw new RuntimeException(e.getMessage());
+        }	
+    }
+    
+    // returns the current user if logged in, otherwise returns null.
     private User getUser() {
     	UserService userService = UserServiceFactory.getUserService();
     	return userService.getCurrentUser();
