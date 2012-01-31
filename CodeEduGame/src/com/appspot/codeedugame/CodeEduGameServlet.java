@@ -25,26 +25,36 @@ public class CodeEduGameServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         String rpcName = req.getParameter("rpcName");
+        if (rpcName == null) {
+            sendError("You need an rpcName field.", resp);
+            return;
+        }
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
+            if (rpcName.equals("getLogin")) {
+                sendURL(resp, req);
+                return;
+            } else if (rpcName.equals("getName")) {
+                sendName(resp);
+                return;
+            }
+            if (getUser() == null) {
+                sendError("You are not logged in.", resp);
+                return;
+            }
             Blackjack game = null;
             if (rpcName.equals("startGame")) {
-                String id = getNewGameId(getUser(), pm);
+                String id = getNewGameId(getUser(), pm, resp);
                 JSONObject respObj = new JSONObject();
                 try {
                     respObj.put("isSuccess", true);
                     respObj.put("msg", "You have started a new game.");
+                    resp.getWriter().print(respObj);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
             } else {
                 game = getGame(getUser(), pm, resp);
-            }
-            
-            if (rpcName.equals("getLogin")) {
-                sendURL(resp, req);
-            } else if (rpcName.equals("getName")) {
-                sendName(resp);
             }
           
             if (game != null) {
@@ -85,8 +95,15 @@ public class CodeEduGameServlet extends HttpServlet {
         pm.deletePersistent(results.get(0));
     }
 
-    private String getNewGameId(User user, PersistenceManager pm) {
-        UserAndGame uag = UserAndGame.make(user.getUserId());
+    private String getNewGameId(User user, PersistenceManager pm, HttpServletResponse resp) {
+        UserAndGame uag = null;
+        try {
+            uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+            sendError("User " + user.getNickname() + " already is playing a game.", resp);
+        } catch (JDOObjectNotFoundException e) {
+            //this is what we want to happen
+        }
+        uag = UserAndGame.make(user.getUserId());
         Blackjack game = new Blackjack(STARTING_MONEY, uag.getGameId());
         pm.makePersistent(uag);
         pm.makePersistent(game);
@@ -100,7 +117,7 @@ public class CodeEduGameServlet extends HttpServlet {
         try {
             return pm.getObjectById(Blackjack.class, k);
         } catch (JDOObjectNotFoundException e) {
-            sendError("No game for user " + user.getNickname() + " does not exist.", resp);
+            sendError("No game for user " + user.getNickname() + " exists.", resp);
             return null;
         }
     }
