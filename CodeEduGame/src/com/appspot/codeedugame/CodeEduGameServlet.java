@@ -6,10 +6,10 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.*;
 
+import com.appspot.codeedugame.json.JSONArray;
+import com.appspot.codeedugame.json.JSONException;
+import com.appspot.codeedugame.json.JSONObject;
 import com.appspot.codeedugame.deck.PokerCard;
-import com.google.appengine.repackaged.org.json.JSONArray;
-import com.google.appengine.repackaged.org.json.JSONException;
-import com.google.appengine.repackaged.org.json.JSONObject;
 
 @SuppressWarnings("serial")
 public class CodeEduGameServlet extends HttpServlet {
