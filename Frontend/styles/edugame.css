@@ -1,6 +1,6 @@
 body {
-	font-family: Arial, sans-serif;
-	font-size: 14px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 13px;
 	color: #111111;
 }
 h1 {
@@ -10,7 +10,7 @@ h1 {
 }
 h2 {
 	font-weight: bold;
-	border-bottom: 1px solid #cccccc;
+	border-bottom: 1px solid #999999;
 	margin-bottom: 0.5em;
 }
 h3 {
@@ -19,6 +19,7 @@ h3 {
 }
 p {
 	padding-bottom: 0.5em;
+	line-height: 1.2em;
 } 
 ul {
 	padding-top: 0.5em;
@@ -57,9 +58,10 @@ pre {
 }
 #sidebar {
 	position:absolute;
-	width: 200px;
-	height: 290px;
-	background-color: #cccccc;
+	width: 800px;
+	height: 390px;
+	background-color: #eeeeee;
+	overflow:auto;
 }
 #instructions {
 	padding: 0.5em;
@@ -72,28 +74,41 @@ pre {
 	font-family: Georgia;
 	background-color: #eeeeee;
 	width: 580px;
-	height: 290px;
-	padding-left: 220px;
+	height: 390px;
+	margin-left: 220px;
+	background-image:url(../img/pokertable.png);
+	color: white;
 }
 #money { 
 	text-align: right;
 }
 #display {
-	width: 100%;
-	height: 230px;
+    margin-left: 100px;
+	height: 280px;
+	
 }
 #evalButton {
 	text-align:center;
+}
+#betbox {
+    float:right;
+}
+#betbox input {
+    width: 3em;
 }
 .codebox {
 	width: 800px;
 	height: 200px;
 	background-color: #eeeeee;
 }
+.code {
+    white-space: pre;
+    font-family: monospace;
+}
 .playerLabel {
 	text-align: center;
 	font-weight: bold;
-	clear: both;
+	font-size: 120%;
 }
 .obnox {
 	font-size: 70px;

@@ -26,7 +26,7 @@
                     <div id="sidebarwrap">
                         <div id="sidebar">
                             <div id="instructions">
-                                <h2>Instructions</h2>
+                              <!--  <h2>Instructions</h2>
                                 <p>
                                     Current API:
                                 </p>
@@ -60,20 +60,24 @@ if (value < 15) {
 } else {
     stand();
 }</pre>
-                                </p>
+                                </p>-->
                             </div>
                         </div>
                     </div>
                     <div id="output">
                         <div class="spacer">
-                            <div id="money" style="float:right"></div>
+                            <div id="betbox">
+                                Bet:
+                                <input type="text" id="bet" maxlength="6" />
+                                <span id="money"></span>
+                            </div>
                             <div id="debug"></div>
-                            <div class="playerLabel">
+                            <div class="playerLabel" style="clear:both">
                                 Dealer
                             </div>
                             <table id="display"></table>
                             <div class="playerLabel" id="playerName">
-                                Player
+                                You
                             </div>
                         </div>
                     </div>
@@ -83,7 +87,7 @@ if (value < 15) {
                     </div>
                     <div id="evalButton">
                         <input type="button" value="Evaluate!" id="eval" />
-                        <input type="button" value="Eval(n)" id="evaln" />
+                        <!--<input type="button" value="Eval(n)" id="evaln" />-->
                     </div>
                 </div>
             </div>

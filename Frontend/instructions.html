@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" href="webstyle.css" rel="stylesheet" media="all" />
+<title>Instructions</title>
+</head>
+
+<body>
+<h2>Welcome!</h2>
+<p>Hello, and welcome to ____ Casino! We hear you want to learn to program, and to make vast sums of money doing it. Well, you’ve come to the right place! We’re going to teach you how to write a program to ensure you make bank playing blackjack. In the process, you’ll learn the fundamentals of programming, as well as some intense blackjack strategies. </p>
+<p>In case you don’t know what blackjack is, it’s a card game in which every player tries to get a hand with a value of as close to, but no more than, 21 as possible. Face cards are worth 10 points, the Ace can be 1 or 11, and every other card is worth its face value. You play against a dealer. You and the dealer will each be dealt two cards at the beginning of the game. You will be able to see one of the dealer’s. You will then have the option to “hit” (get another card) as many times as you’d like. Once you don’t want any more cards, you “stand.” Be careful! If your the value of your cards exceeds 21, you “bust,” that is, you lose! Once you stand, the dealer will draw cards. The dealer must hit if the total value of his/her cards is less than 17, and must stand if it is 17 or greater. When determining this, an Ace is counted as an 11. If the dealer busts and you don’t, you win. If no one busts, whoever has a higher hand wins. A few more important things: If either player is initially dealt 21, that’s a “blackjack” and that player wins. If the players tie, the dealer wins (unless both players have blackjack. Then it's just a tie.) If you get 5 cards without busting, you win. There are some more rules, including betting, but we’ll get into those later. If you want more information, click <a href="http://www.blackjackinfo.com/blackjack-rules.php">here</a>. If you want to practice a bit, use the buttons to the right to play a few hands. Then click next to learn how to program the computer to play for you!</p>
+
+<h2>Lesson 1: Name Yourself--Variables and Strings</h2>
+<p>During the course of this tutorial, it is important to remember you are not programming the entire game. You're programming what will happen when it is your turn in the game. We’ve written some code to tell the dealer what to do when you do various things. It is also potentially useful to know that you will be programming in a language called JavaScript. There are many different programming languages, but the concepts underlying each are the same. Once you understand how to program in one language, it is easy to learn another!</p>
+<p>We don’t want this tutorial to feel impersonal, so the first step is for you to name yourself. Your name needs to be stored in a <em>variable</em> so the computer can use it in the game and tutorial. A variable is simply something that stores a value, or small piece of information. What you need to do is make a variable called name and set its value to your name. To do this, type<br />
+<div class="code">$name = “yourname”;</div><br /> <!--Class for code that I tell them to type. Should be centered and have a different background color or something-->
+in the box below the cards.</p>
+<p>There are a few important things to note here. First, “name” is the name of the variable. The $ in front of name tells the computer that name is a variable. Your name, like any other series of letters, is called a <em>string</em> and must be enclosed in quotes. The = assigns the value on the right ("yourname") to the variable on the left ($name). The semicolon tells the computer that the line of code has been completed. That's it! Click submit and watch your name appear below your cards. (Since you didn't tell the computer you wanted to do anything regarding the gameplay, it didn't give you any more cards but still proceeded to play the game. Don't worry, that's the next step!</p>
+
+<!--
+<?php
+$name = "yourname";
+?>
+-->
+
+<h2>Lesson 2: Hit--Methods</h2>
+<p>Hello there, [NAME]! <!--replace all instances of [NAME] with the value of $name--> Nice to meet you. Good work on the first lesson. Now it's time to learn how program the computer to play the game!</p>
+<p>A <em>function</em>, also known as a <em>method</em>, is a short line of code that makes the computer do stuff. You'll learn how to write a function later, but for now, try one we wrote that hits. (Remember, hitting is asking the dealer for a card.) To do that, on the line below the one where you set your name, type<br />
+<div class="code">hit();</div><br />
+"hit" is the name of the funtion. Every function name is always followed by an open and closed parentheses (). You'll see why later. And notice that the semicolon is once again present to end the line. Hit submit, and the dealer will deal you a card before dealing cards to itself! You may have busted, but that's ok. You know how to make the computer do things, and, as the tutorial goes on, your program will get better and better at winning. One final thing to notice here: No matter how many blank lines you put between your naming command and your hitting command, the computer will still do the same thing. Try it!</p>
+<p>If your code is not working or your name is no longer displaying correctly, make sure your code looks like <a href="">this</a>.</p><!--This link should open up a picture of the proper code (below) over the game stage. I think a picture will be good because then the user can't just copy and paste. It would also be ideal if this paragraph only showed up after they submitted at least once.-->
+
+<!--
+<?php
+$name = "yourname";
+hit();
+?>
+-->
+ <!--  
+<h2>Lesson 3: Stand--Progression</h2>
+<p>Good work! Notice that so far, the dealer has started its turn because your program stops telling it to do things. That's just silly! It's like you walked away from the blackjack table. After you hit, you should tell the dealer you want to stand. We've written a function to do this, too. All you need to do is type<br />
+<div class="code">stand();</div><br />
+on the line after hit. Again, note the () following stand. That needs to be at the end of every function! If it's not there, the function won't do anything.</p>
+<p>Let's talk a little bit about the order the computer does things. The computer starts reading your code at the top and moves down line by line. So, the first thing that happens is you tell the computer your name. Then you tell it you want to hit, and finally to stand. If you move the stand command in front of hit, you will not receive another card because the computer will end your turn after you stand. Try it! Then put hit back in front of stand before proceeding to the next step.</p>
+<p>If your code is not working properly, make sure it looks like <a href="">this</a>.</p>
+
+<!-- 
+<?php
+$name = "yourname";
+hit();
+stand();
+?>  
+-->
+
+<h2>Lesson 3: Hit or Stand--Conditionals and Returns</h2>
+<p>Alrighty, [NAME]! You are now successfully playing blackjack. You'll bust every time, but that's what we're about to fix. This lesson will be a bit long, but hang in there! Now we're getting into some serious stuff.</p>
+<p>In blackjack you obviously don't want to hit every time because you'll end up busting. What you want to do is hit under some circumstances and stand under others. Fortunately, programming languages have a simple way to do if-else statements. Esentially you tell the computer if something is true, do A, else (otherwise) do B. In JavaScript, the syntax for this statement is<br />
+<div class="code">if(somethingtrue){
+	A;
+}
+else{
+	B;
+}
+</div><br />
+Delete hit(); and stand(); and type this statement into the box on the right after your name-setting command. Don't click submit. Notice that there are semicolons after the commands A and B but not after if() and else. The braces { } following if() and else surround the command (A or B) that is performed in each case. Just like it doesn't matter how many blank lines are between two commands, the indentations don't matter either. They just make it easier to read.</p>
+<p>Now we need to replace somethingtrue, A, and B with commands the computer can read. A and B are easy. We want to hit if something is true and stand if it's not, so replace A with hit(); and B with stand(); (we also wrote stand() for you).</p>
+<p>Excellent! Now we just need to replace somethingtrue with the condition that needs to be met before you hit. First, you need to understand <em>booleans</em>. A boolean is a type of variable that is either true or false. Try replacing somethingtrue with true. (Note that somethingtrue is just gibberish to the computer, but it knows what true means.) Don't delete the parentheses! Press submit. Now your program will always hit because the statement following the if is always true, literally!</p>
+<p>Now it's time to use a <em>boolean expression</em>, or comparison. There are a few comparisons you can make between variables and numbers:<br />
+== checks to see if the thing on the left equals the thing on the right and <em>returns</em> true if it is and false if it isn't. "Return" simply means "give the computer a value." (Remember, = is used to asign a value to a variable. It is never used for comparisons.)<br />
+&lt; checks to see if the thing on the left is less than the thing on the right and returns true if it is and false if it isn't.<br />
+&gt; checks to see if the thing on the left is greater than the thing on the right.<br />
+&lt;= checks to see if the thing on the left is less than or equal to the thing on the right.<br />
+&gt;= checks to see if the thing on the left is greater than or equal to the thing on the right.<br /></p>
+<p>Try replacing true with<br />
+<div class="code">3 == 3</div><br />
+and press submit. Since 3 does in fact equal 3, the computer will do the same thing! Now, replace one of the 3's with a 4 and press submit. Your player should now stand every time because three does not equal 4, that is, the expression returns false and so the computer skips over the if statement and straight to the else statement. Try experimenting with comparing numbers using &lt;= and other operators.</p>
+<p>You can also compare variables. Try replacing the expression inside the parentheses after if with<br />
+<div class="code">$name == "yourname"</div><br />
+The program will evaluate this as true and hit every turn! Instead of comparing a number to a number, you are comparing a variable to a string. Replace "yourname" with a different string, and it will evaluate as false and the program will stand. Try it!</p>
+<p>There's one other cool thing you can do with boolean expressions. What if you wanted to see if something is not equal to something else? An ! means "not" in boolean expressions. So, != checks to see if the thing on the left is NOT equal to the thing on the right and returns true if it is unequal and false if it is equal. Try replacing the == in the statement comparing $name to a string that isn't your name with !=. The computer will now evaluate this statement as true and will once again hit every turn.</p>
+<p>Alright, so this is all fine and dandy, but how does it help with blackjack? Let's start with something simple. We wrote a function for you called lastDealtCardVal(). This function does something you haven't seen before: It returns a value just like a boolean expression does. Recall that hit() and stand() simply make stuff happen but don't give any information. A method that returns a value can be set to a variable to store information, like you set "yourname" to $name. For example, if you had a method called findYourName() that returned a string containing your name, you could rewrite the first line as<br />
+<div class="code">$name = findYourName();</div><br />
+This line would do the same thing. The findYourName function doesn't exist because that would require the computer to read your mind, so don't try this one!</p>
+<p>Anyway, lastDealtCardVal() returns the value of the last, in this case second, card you were dealt. For instance, if your last card was a Jack, it would return 10. If it was a 4, it would return 4. A very simple conditional statement for this hit or stand task would be "if the last card dealt to me is less than 7, hit, otherwise, stand." This will increase your winning percentage because if one of your cards is a low number, you are less likely to bust so you can afford to hit. (Of course, this is a very imperfect strategy but we'll get more perfect later.) So, we need to replace somethingtrue with a statement that checks to see how the value of the last card dealt compares to 7. Remember how I said you can assign  lastDealtCardVal() to a variable? Well you can also compare it to a variable or number with the same boolean expressions described above! 
+<p>We said we were going to check to see if the value of the last card dealt was less than 7, so replace somethingtrue with<br />
+<div class="code">lastDealtCardVal() &lt; 7</div>
+Don't delete the parentheses around somethingtrue!</p>
+<p>Now, hit submit and play the game a few times. Observe how your program tells the dealer it wants to hit if your card is a 2, 3, 4, 5, or 6 and otherwise stands! (We're counting the ace as an 11 in lastDealtCardVal() and you will continue to do so in the following code we will have you write. The game engine will still count an Ace as 1 or 11, but this is more difficult to deal with, so we won't have you worry about that yet. As a result, your code won't be perfectly evaluating the game, but towards the end of the tutorial we'll have you fix the problem.)</p> 
+<p>Notice that, given the 6 comparisons above, there are more ways than one to write the conditional statement inside the parentheses following if. For example, you could say that lastDealtCardVal() should be less than or equal to 6, which is the same thing as saying less than 7 since the values are whole numbers. You could also say 7 is greater than lastDealtCardVal(). What else could you say? Try it out! You can also try numbers other than 6 and see if you win more often!
+<p>Before going to the next step, let's talk a little bit about the order the computer does things. The computer starts reading your code at the top and moves down line by line. So, the first thing that happens is you tell the computer your name. Then you tell it to check if it should hit, and finally to stand, if you don't hit. If you change the order of the code, the computer will process things in a different order. For example, if you put the name declaration at the end, it will assign the name after you take a card. The computer is so fast, this probably will be hardly noticeable! You'll see a case when the order is crucial later.</p>
+<p>If your code is not working properly, make sure it looks like <a href="">this</a>.</p> 
+
+<!--
+<?php
+$name = "yourname";
+
+if(lastDealtCardVal() < 7){
+	hit();
+}
+else{
+	stand();
+}
+?>-->
+
+<h2>Lesson 4: Better Strategy--Writing Methods and Introduction to Arrays</h2>
+<p>Whew! That was a long lesson. But you did it, and now you're really starting to understand how to use the computer's power for logic. The strategy we just designed is, of course, not a very good one. The value of the last card you were dealt really has very little bearing on whether you should hit because the first card you were dealt could be anything! Let's fix that problem.</p>
+<p>The program would work a lot better if it hit every time the TOTAL value of BOTH cards was less than, say, 17, and stand otherwise. (Notice that these are the rules the dealer is playing by. Playing by these rules will improve your chances of winning, but the dealer still has a higher chance because he/she wins ties.) Take a moment and try to figure out what conditional statement should replace <br />
+<div class="code">lastDealtCardVal() &lt; 7</div>
+to make this work before reading on.</p>
+<p>The first part is a bit tricky. Instead of checking the value of the last dealt card, we need to check the value of both cards. So, lastDealtCardVal() needs to be replaced by a function that returns the total value of the two cards. Let's call that function totalValue(). Replace lastDealtCardVal() with totalValue().</p>
+<p>The second part is easy. The total value needs to be less than 17, so we just replace 7 with 17! That line should now read<br />
+<div class="code">if(totalValue() &lt; 17){</div></p>
+<p>Press submit. What happens? The game tells you there is an error because a function is undefined. The problem is that totalValue() doesn't exist! lastDealtCardVal() exists because we wrote it for you, but we didn't write totalValue(). That's your job!</p>
+<p>A function is a command that represents a block of code. Every time the command is given, the computer finds where the function is written, does what it says, and then returns to the rest of the code. To start writing a function, go to the end of your code, after the last brace of the else statement, and type
+<div class="code">function totalValue(){
+
+}</div><br />
+"function" is included at the beginning to tell the computer this is a function. When it sees this, it knows to not read it in the normal sequential progression but instead find it when it is called. The braces { } after totalValue() will contain the code that the function executes.</p>
+<p>Let's take a quick break here to discuss naming rules and conventions. When you name a variable or function in JavaScript, you can use letters, numbers, and underscores, but cannot start with a number. Names of two or more words are usually either written with the first word lowercase and the rest capitalized (totalValue) or every word lowercase and separated with an underscore (total_value). You can use either name for totalValue(), but you MUST use the same name every time! That is, if you write <br />
+<div class="code">function total_value(){
+
+}</div><br />
+here you must write <br />
+<div class="code">if(total_value() &lt; 17){</div><br />
+above.</p>
+<p>Anyway, now we're going to make this function do something. Remember, this function needs to return a value. Between the braces of the function, type<br />
+<div class="code">return 3;</div><br />
+and run the program. totalValue() now always returns 3 and 3 is less than 17, so the computer will always hit.</p>
+<p>You can make the computer evaluate mathematical expressions, too. Replace "3" with "3 + 18" and run the program. Now totalValue() returns the sum of 3 and 18 (21) so the program always stands. In most programming languages, there are 5 mathematical operators available: + is used for addition, - is used for subtraction, * for multiplication, / for division, and % for modulus. Modulus divides the two numbers and returns the remainder.</p>
+<p>Ok. We know how to add numbers, but now we need to figure out what the numbers are. Before, you used lastDealtCardVal() to find the value of one card. Unfortunately for you, there's no firstDealtCardVal() function, so you need to understand how the cards in your hand are stored. The values of the cards are stored in an array called handValue. (An array is just a numbered list.) To access something in this array, one types<br />
+<div class="code">$handValue[position]</div><br />
+where position is replaced by a number or variable representing the spot in the list you want information from. Note the dollar sign is still needed to specify that handValue is a variable. There is one confusing thing here: JavaScript, like many languages, starts numbering arrays at 0. So, the first spot in the array is 0, the second is 1, and so on. This means that $handValue[0] will return the value stored at the first position in the handValue array, that is, the value of the first card in your hand. Likewise, $handValue[1] returns the value of the second card. (That's all that lastDealtCardVal() is doing!)</p>
+<p>As you may have guessed, you can add these values together just as you would regular numbers. So, replace<br />
+<div class="code">return 3 + 3;</div><br />
+with<br />
+<div class="code">return $handValue[0] + $handValue[1];</div><br />
+<p>This will add the values of your two cards and return them to the boolean expression in the if statement, where it will compare the sum to 17! Click submit, and observe how the computer only hits when the value of both cards is less than 17. This is a pretty simple, but reasonably effective, blackjack strategy! <!--running methods multiple times?--></p>
+<p>If your code is not working properly, make sure it looks like <a href="">this</a>.</p> 
+
+<!--<?php
+$name = "yourname";
+
+if(totalValue() < 17){
+	hit();
+}
+else{
+	stand();
+}
+
+function totalValue(){
+	return $handValue[0] + $handValue[1];
+}
+?>-->
+
+<h2>Lesson 5: Organize Your Code--Commenting</h2>
+<p>Well, it looks like you're well on your way to becoming a professional programmer and blackjack player, [NAME]! But your code is getting a bit complicated. It's very important to remember what each part of your code does in case you need to edit it later. Fortunately, you can <em>comment</em> it. Comments are notes in your code that the computer just skips over without reading. You can type anything you want in comments without worrying about the computer doing something weird.</p>
+<p>There are two types of comment notation in JavaScript. The first is a single line comment. It is written like this<br />
+<div class="code">//type your comment here</div><br />
+Anything on the line after the two slashes will be skipped over by the computer. This can be used for adding notes or for "commenting out" lines of code that you want the computer to skip.</p>
+<p>You can also put a comment on a line after a piece of code. For example,<br />
+<div class="code">function totalValue(){ //type your comment here</div><br />
+The computer will still see the function declaration because it is before the // but will not see the comment. This is very useful for adding notes about what a line does.</p>
+<p>The other type of comment is a multiline comment. It begins with /* and ends with */ For example,<br />
+<div class="code">/* part 1 of comment
+part two of comment
+part three of comment */</div><br />
+The computer will skip over all three of those lines!</p>
+<p>Add some comments to your code to remind yourself what's happening at each step, and then hit submit. Nothing different should happen!</p>
+<p>To see some commenting suggestions, click <a href="">here</a>.</p> 
+<!--
+<?php
+$name = "yourname"; //tell computer your name
+
+if(totalValue() < 17){ //if the total value of both your cards is less than 17
+	hit();
+}
+else{
+	stand();
+}
+/*function to find total value of both cards
+returns an integer that is the total value of both cards*/
+function totalValue(){
+	return $handValue[0] + $handValue[1];
+}
+?>
+-->
+
+<h2>Lesson 6: Total Value With More than Two Cards--Loops</h2>
+<p>If you've played the game a few times, you may have noticed that your program does a decent job determing if it should hit or stand the first time, but then keeps making the same decision every time until you bust! That's no good! The problem is that no matter how many card you have, totalValue() is only summing the value of the first two.</p>
+<p>An obvious solution is to change the return line in totalValue(){ to<br />
+<div class="code">return $handValue[0] + $handValue[1] + $handValue[2];</div><br />
+but there are two problems with this. Make this change, click submit, and you'll see the first one. When you have only two cards, $handValue[2] doesn't exist and so the game gives an "undefined" error. The other problem is that it still doesn't work if there are four cards.</p>
+<p>We can fix both these problems with loops. There are two kinds of loop. The first and most basic kind is a while loop. It's syntax looks like<br />
+<div class="code">while(somethingtrue){
+
+}</div><br />
+This should remind you of an if statement. When the computer reaches this while loop, it will do whatever is inside the braces { } over and over as long as the argument inside the parentheses ( ) is true. Once the argument is false, the computer will continue reading the code after the loop. But be careful! If the argument in the parentheses never becomes true, the loop will never end, and the game and possibly even your entire web browser will crash. That would really be a downer.</p>
+<p>Delete the return statement in the totalValue() function and replace it with the basic while loop structure. What we are going to do is declare a variable that holds the length of the hand. We will declare another that is a counter which will count how many times we've gone through the loop, and one more that will hold the sum of the values of the cards in your hand. This variable will be returned. To declare these variables, write, immediately before the while loop,<br />
+<div class="code">$length = sizeof($handValue[]); //set length to the size of the hand
+$counter = 0; //counter variable, starts at 0
+$sum = 0; //sum of card values, to be returned</div><br />
+The comments don't need to be written, of course, but will be helpful for you. Remember, you can name the variables whatever you want as long as your consistent. Take another look at the first line you just wrote. sizeof() is a function that returns the length of an array. It is built into JavaScript. Observe that $handValue[] is written inside the parentheses of this function. This is known as <em>passing a function a parameter</em>. The function needs to know what array it should find the size of, so we put the array inside its parentheses. You'll learn more about this later. Finally, note that every time this function is called, it will reset $length to the current length of this array. That is important, becuase the size of your hand can change every turn.</p>
+<p>Every time we run through the loop, we need to add the value of the current spot in the array to the variable $sum and then increment the counter by one to keep track of our place in the array. Inside the braces { } of the while loop, write<br />
+<div class="code">$sum = $sum + $handValue[$counter];
+$counter = $counter + 1;</div><br />
+The first line sets $sum to itself (initialy zero) plus the value of the card at position counter. This may seem a little strange, but recall that counter is just a variable representing a number. It starts at 0, so this line is initially just like saying <br />
+<div class="code">$sum = $sum + $handValue[0];</div><br />
+The second line sets $counter to itself plus one, so the second time it runs through the loop the first line will get the value at position 1, the third time will get the value at positon 2, and so on. Remember when we promised you'd see a case where the order of commands was crucial? This is one. 	It is important that the adjustment of $counter occurs after that of $sum or else the first spot would be skipped.</p>
+<p>Now we just need to replace somethingtrue with a boolean expression telling the computer to run through the loop until it has gone through the whole hand. Since $counter is counting the position in the hand, we can compare this value to $length, the variable that represents the size of the hand. Inside the parentheses following while, write<br />
+<div class="code">$counter &lt; $length</div><br />
+Why did we use &lt; instead of &lt;=? Remember that $counter, like the positions in an array, start at 0. However, when sizeof() counts an array, it starts at 1. So, if you have an array with 4 items in it, the largest position is 3 and sizeof() will return 4. 3 is the last number that is less than 4, so position 3 is the last position that will be added to $sum. Once $counter is incremented to 4, the statement in the while loop will be false and the loop will be skipped. If you used &lt;=, the computer would try to find something at position 4 and you'd get another undefined error.</p>
+<p>Now all that's left is to return $sum, the total value of all cards. After the closing brace of the while loop, write<br />
+<div class="code">return $sum;</div><br />
+ Press submit, and observe how the computer makes a different decision when you have more cards!</p>
+<p>If your code is not working properly, make sure your totalValue() method looks like <a href="">this</a>. We deleted comments since your comments don't need to be identical to ours, but you should keep yours.</p> 
+<!--
+<?php
+function totalValue(){
+	$length = sizeof($handValue[]); 
+	$counter = 0; 
+	$sum = 0;
+	while($counter < $length){
+		$sum = $sum + $handValue[$counter]; 
+		$counter = $counter + 1;
+	}
+	return $sum;
+}
+?>-->
+
+<h2>Lesson 7: Cleaning Up Your Code--For Loops and Other Simplifications</h2>
+<p>Programmers are lazy. We don't like to type more than we have to if at all possible. As a result, programming languages have many shortucuts. Since you're going to be a programmer, you should learn to be lazy too.</p>
+<p>Our totalValue() function could benefit from a few of these shortcuts. First, we'll take a look at the section<br />
+<div class="code">$sum = $sum + $handValue[$counter]; 
+$counter = $counter + 1;</div><br />
+Just look at all that unnecessary repetition! $sum = $sum? Clearly typing that's a waste of effort. Fortunately, we can modify both of those statements using the operator +=. Using this operator, the first line now reads<br />
+<div class="code">$sum += $handValue[$counter];</div><br />
+This line does exactly the same thing as the line it replaces! Pretty awesome. Change the second line yourself following this example and then press submit. The program will work in exactly the same way. The same thing can be done with the other 4 operators: -=, *=, /=, and %=.</p>
+<p>Think that's enough simplification? Wrong. Programmers are even lazier than that. Take a look at the second line, and imagine how often you would have to write<br />
+<div class="code">+= 1</div><br />
+if you were to keep making loops with counters. Too much work! Try replacing the second line with<br />
+<div class="code">$counter++;</div><br />
+and press submit. The code does the same thing. This shortcut only exists for incrementing by 1. If you want to increment by any other number, you have to write it out. There is, however, also a shortcut for<br />
+<div class="code">$variable -= 1;</div><br />
+It is<br />
+<div class="code">$variable--;</div></p>
+<p>That's as lazy as we're going to get with incrementing, but don't fear! There are more shortcuts to know. Take a look at your while loop. Wouldn't it be better with a couple fewer lines of code? Yes, it would. There is a special kind of while loop for use with counters called a for loop. A for loop basically combines all of the manipulations of the counter variable into one line. The following function is exactly the same as the one you are using with a while loop<br />
+<div class="code">function totalValue(){
+    $length = sizeof($handValue[]); 
+    $sum = 0;
+    for($counter = 0; $counter &lt; $length; $counter++){
+        $sum += $handValue[$counter]; 
+    }
+    return $sum;
+}</div><br />
+Two fewer lines of code as promised! All that happened is "while" was changed to "for" and the initialization and incrementation were moved into the parentheses. So, the basic for loop structure is<br />
+<div class="code">for(initialize counter; counter boundary; counter incrementation){
+
+}</div><br />
+Note each command in the parentheses is separated by semicolons. Press submit, and notice the program does exactly the same thing with the for loop as it did with the while loop. There are instances when you should use a while loop and not a for loop, but we won't go into them in this tutorial.</p>
+<p>Alright, we're satisfied. Enough laziness for now! (It's not all about laziness though...having fewer lines of code is easier to read!)</p>
+
+<h2>Lesson 8: Betting--Nested Conditionals and More Functions with Parameters</h2>
+<p>Now that your code as been modified to reflect the lazy programmer you're becoming, it's time to get back to the game. As you may have realized, blackjack is a little boring if there's nothing on the line. So, we're going to introduce betting. We've written a bet method for you, called bet()
+
+</p>
+</body>
+</html>

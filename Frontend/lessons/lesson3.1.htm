@@ -1,0 +1,11 @@
+<h2>Lesson 3.1: Hit or Stand &mdash; Conditionals and Returns</h2>
+<p>Alrighty, {NAME}! You are now successfully playing blackjack. You'll bust every time, but that's what we're about to fix. This lesson will be a bit long, but hang in there! Now we're getting into some serious stuff.</p>
+<p>In blackjack you obviously don't want to hit every time because you'll end up busting. What you want to do is hit under some circumstances and stand under others. Fortunately, programming languages have a simple way to do if-else statements. Esentially you tell the computer if something is true, do A, else (otherwise) do B. In JavaScript, the syntax for this statement is<br />
+<div class="code">if (somethingtrue) {
+    A;
+} else {
+    B;
+}
+</div><br />
+Delete hit(); and stand(); and type this statement into the box on the right after your name-setting command. Don't click submit. Notice that there are semicolons after the commands A and B but not after if() and else. The braces { } following if() and else surround the command (A or B) that is performed in each case. Just like it doesn't matter how many blank lines are between two commands, the indentations don't matter either. They just make it easier to read.</p>
+<p>Now we need to replace somethingtrue, A, and B with commands the computer can read. A and B are easy. We want to hit if something is true and stand if it's not, so replace A with hit(); and B with stand(); (we also wrote stand() for you).</p>
