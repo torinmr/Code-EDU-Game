@@ -2,6 +2,9 @@ package com.appspot.codeedugame.deck;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.PersistenceCapable;
+
+@PersistenceCapable
 public class PokerCard implements Comparable<PokerCard>, Serializable {
     private static final long serialVersionUID = 1L;
     private static final String SUIT_NAMES[] = {"C", "D", "H", "S"};

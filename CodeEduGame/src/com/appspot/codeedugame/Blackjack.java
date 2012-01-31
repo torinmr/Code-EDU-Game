@@ -18,16 +18,16 @@ public class Blackjack {
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-	@Persistent//(dependent = "true")
+	@Persistent(dependent = "true")
 	private PokerDeck deck;
 	
-	@Persistent//(dependent = "true")
+	@Persistent(dependent = "true")
 	private PokerDeck discardPile;
 	
-	@Persistent//(dependent = "true")
+	@Persistent(dependent = "true")
 	private PokerDeck playerCards;
 	
-	@Persistent//(dependent = "true")
+	@Persistent(dependent = "true")
 	private PokerDeck dealerCards;
 	
 	@Persistent
