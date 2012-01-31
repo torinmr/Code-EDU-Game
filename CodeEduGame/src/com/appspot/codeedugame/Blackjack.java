@@ -36,6 +36,7 @@ public class Blackjack {
 	private boolean hasReshuffled;
 	
 	public Blackjack(int playerMoney, String id) {
+		System.out.println("Creating new game.");
 		this.playerMoney = playerMoney;
 		this.bid = 0;
 		this.key = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
