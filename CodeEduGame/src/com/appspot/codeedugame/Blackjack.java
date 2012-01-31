@@ -19,8 +19,8 @@ public class Blackjack {
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-	@Persistent
-	private ArrayList<PokerDeck> decks = new ArrayList<PokerDeck>();
+	@Persistent(serialized = "true")
+	private ArrayList<PokerDeck> decks;
 	// 0 = deck, 1 = discard pile, 2 = dealer hand, 3 = player hand.
 	
 	@Persistent
@@ -36,10 +36,12 @@ public class Blackjack {
 	private boolean hasReshuffled;
 	
 	public Blackjack(int playerMoney, String id) {
+		System.out.println("Creating new game.");
 		this.playerMoney = playerMoney;
 		this.bid = 0;
 		this.key = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
 		
+		this.decks = new ArrayList<PokerDeck>(4);
 		this.decks.add(PokerDeck.make());
 		this.decks.add(PokerDeck.make());
 		this.decks.add(PokerDeck.make());
