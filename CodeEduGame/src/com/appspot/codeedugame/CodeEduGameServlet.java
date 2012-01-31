@@ -12,6 +12,8 @@ import com.appspot.codeedugame.json.JSONObject;
 import com.appspot.codeedugame.deck.PokerCard;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.users.UserService;
 
 @SuppressWarnings("serial")
 public class CodeEduGameServlet extends HttpServlet {
@@ -160,6 +162,26 @@ public class CodeEduGameServlet extends HttpServlet {
         }
     }
 
+    private void sendURL(HttpServletResponse resp, HttpServletRequest req) {
+    	JSONObject respObj = new JSONObject();
+    	UserService userService = UserServiceFactory.getUserService();
+    	String thisURL = req.getRequestURI();
+
+    	try {
+	        if (req.getUserPrincipal() != null) {
+	            respObj.put("logout", userService.createLogoutURL(thisURL));
+	        } else {
+	            respObj.put("login", userService.createLoginURL(thisURL));
+	        }
+	        resp.getWriter().print(respObj.toString());
+    	} catch (JSONException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+    }
+    
     private JSONObject assembleGameObj(Blackjack game) {
         JSONObject gameObj = new JSONObject();
         try {
