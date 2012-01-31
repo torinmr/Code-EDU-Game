@@ -1,5 +1,6 @@
 package com.appspot.codeedugame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,6 @@ import com.appspot.codeedugame.deck.PokerCard;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -21,7 +21,7 @@ public class Blackjack {
     private Key key;
 
 	@Persistent(serialized = "true")
-	private ArrayList<PokerDeck> decks;
+	private Decks decks;
 	// 0 = deck, 1 = discard pile, 2 = dealer hand, 3 = player hand.
 	
 	@Persistent
@@ -36,20 +36,35 @@ public class Blackjack {
 	@Persistent
 	private boolean hasReshuffled;
 	
+	public static class Decks implements Serializable {
+		private static final long serialVersionUID = 1L;
+		private final ArrayList<PokerDeck> decks;
+
+		public Decks(ArrayList<PokerDeck> decks) {
+			this.decks = decks;
+		}
+
+		public ArrayList<PokerDeck> get() {
+	       return decks;
+		}
+	} 
+	
 	public Blackjack(int playerMoney, String id) {
 		System.out.println("Creating new game.");
 		this.playerMoney = playerMoney;
 		this.bid = 0;
 		this.key = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
 		
-		this.decks = new ArrayList<PokerDeck>(4);
-		this.decks.add(PokerDeck.make());
-		this.decks.add(PokerDeck.make());
-		this.decks.add(PokerDeck.make());
-		this.decks.add(PokerDeck.make());
+		ArrayList<PokerDeck> tempDeckList = new ArrayList<PokerDeck>(4);
+		tempDeckList.add(PokerDeck.make());
+		tempDeckList.add(PokerDeck.make());
+		tempDeckList.add(PokerDeck.make());
+		tempDeckList.add(PokerDeck.make());
 		
-		this.decks.get(0).constructStandardDeck();
-		this.decks.get(0).shuffle();
+		tempDeckList.get(0).constructStandardDeck();
+		tempDeckList.get(0).shuffle();
+		
+		decks = new Decks(tempDeckList);
 		
 		this.roundOver = true;
 		this.hasReshuffled = true;
@@ -61,15 +76,15 @@ public class Blackjack {
 	}
 	
 	public int deckSize() {
-		return decks.get(0).getSize();
+		return decks.get().get(0).getSize();
 	}
 	
 	public List<PokerCard> getPlayerCards() {
-		return decks.get(3).getOrdering();
+		return decks.get().get(3).getOrdering();
 	}
 	
 	public List<PokerCard> getDealerCards() {
-		return decks.get(2).getOrdering();
+		return decks.get().get(2).getOrdering();
 	}
 	
 	public int getPlayerMoney() {
@@ -98,8 +113,8 @@ public class Blackjack {
 		}
 		
 		bid = 0;
-		discardHand(decks.get(2));
-		discardHand(decks.get(3));
+		discardHand(decks.get().get(2));
+		discardHand(decks.get().get(3));
 		roundOver = false;
 		return true;
 	}
@@ -111,14 +126,15 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (decks.get(3).getSize() == 0) {
+		if (decks.get().get(3).getSize() == 0) {
+			System.out.println("In hit, calling makeBid.");
 			makeBid(0);
 		}
-		dealCard(decks.get(3));
-		if (handValue(decks.get(3)) > 21) {
+		dealCard(decks.get().get(3));
+		if (handValue(decks.get().get(3)) > 21) {
 			playerLose();
 		}
-		if (decks.get(3).getSize() >= 5) {
+		if (decks.get().get(3).getSize() >= 5) {
 			playerWin();
 		}
 	
@@ -132,7 +148,7 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (decks.get(3).getSize() == 0) {
+		if (decks.get().get(3).getSize() == 0) {
 			makeBid(0);
 		}
 		
@@ -147,10 +163,10 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (decks.get(3).getSize() > 2) {
+		if (decks.get().get(3).getSize() > 2) {
 			return false;
 		}
-		if (decks.get(3).getSize() == 0) {
+		if (decks.get().get(3).getSize() == 0) {
 			makeBid(0);
 		}		
 		if (bid > playerMoney) {
@@ -170,7 +186,7 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (decks.get(3).getSize() > 0) {
+		if (decks.get().get(3).getSize() > 0) {
 			return false;
 		}
 		if (bidAmount < 0) {
@@ -180,16 +196,17 @@ public class Blackjack {
 			return false;
 		}
 		
+		System.out.println("Making bid.");
 		bid = bidAmount;
 		playerMoney -= bidAmount;
 
-		dealCard(decks.get(3));
-		dealCard(decks.get(2));
-		dealCard(decks.get(3));
-		dealCard(decks.get(2));
+		dealCard(decks.get().get(3));
+		dealCard(decks.get().get(2));
+		dealCard(decks.get().get(3));
+		dealCard(decks.get().get(2));
 
-		int dealerValue = handValue(decks.get(2));
-		int playerValue = handValue(decks.get(3));
+		int dealerValue = handValue(decks.get().get(2));
+		int playerValue = handValue(decks.get().get(3));
 		if (dealerValue == 21 && playerValue == 21) {
 			tie();		
 		} else if (dealerValue == 21) {
@@ -197,28 +214,38 @@ public class Blackjack {
 		} else if (playerValue == 21) {
 			playerBlackjack();
 		}
-		
+		System.out.printf("At end of makeBid, size = %d.\n", decks.get().get(3).getSize());
 		hasReshuffled = false;
 		return true;
 	}
 
 // private methods
+	private void updateDecks() {
+		decks = new Decks(decks.get());
+	}
+	
 	private void shuffleDeck() {
 		PokerDeck dummy;
-		dummy = decks.get(1);
-		decks.set(1, decks.get(0));
-		decks.set(0, dummy);
-		decks.get(0).shuffle();
+		dummy = decks.get().get(1);
+		decks.get().set(1, decks.get().get(0));
+		decks.get().set(0, dummy);
+		decks.get().get(0).shuffle();
 		hasReshuffled = true;
+		
+		updateDecks();
 	}
-	//TODO(torinmr): WHAT IS THIS FUNCTION DOING??? NULL POINTERS HERE!
+	
 	private void dealCard(PokerDeck hand) {
-		PokerCard card = decks.get(0).draw();
+		PokerCard card = decks.get().get(0).draw();
 		if (card == null) {
 			shuffleDeck();
-			card = decks.get(0).draw();
+			card = decks.get().get(0).draw();
 		}
 		hand.discard(card);
+		
+		decks = new Decks(decks.get());
+		
+		updateDecks();
 		return;
 	}
 	
@@ -241,9 +268,10 @@ public class Blackjack {
 	private void discardHand(PokerDeck hand) {
 		PokerCard card = hand.draw();
 		while (card != null) {
-			decks.get(1).discard(card);
+			decks.get().get(1).discard(card);
 			card = hand.draw();
 		}
+		updateDecks();
 	}
 	
 	private int getCardValue(PokerCard card) {
@@ -261,33 +289,37 @@ public class Blackjack {
 	}
 	
 	private void playerLose() {
+		System.out.println("Player loses!");
 		roundOver = true;
 	}
 	
 	private void playerWin() {
+		System.out.println("Player wins!");
 		playerMoney += 2*bid;
 		roundOver = true;
 	}
 	
 	private void playerBlackjack() {
+		System.out.println("Player gets a blackjack!");
 		playerMoney += 2.5*bid;
 		roundOver = true;
 	}
 	
 	private void tie() {
+		System.out.println("Player ties!");
 		playerMoney += bid;
 		roundOver = true;
 	}
 	
 	private void dealerFinish() {
-		while (handValue(decks.get(2)) < 17) {
-			dealCard(decks.get(2));
+		while (handValue(decks.get().get(2)) < 17) {
+			dealCard(decks.get().get(2));
 		}
-		if (handValue(decks.get(2)) > 21) {
+		if (handValue(decks.get().get(2)) > 21) {
 			playerWin();
 			return;
 		}
-		if (handValue(decks.get(2)) >= handValue(decks.get(3))) {
+		if (handValue(decks.get().get(2)) >= handValue(decks.get().get(3))) {
 			playerLose();
 		} else {
 			playerWin();
