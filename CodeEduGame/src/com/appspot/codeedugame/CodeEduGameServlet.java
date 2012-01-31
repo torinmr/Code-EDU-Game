@@ -1,11 +1,8 @@
 package com.appspot.codeedugame;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import javax.servlet.http.*;
 
 import com.appspot.codeedugame.json.JSONArray;
@@ -84,15 +81,20 @@ public class CodeEduGameServlet extends HttpServlet {
 
     private void deleteGame(Blackjack game, PersistenceManager pm, HttpServletResponse resp) {
         pm.deletePersistent(game);
-        String gameId = game.getKey().getName();
-        Query query = pm.newQuery("select from UserAndGame " + 
-                                  "where gameId == gameIdParam " +
-                                  "parameters String gameIdParam " + 
-                                  "order by token desc");
+        UserAndGame uag = pm.getObjectById(UserAndGame.class, getUser().getUserId());
+        pm.deletePersistent(uag);
         
-        @SuppressWarnings("unchecked")
-        List<UserAndGame> results = (List<UserAndGame>) query.execute(gameId);
-        pm.deletePersistent(results.get(0));
+        JSONObject respObj = new JSONObject();
+        try {
+            respObj.put("isSuccess", true);
+            respObj.put("msg", "You successfully deleted a game for user "
+                    + getUser().getNickname() + ".");
+            resp.getWriter().print(respObj);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String getNewGameId(User user, PersistenceManager pm, HttpServletResponse resp) {
@@ -111,7 +113,13 @@ public class CodeEduGameServlet extends HttpServlet {
     }
     
     private Blackjack getGame(User user, PersistenceManager pm, HttpServletResponse resp) {
-        UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+        UserAndGame uag = null;
+        try {
+            uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+        } catch (JDOObjectNotFoundException e) {
+            sendError("No user object found for user " + user.getNickname() + ".", resp);
+            return null;
+        }
         Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(),
                 uag.getGameId());
         try {
