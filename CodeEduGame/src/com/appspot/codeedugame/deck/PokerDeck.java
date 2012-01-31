@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -29,16 +28,17 @@ public class PokerDeck {
     private Key key;
     
     @Persistent(serialized = "true")
-    private Map<String, Integer> quantityMap;
+    private HashMap<PokerCard, Integer> quantityMap;
     
     @Persistent
+    @Element(dependent = "true")
     private List<PokerCard> deckList;
     
     @Persistent
     private int size;
 
     public PokerDeck() {
-        this.quantityMap = new HashMap<String, Integer>();
+        this.quantityMap = new HashMap<PokerCard, Integer>();
         this.deckList = new ArrayList<PokerCard>();
         this.size = 0;
     }
@@ -57,12 +57,12 @@ public class PokerDeck {
     
     public void discard(PokerCard card) {
         int count;
-        if(!quantityMap.containsKey(card.toString()))
+        if(!quantityMap.containsKey(card))
             count = 0;
         else
-            count = quantityMap.remove(card.toString());
+            count = quantityMap.remove(card);
         count++;
-        quantityMap.put(card.toString(), count);
+        quantityMap.put(card, count);
         deckList.add(card);
         this.size++;
     }
@@ -73,21 +73,21 @@ public class PokerDeck {
         }
         PokerCard topCard = deckList.remove(0);
         this.size--;
-        int count = this.quantityMap.remove(topCard.toString());
+        int count = this.quantityMap.remove(topCard);
         count--;
         if(count > 0)
-            this.quantityMap.put(topCard.toString(), count);
+            this.quantityMap.put(topCard, count);
         return topCard;
     }
     
-    public boolean draw(PokerDeck card) {
-        int quantity = (quantityMap.get(card.toString()) == null) ? 0 : quantityMap.get(card.toString()).intValue();
+    public boolean draw(PokerCard card) {
+        int quantity = (quantityMap.get(card) == null) ? 0 : quantityMap.get(card).intValue();
         if (quantity < 1) {
             return false;
         }
         quantity--;
-        quantityMap.put(card.toString(), quantity);
-        deckList.remove(card.toString());
+        quantityMap.put(card, quantity);
+        deckList.remove(card);
         size--;
         return true;
     }
@@ -97,8 +97,8 @@ public class PokerDeck {
     }
     
     public int getFromQuantityMap(PokerCard card) {
-        return (this.quantityMap.get(card.toString()) == null)
-                ? 0 : this.quantityMap.get(card.toString());
+        return (this.quantityMap.get(card) == null)
+                ? 0 : this.quantityMap.get(card);
     }
     
     public int getSize() {

@@ -7,8 +7,6 @@ import javax.jdo.PersistenceManager;
 import javax.servlet.http.*;
 
 import com.appspot.codeedugame.deck.PokerCard;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.repackaged.org.json.JSONArray;
 import com.google.appengine.repackaged.org.json.JSONException;
 import com.google.appengine.repackaged.org.json.JSONObject;
@@ -24,7 +22,8 @@ public class CodeEduGameServlet extends HttpServlet {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
             Blackjack game = getGame(ID, pm);
-        
+            pm.deletePersistent(game);
+            
             if (rpcName.equals("bid")) {
                 attemptBid(game, req, resp);
             } else if (rpcName.equals("hit")) {
@@ -35,9 +34,14 @@ public class CodeEduGameServlet extends HttpServlet {
                 attemptDoubleDown(game, req, resp);
             } else if (rpcName.equals("startNextRound")) {
                 attemptStartNextRound(game, req, resp);
+            } else if (rpcName.equals("deleteGame")) {
+                //do nothing
             } else {
                 sendError(req.getParameter("rpcName")
                         + " is an invalid move.", resp);
+            }
+            if (!rpcName.equals("deleteGame")) {
+                pm.makePersistent(game);
             }
         } finally {
             pm.close();
@@ -121,9 +125,8 @@ public class CodeEduGameServlet extends HttpServlet {
     }
 
     private Blackjack getGame(String id, PersistenceManager pm) {
-        Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
         try {
-            return pm.getObjectById(Blackjack.class, k);
+            return pm.getObjectById(Blackjack.class, id);
         } catch (JDOObjectNotFoundException e) {
             Blackjack game = new Blackjack(STARTING_MONEY, id);
             pm.makePersistent(game);
