@@ -22,7 +22,6 @@ public class CodeEduGameServlet extends HttpServlet {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
             Blackjack game = getGame(ID, pm);
-            pm.deletePersistent(game);
           
             if (rpcName.equals("bid")) {
                 attemptBid(game, req, resp);

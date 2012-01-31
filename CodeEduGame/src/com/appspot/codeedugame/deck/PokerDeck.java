@@ -30,7 +30,7 @@ public class PokerDeck implements Iterable<PokerCard> {
     private HashMap<PokerCard, Integer> quantityMap;
     
     @Persistent(serialized = "true")
-    private List<PokerCard> deckList;
+    private ArrayList<PokerCard> deckList;
     
     @Persistent
     private int size;

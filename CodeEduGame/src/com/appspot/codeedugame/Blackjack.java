@@ -1,6 +1,5 @@
 package com.appspot.codeedugame;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.appspot.codeedugame.deck.PokerDeck;
