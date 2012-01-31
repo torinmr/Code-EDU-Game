@@ -15,6 +15,7 @@ import com.google.appengine.repackaged.org.json.JSONObject;
 public class CodeEduGameServlet extends HttpServlet {
     private final String ID = "THE SCHIZ";
     private final int STARTING_MONEY = 100;
+    private Blackjack game;
     
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
@@ -22,7 +23,7 @@ public class CodeEduGameServlet extends HttpServlet {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
             Blackjack game = getGame(ID, pm);
-            pm.deletePersistent(game);
+            this.game = game;
             
             if (rpcName.equals("bid")) {
                 attemptBid(game, req, resp);
@@ -136,6 +137,7 @@ public class CodeEduGameServlet extends HttpServlet {
         try {
             respObj.put("msg", error);
             respObj.put("isSuccess", false);
+            respObj.put("gameObj", assembleGameObj(this.game));
             resp.getWriter().print(respObj.toString());
         } catch (JSONException e) {
             throw new RuntimeException(e.getMessage());

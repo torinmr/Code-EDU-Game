@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -18,7 +17,7 @@ import com.google.appengine.api.datastore.Key;
  *
  */
 @PersistenceCapable
-public class PokerDeck {
+public class PokerDeck implements Iterable<PokerCard> {
     private static final int SUITS = 4;
     private static final int MIN_RANK = 2;
     private static final int MAX_RANK = 14;
@@ -30,8 +29,7 @@ public class PokerDeck {
     @Persistent(serialized = "true")
     private HashMap<PokerCard, Integer> quantityMap;
     
-    @Persistent
-    @Element(dependent = "true")
+    @Persistent(serialized = "true")
     private List<PokerCard> deckList;
     
     @Persistent
@@ -137,6 +135,7 @@ public class PokerDeck {
         return new ArrayList<PokerCard>(deckList);
     }
 
+    @Override
     public Iterator<PokerCard> iterator() {
         return deckList.iterator();
     }
