@@ -2,20 +2,14 @@ package com.appspot.codeedugame;
 
 import java.util.UUID;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.google.appengine.api.datastore.Key;
-
 @PersistenceCapable
 public class UserAndGame {
-    
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
 
+    @PrimaryKey
     @Persistent
     private String token;
     

@@ -29,26 +29,22 @@ public class CodeEduGameServlet extends HttpServlet {
         try {
             Blackjack game = null;
             if (rpcName.equals("startGame")) {
-                String token = req.getParameter("token");
-                if (token == null) {
-                    sendError("You didn't send a token.", resp);
-                } else {
-                    String id = getNewGameId(token, pm);
-                    JSONObject respObj = new JSONObject();
-                    try {
-                        respObj.put("isSuccess", true);
-                        respObj.put("gameId", id);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
+                String id = getNewGameId(getUser(), pm);
+                JSONObject respObj = new JSONObject();
+                try {
+                    respObj.put("isSuccess", true);
+                    respObj.put("msg", "You have started a new game.");
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
                 }
             } else {
-                String id = req.getParameter("gameId");
-                if (id == null) {
-                    sendError("You didn't send a gameId.", resp);
-                } else {
-                    game = getGame(id, pm, resp);
-                }
+                game = getGame(getUser(), pm, resp);
+            }
+            
+            if (rpcName.equals("getLogin")) {
+                sendURL(resp, req);
+            } else if (rpcName.equals("getName")) {
+                sendName(resp);
             }
           
             if (game != null) {
@@ -86,27 +82,25 @@ public class CodeEduGameServlet extends HttpServlet {
         
         @SuppressWarnings("unchecked")
         List<UserAndGame> results = (List<UserAndGame>) query.execute(gameId);
-        if (results.isEmpty()) {
-            sendError("Game " + gameId + " does not exist.", resp);
-        } else {
-            pm.deletePersistent(results.get(0));
-        }
+        pm.deletePersistent(results.get(0));
     }
 
-    private String getNewGameId(String token, PersistenceManager pm) {
-        UserAndGame uag = UserAndGame.make(token);
+    private String getNewGameId(User user, PersistenceManager pm) {
+        UserAndGame uag = UserAndGame.make(user.getUserId());
         Blackjack game = new Blackjack(STARTING_MONEY, uag.getGameId());
         pm.makePersistent(uag);
         pm.makePersistent(game);
         return uag.getGameId();
     }
     
-    private Blackjack getGame(String id, PersistenceManager pm, HttpServletResponse resp) {
-        Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
+    private Blackjack getGame(User user, PersistenceManager pm, HttpServletResponse resp) {
+        UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+        Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(),
+                uag.getGameId());
         try {
             return pm.getObjectById(Blackjack.class, k);
         } catch (JDOObjectNotFoundException e) {
-            sendError("Game " + id + " does not exist.", resp);
+            sendError("No game for user " + user.getNickname() + " does not exist.", resp);
             return null;
         }
     }
