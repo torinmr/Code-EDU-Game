@@ -97,7 +97,7 @@ public class Blackjack {
 	// starts a new round. Returns false if this is illegal (i.e. if
 	// in the middle of a round.), returns true otherwise.
 	public boolean startNextRound() {
-		if (!roundOver) {
+		if (roundOver == false) {
 			return false;
 		}
 		

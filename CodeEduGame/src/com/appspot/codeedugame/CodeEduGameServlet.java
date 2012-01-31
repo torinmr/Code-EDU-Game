@@ -35,13 +35,10 @@ public class CodeEduGameServlet extends HttpServlet {
             } else if (rpcName.equals("startNextRound")) {
                 attemptStartNextRound(game, req, resp);
             } else if (rpcName.equals("deleteGame")) {
-                //do nothing
+            	pm.deletePersistent(game);
             } else {
                 sendError(req.getParameter("rpcName")
                         + " is an invalid move.", resp);
-            }
-            if (!rpcName.equals("deleteGame")) {
-                pm.makePersistent(game);
             }
         } finally {
             pm.close();
