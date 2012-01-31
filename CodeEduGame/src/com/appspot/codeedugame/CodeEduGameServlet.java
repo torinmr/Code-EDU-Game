@@ -10,6 +10,8 @@ import com.appspot.codeedugame.json.JSONArray;
 import com.appspot.codeedugame.json.JSONException;
 import com.appspot.codeedugame.json.JSONObject;
 import com.appspot.codeedugame.deck.PokerCard;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 @SuppressWarnings("serial")
 public class CodeEduGameServlet extends HttpServlet {
@@ -121,8 +123,9 @@ public class CodeEduGameServlet extends HttpServlet {
     }
 
     private Blackjack getGame(String id, PersistenceManager pm) {
+        Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
         try {
-            return pm.getObjectById(Blackjack.class, id);
+            return pm.getObjectById(Blackjack.class, k);
         } catch (JDOObjectNotFoundException e) {
             Blackjack game = new Blackjack(STARTING_MONEY, id);
             pm.makePersistent(game);

@@ -3,8 +3,8 @@ package com.appspot.codeedugame.deck;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -17,7 +17,7 @@ import com.google.appengine.api.datastore.Key;
  *
  */
 @PersistenceCapable
-public class PokerDeck implements Iterable<PokerCard> {
+public class PokerDeck {
     private static final int SUITS = 4;
     private static final int MIN_RANK = 2;
     private static final int MAX_RANK = 14;
@@ -27,7 +27,7 @@ public class PokerDeck implements Iterable<PokerCard> {
     private Key key;
     
     @Persistent(serialized = "true")
-    private HashMap<PokerCard, Integer> quantityMap;
+    private HashMap<String, Integer> quantityMap;
     
     @Persistent(serialized = "true")
     private ArrayList<PokerCard> deckList;
@@ -35,10 +35,13 @@ public class PokerDeck implements Iterable<PokerCard> {
     @Persistent
     private int size;
 
-    public PokerDeck() {
-        this.quantityMap = new HashMap<PokerCard, Integer>();
-        this.deckList = new ArrayList<PokerCard>();
-        this.size = 0;
+    private PokerDeck() {}
+    public static PokerDeck make() {
+        PokerDeck deck = new PokerDeck();
+        deck.quantityMap = new HashMap<String, Integer>();
+        deck.deckList = new ArrayList<PokerCard>();
+        deck.size = 0;
+        return deck;
     }
     
     public Key getKey() {
@@ -55,12 +58,12 @@ public class PokerDeck implements Iterable<PokerCard> {
     
     public void discard(PokerCard card) {
         int count;
-        if(!quantityMap.containsKey(card))
+        if(!quantityMap.containsKey(card.toString()))
             count = 0;
         else
-            count = quantityMap.remove(card);
+            count = quantityMap.remove(card.toString());
         count++;
-        quantityMap.put(card, count);
+        quantityMap.put(card.toString(), count);
         deckList.add(card);
         this.size++;
     }
@@ -71,20 +74,20 @@ public class PokerDeck implements Iterable<PokerCard> {
         }
         PokerCard topCard = deckList.remove(0);
         this.size--;
-        int count = this.quantityMap.remove(topCard);
+        int count = this.quantityMap.remove(topCard.toString());
         count--;
         if(count > 0)
-            this.quantityMap.put(topCard, count);
+            this.quantityMap.put(topCard.toString(), count);
         return topCard;
     }
     
     public boolean draw(PokerCard card) {
-        int quantity = (quantityMap.get(card) == null) ? 0 : quantityMap.get(card).intValue();
+        int quantity = (quantityMap.get(card.toString()) == null) ? 0 : quantityMap.get(card).intValue();
         if (quantity < 1) {
             return false;
         }
         quantity--;
-        quantityMap.put(card, quantity);
+        quantityMap.put(card.toString(), quantity);
         deckList.remove(card);
         size--;
         return true;
@@ -95,7 +98,7 @@ public class PokerDeck implements Iterable<PokerCard> {
     }
     
     public int getFromQuantityMap(PokerCard card) {
-        return (this.quantityMap.get(card) == null)
+        return (this.quantityMap.get(card.toString()) == null)
                 ? 0 : this.quantityMap.get(card);
     }
     
@@ -135,8 +138,9 @@ public class PokerDeck implements Iterable<PokerCard> {
         return new ArrayList<PokerCard>(deckList);
     }
 
+    /*
     @Override
     public Iterator<PokerCard> iterator() {
         return deckList.iterator();
-    }
+    }*/
 }

@@ -47,13 +47,13 @@ public class Blackjack {
 		this.bid = 0;
 		this.key = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
 		
-		this.deck = new PokerDeck();
+		this.deck = PokerDeck.make();
 		this.deck.constructStandardDeck();
 		this.deck.shuffle();
 		
-		this.playerCards = new PokerDeck();
-		this.dealerCards = new PokerDeck();
-		this.discardPile = new PokerDeck();
+		this.playerCards = PokerDeck.make();
+		this.dealerCards = PokerDeck.make();
+		this.discardPile = PokerDeck.make();
 		this.roundOver = true;
 		this.hasReshuffled = true;
 	}
@@ -214,7 +214,7 @@ public class Blackjack {
 		deck.shuffle();
 		hasReshuffled = true;
 	}
-
+	//TODO(torinmr): WHAT IS THIS FUNCTION DOING??? NULL POINTERS HERE!
 	private void dealCard(PokerDeck hand) {
 		PokerCard card = deck.draw();
 		if (card == null) {
@@ -228,7 +228,7 @@ public class Blackjack {
 	private int handValue(PokerDeck hand) {
 		int value = 0;
 		int numAce = 0;
-		for (PokerCard card : hand) {
+		for (PokerCard card : hand.getOrdering()) {
 			value += getCardValue(card);
 			if (card.getRank() == 14) {
 				numAce++;
