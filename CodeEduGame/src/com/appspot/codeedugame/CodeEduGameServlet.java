@@ -1,9 +1,11 @@
 package com.appspot.codeedugame;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 import javax.servlet.http.*;
 
 import com.appspot.codeedugame.json.JSONArray;
@@ -15,7 +17,6 @@ import com.google.appengine.api.datastore.KeyFactory;
 
 @SuppressWarnings("serial")
 public class CodeEduGameServlet extends HttpServlet {
-    private final String ID = "THE SCHIZ";
     private final int STARTING_MONEY = 100;
     
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -23,26 +24,87 @@ public class CodeEduGameServlet extends HttpServlet {
         String rpcName = req.getParameter("rpcName");
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
-            Blackjack game = getGame(ID, pm);
-          
-            if (rpcName.equals("bid")) {
-                attemptBid(game, req, resp);
-            } else if (rpcName.equals("hit")) {
-                attemptHit(game, req, resp);
-            } else if (rpcName.equals("stand")) {
-                attemptStand(game, req, resp);
-            } else if (rpcName.equals("doubleDown")) {
-                attemptDoubleDown(game, req, resp);
-            } else if (rpcName.equals("startNextRound")) {
-                attemptStartNextRound(game, req, resp);
-            } else if (rpcName.equals("deleteGame")) {
-            	pm.deletePersistent(game);
+            Blackjack game = null;
+            if (rpcName.equals("startGame")) {
+                String token = req.getParameter("token");
+                if (token == null) {
+                    sendError("You didn't send a token.", resp);
+                } else {
+                    String id = getNewGameId(token, pm);
+                    JSONObject respObj = new JSONObject();
+                    try {
+                        respObj.put("isSuccess", true);
+                        respObj.put("gameId", id);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             } else {
-                sendError(req.getParameter("rpcName")
-                        + " is an invalid move.", resp);
+                String id = req.getParameter("gameId");
+                if (id == null) {
+                    sendError("You didn't send a gameId.", resp);
+                } else {
+                    game = getGame(id, pm, resp);
+                }
+            }
+          
+            if (game != null) {
+                if (rpcName.equals("bid")) {
+                    attemptBid(game, req, resp);
+                } else if (rpcName.equals("hit")) {
+                    attemptHit(game, req, resp);
+                } else if (rpcName.equals("stand")) {
+                    attemptStand(game, req, resp);
+                } else if (rpcName.equals("doubleDown")) {
+                    attemptDoubleDown(game, req, resp);
+                } else if (rpcName.equals("startNextRound")) {
+                    attemptStartNextRound(game, req, resp);
+                } else if (rpcName.equals("deleteGame")) {
+                    deleteGame(game, pm, resp);
+                } else if (rpcName.equals("startGame")) {
+                    //don't do anything
+                } else {
+                    sendError(req.getParameter("rpcName")
+                            + " is an invalid move.", resp);
+                }
             }
         } finally {
             pm.close();
+        }
+    }
+
+    private void deleteGame(Blackjack game, PersistenceManager pm, HttpServletResponse resp) {
+        pm.deletePersistent(game);
+        String gameId = game.getKey().getName();
+        Query query = pm.newQuery("select from UserAndGame " + 
+                                  "where gameId == gameIdParam " +
+                                  "parameters String gameIdParam " + 
+                                  "order by token desc");
+        
+        @SuppressWarnings("unchecked")
+        List<UserAndGame> results = (List<UserAndGame>) query.execute(gameId);
+        if (results.isEmpty()) {
+            sendError("Game " + gameId + " does not exist.", resp);
+        } else {
+            pm.deletePersistent(results.get(0));
+        }
+    }
+
+    private String getNewGameId(String token, PersistenceManager pm) {
+        UserAndGame uag = UserAndGame.make(token);
+        Blackjack game = new Blackjack(STARTING_MONEY, uag.getGameId());
+        pm.makePersistent(uag);
+        pm.makePersistent(game);
+        return uag.getGameId();
+    }
+    
+    private Blackjack getGame(String id, PersistenceManager pm, HttpServletResponse resp) {
+        Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
+        try {
+            return pm.getObjectById(Blackjack.class, k);
+        } catch (JDOObjectNotFoundException e) {
+            sendError("Game " + id + " does not exist.", resp);
+            return null;
         }
     }
 
@@ -119,17 +181,6 @@ public class CodeEduGameServlet extends HttpServlet {
             } else {
                 sendError("UNKNOWN BIDDING ERROR!!!!!!!", resp);
             }
-        }
-    }
-
-    private Blackjack getGame(String id, PersistenceManager pm) {
-        Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
-        try {
-            return pm.getObjectById(Blackjack.class, k);
-        } catch (JDOObjectNotFoundException e) {
-            Blackjack game = new Blackjack(STARTING_MONEY, id);
-            pm.makePersistent(game);
-            return game;
         }
     }
 
