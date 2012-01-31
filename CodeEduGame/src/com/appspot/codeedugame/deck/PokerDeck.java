@@ -10,21 +10,21 @@ import java.util.List;
  * @author aschild
  *
  */
-
 public class PokerDeck implements Serializable {
     private static final int SUITS = 4;
     private static final int MIN_RANK = 2;
     private static final int MAX_RANK = 14;
     static final long serialVersionUID = 1;
-    
+
     private HashMap<String, Integer> quantityMap;
     
     private ArrayList<PokerCard> deckList;
     
     private int size;
 
-    private PokerDeck() {}
+    private PokerDeck() {} 
     public static PokerDeck make() {
+    	System.out.println("Making poker deck.");
         PokerDeck deck = new PokerDeck();
         deck.quantityMap = new HashMap<String, Integer>();
         deck.deckList = new ArrayList<PokerCard>();
