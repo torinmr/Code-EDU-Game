@@ -104,6 +104,8 @@ pre {
 .code {
     white-space: pre;
     font-family: monospace;
+    background-color: #cccccc;
+    padding: 0.3em;
 }
 .playerLabel {
 	text-align: center;

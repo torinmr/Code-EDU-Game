@@ -13,10 +13,15 @@ var eg = {
 	doubled : false,
 	playerHand : new Array(),
 	dealerHand : new Array(),
-	
+	playerHandValues : new Array(),
+
 	evalLocked : false,
-	lockEval : function() {eg.evalLocked = true;},
-	unlockEval : function() {eg.evalLocked = false;},
+	lockEval : function() {
+		eg.evalLocked = true;
+	},
+	unlockEval : function() {
+		eg.evalLocked = false;
+	},
 
 	// Game controls
 	getBet : function() {
@@ -40,6 +45,7 @@ var eg = {
 		eg.deck = cards.shuffle(cards.makeDeck());
 
 		eg.playerHand = new Array();
+		eg.playerHandValues = new Array()
 		eg.dealerHand = new Array();
 
 		// Remove leftover messages
@@ -55,8 +61,8 @@ var eg = {
 		eg.dealerHand.push(eg.deck.pop());
 		eg.dealerHand.push(eg.deck.pop());
 
-		eg.playerHand.push(eg.deck.pop());
-		eg.playerHand.push(eg.deck.pop());
+		eg.playerDrawCard();
+		eg.playerDrawCard();
 
 		// Display the new game
 		eg.drawGame();
@@ -66,17 +72,22 @@ var eg = {
 			eg.end();
 		}
 	},
+	playerDrawCard : function() {
+		var newCard = eg.deck.pop();
+		eg.playerHand.push(newCard);
+		eg.playerHandValues.push(eg.cardNumValue(newCard));
+	},
 	hit : function() {
 		// Check the game lock
 		if (!eg.inGame)
 			return;
 
 		cb.call('hit');
-		
+
 		eg.ddAble = false;
 
 		// Add a card and redraw
-		eg.playerHand.push(eg.deck.pop());
+		eg.playerDrawCard();
 		eg.drawGame();
 
 		// Check for bust
@@ -88,7 +99,7 @@ var eg = {
 		// Check the game lock
 		if (!eg.inGame)
 			return;
-		
+
 		cb.call('stand');
 
 		eg.ddAble = false;
@@ -97,7 +108,7 @@ var eg = {
 
 		// The user can't do anything else
 		eg.end();
-		
+
 		cb.call('hit');
 	},
 	ai : function() {
@@ -185,6 +196,15 @@ var eg = {
 									eg.playerHand[p].num) + '" />');
 		}
 	},
+	cardNumValue : function(card) {
+		if (card.num == 14) {
+			return 11;
+		} else if (card.num > 10) {
+			return 10;
+		} else {
+			return card.num;
+		}
+	},
 	// Calculate the value of a hand
 	value : function(hand) {
 		var numAces = 0;
@@ -211,28 +231,38 @@ var eg = {
 			return;
 		}
 		
-		ui.minIns();
-		
+		// Kludgy, but whatever...
+		var sub = {
+			'handValue' : 'eg.playerHandValues',
+		};
+		for (raw in sub) {
+			code = code.replace(new RegExp(raw, 'g'), sub[raw]);
+		}
+
 		var turns = 0;
 		eg.newGame();
 		while (turns < 5 && eg.inGame) {
 			try {
 				jQuery.globalEval(code);
 			} catch (E) {
-
+				alert(E);
+				return;
 			}
 			turns++;
 		}
+		ui.minIns();
 		eg.drawGame();
 		eg.ai();
 		eg.end();
 		cb.call('exec');
 	}
 }
-
 var hit = eg.hit;
 var stand = eg.stand;
 var value = function() {
 	return eg.value(eg.playerHand);
 }
 var name = undefined;
+var lastDealtCardVal = function() {
+	return eg.playerHandValues[eg.playerHandValues.length - 1];
+}

@@ -99,19 +99,36 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('hit', function() {
-					if (ui.getUserCode().indexOf("true") != -1) {
-						les.objComplete = true;
-					}
-				});
-				cb.add('exec', function() {
-					if (les.objComplete) {
-						les.objComplete = false;
-						les.nextLesson();
-					}
-				});
 			},
 			next : 'lesson3.4',
+		},
+		'lesson3.4' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+			},
+			next : 'lesson4',
+		},
+		'lesson4' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+			},
+			next : 'lesson5',
+		},
+		'lesson5' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+			},
+			next : 'lesson6',
+		},
+		'lesson6' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+			},
+			next : 'lesson7',
 		},
 	},
 
@@ -124,6 +141,8 @@ var les = {
 			} else {
 				data = data.replace(/\{NAME\}/g, 'friend');
 			}
+			
+			data = data.replace(/\{NEXT\}/g, '<p style="text-align:center"><input type="button" value="Continue" onclick="les.nextLesson()" /></p>');
 
 			les.lessonText = data;
 			$("#instructions").fadeOut().queue(function() {
