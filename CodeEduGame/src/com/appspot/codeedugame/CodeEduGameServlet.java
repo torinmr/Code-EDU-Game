@@ -12,6 +12,7 @@ import com.appspot.codeedugame.json.JSONObject;
 import com.appspot.codeedugame.deck.PokerCard;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.users.UserService;
 
@@ -166,7 +167,6 @@ public class CodeEduGameServlet extends HttpServlet {
     	JSONObject respObj = new JSONObject();
     	UserService userService = UserServiceFactory.getUserService();
     	String thisURL = req.getRequestURI();
-
     	try {
 	        if (req.getUserPrincipal() != null) {
 	            respObj.put("logout", userService.createLogoutURL(thisURL));
@@ -180,6 +180,11 @@ public class CodeEduGameServlet extends HttpServlet {
             throw new RuntimeException(e.getMessage());
         }
 
+    }
+    
+    private User getUser() {
+    	UserService userService = UserServiceFactory.getUserService();
+    	return userService.getCurrentUser();
     }
     
     private JSONObject assembleGameObj(Blackjack game) {
