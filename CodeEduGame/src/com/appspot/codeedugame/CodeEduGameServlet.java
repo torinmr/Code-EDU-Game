@@ -194,7 +194,7 @@ public class CodeEduGameServlet extends HttpServlet {
     		resp.getWriter().print(respObj.toString());
     	} catch (JSONException e) {
             throw new RuntimeException(e.getMessage());
-        } catch (IOException e) {UserService userService = UserServiceFactory.getUserService();
+        } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }	
     }
