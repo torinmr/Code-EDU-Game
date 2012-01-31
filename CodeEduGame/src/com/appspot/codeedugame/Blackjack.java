@@ -1,11 +1,11 @@
 package com.appspot.codeedugame;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.appspot.codeedugame.deck.PokerDeck;
 import com.appspot.codeedugame.deck.PokerCard;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -18,16 +18,16 @@ public class Blackjack {
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-	@Persistent
+	@Persistent(dependent = "true")
 	private PokerDeck deck;
 	
-	@Persistent
+	@Persistent(dependent = "true")
 	private PokerDeck discardPile;
 	
-	@Persistent
+	@Persistent(dependent = "true")
 	private PokerDeck playerCards;
 	
-	@Persistent
+	@Persistent(dependent = "true")
 	private PokerDeck dealerCards;
 	
 	@Persistent
@@ -42,9 +42,10 @@ public class Blackjack {
 	@Persistent
 	private boolean hasReshuffled;
 	
-	public Blackjack(int playerMoney) {
+	public Blackjack(int playerMoney, String id) {
 		this.playerMoney = playerMoney;
 		this.bid = 0;
+		this.key = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
 		
 		this.deck = new PokerDeck();
 		this.deck.constructStandardDeck();
@@ -95,7 +96,7 @@ public class Blackjack {
 	// starts a new round. Returns false if this is illegal (i.e. if
 	// in the middle of a round.), returns true otherwise.
 	public boolean startNextRound() {
-		if (!roundOver) {
+		if (roundOver == false) {
 			return false;
 		}
 		
@@ -225,11 +226,9 @@ public class Blackjack {
 	}
 	
 	private int handValue(PokerDeck hand) {
-		Iterator<PokerCard> it = hand.iterator();
 		int value = 0;
 		int numAce = 0;
-		while (it.hasNext()) {
-			PokerCard card = it.next();
+		for (PokerCard card : hand) {
 			value += getCardValue(card);
 			if (card.getRank() == 14) {
 				numAce++;
