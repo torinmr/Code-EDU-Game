@@ -227,11 +227,9 @@ public class Blackjack {
 	}
 	
 	private int handValue(PokerDeck hand) {
-		Iterator<PokerCard> it = hand.iterator();
 		int value = 0;
 		int numAce = 0;
-		while (it.hasNext()) {
-			PokerCard card = it.next();
+		for (PokerCard card : hand) {
 			value += getCardValue(card);
 			if (card.getRank() == 14) {
 				numAce++;
