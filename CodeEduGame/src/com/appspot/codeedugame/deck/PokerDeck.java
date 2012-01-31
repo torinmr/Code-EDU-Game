@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.jdo.annotations.EmbeddedOnly;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -23,8 +24,8 @@ public class PokerDeck {
     private static final int MAX_RANK = 14;
 
     @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Key key;
     
     @Persistent(serialized = "true")
     private HashMap<String, Integer> quantityMap;
@@ -42,10 +43,6 @@ public class PokerDeck {
         deck.deckList = new ArrayList<PokerCard>();
         deck.size = 0;
         return deck;
-    }
-    
-    public Key getKey() {
-        return key;
     }
     
     public void constructStandardDeck() {

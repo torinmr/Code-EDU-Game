@@ -1,5 +1,6 @@
 package com.appspot.codeedugame;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.appspot.codeedugame.deck.PokerDeck;
@@ -18,17 +19,9 @@ public class Blackjack {
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
-	@Persistent(dependent = "true")
-	private PokerDeck deck;
-	
-	@Persistent(dependent = "true")
-	private PokerDeck discardPile;
-	
-	@Persistent(dependent = "true")
-	private PokerDeck playerCards;
-	
-	@Persistent(dependent = "true")
-	private PokerDeck dealerCards;
+	@Persistent
+	private ArrayList<PokerDeck> decks = new ArrayList<PokerDeck>();
+	// 0 = deck, 1 = discard pile, 2 = dealer hand, 3 = player hand.
 	
 	@Persistent
 	private int playerMoney;
@@ -47,13 +40,14 @@ public class Blackjack {
 		this.bid = 0;
 		this.key = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
 		
-		this.deck = PokerDeck.make();
-		this.deck.constructStandardDeck();
-		this.deck.shuffle();
+		this.decks.add(PokerDeck.make());
+		this.decks.add(PokerDeck.make());
+		this.decks.add(PokerDeck.make());
+		this.decks.add(PokerDeck.make());
 		
-		this.playerCards = PokerDeck.make();
-		this.dealerCards = PokerDeck.make();
-		this.discardPile = PokerDeck.make();
+		this.decks.get(0).constructStandardDeck();
+		this.decks.get(0).shuffle();
+		
 		this.roundOver = true;
 		this.hasReshuffled = true;
 	}
@@ -64,15 +58,15 @@ public class Blackjack {
 	}
 	
 	public int deckSize() {
-		return deck.getSize();
+		return decks.get(0).getSize();
 	}
 	
 	public List<PokerCard> getPlayerCards() {
-		return playerCards.getOrdering();
+		return decks.get(3).getOrdering();
 	}
 	
 	public List<PokerCard> getDealerCards() {
-		return dealerCards.getOrdering();
+		return decks.get(2).getOrdering();
 	}
 	
 	public int getPlayerMoney() {
@@ -101,8 +95,8 @@ public class Blackjack {
 		}
 		
 		bid = 0;
-		discardHand(playerCards);
-		discardHand(dealerCards);
+		discardHand(decks.get(2));
+		discardHand(decks.get(3));
 		roundOver = false;
 		return true;
 	}
@@ -114,14 +108,14 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (playerCards.getSize() == 0) {
+		if (decks.get(3).getSize() == 0) {
 			makeBid(0);
 		}
-		dealCard(playerCards);
-		if (handValue(playerCards) > 21) {
+		dealCard(decks.get(3));
+		if (handValue(decks.get(3)) > 21) {
 			playerLose();
 		}
-		if (playerCards.getSize() >= 5) {
+		if (decks.get(3).getSize() >= 5) {
 			playerWin();
 		}
 	
@@ -135,7 +129,7 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (playerCards.getSize() == 0) {
+		if (decks.get(3).getSize() == 0) {
 			makeBid(0);
 		}
 		
@@ -150,10 +144,10 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (playerCards.getSize() > 2) {
+		if (decks.get(3).getSize() > 2) {
 			return false;
 		}
-		if (playerCards.getSize() == 0) {
+		if (decks.get(3).getSize() == 0) {
 			makeBid(0);
 		}		
 		if (bid > playerMoney) {
@@ -173,7 +167,7 @@ public class Blackjack {
 		if (roundOver) {
 			return false;
 		}
-		if (playerCards.getSize() > 0) {
+		if (decks.get(3).getSize() > 0) {
 			return false;
 		}
 		if (bidAmount < 0) {
@@ -186,13 +180,13 @@ public class Blackjack {
 		bid = bidAmount;
 		playerMoney -= bidAmount;
 
-		dealCard(playerCards);
-		dealCard(dealerCards);
-		dealCard(playerCards);
-		dealCard(dealerCards);
+		dealCard(decks.get(3));
+		dealCard(decks.get(2));
+		dealCard(decks.get(3));
+		dealCard(decks.get(2));
 
-		int dealerValue = handValue(dealerCards);
-		int playerValue = handValue(playerCards);
+		int dealerValue = handValue(decks.get(2));
+		int playerValue = handValue(decks.get(3));
 		if (dealerValue == 21 && playerValue == 21) {
 			tie();		
 		} else if (dealerValue == 21) {
@@ -208,18 +202,18 @@ public class Blackjack {
 // private methods
 	private void shuffleDeck() {
 		PokerDeck dummy;
-		dummy = discardPile;
-		discardPile = deck;
-		deck = dummy;
-		deck.shuffle();
+		dummy = decks.get(1);
+		decks.set(1, decks.get(0));
+		decks.set(0, dummy);
+		decks.get(0).shuffle();
 		hasReshuffled = true;
 	}
 	//TODO(torinmr): WHAT IS THIS FUNCTION DOING??? NULL POINTERS HERE!
 	private void dealCard(PokerDeck hand) {
-		PokerCard card = deck.draw();
+		PokerCard card = decks.get(0).draw();
 		if (card == null) {
 			shuffleDeck();
-			card = deck.draw();
+			card = decks.get(0).draw();
 		}
 		hand.discard(card);
 		return;
@@ -244,7 +238,7 @@ public class Blackjack {
 	private void discardHand(PokerDeck hand) {
 		PokerCard card = hand.draw();
 		while (card != null) {
-			discardPile.discard(card);
+			decks.get(1).discard(card);
 			card = hand.draw();
 		}
 	}
@@ -283,14 +277,14 @@ public class Blackjack {
 	}
 	
 	private void dealerFinish() {
-		while (handValue(dealerCards) < 17) {
-			dealCard(dealerCards);
+		while (handValue(decks.get(2)) < 17) {
+			dealCard(decks.get(2));
 		}
-		if (handValue(dealerCards) > 21) {
+		if (handValue(decks.get(2)) > 21) {
 			playerWin();
 			return;
 		}
-		if (handValue(dealerCards) >= handValue(playerCards)) {
+		if (handValue(decks.get(2)) >= handValue(decks.get(3))) {
 			playerLose();
 		} else {
 			playerWin();
