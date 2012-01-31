@@ -1,0 +1,16 @@
+<h3>Lesson 6.1: Total Value With More than Two Cards--Loop Setup</h3>
+<p>If you've played the game a few times, you may have noticed that your program does a decent job determining if it should hit or stand the first time, but then keeps making the same decision every time until you bust! That's no good! The problem is that no matter how many card you have, totalValue() is only summing the value of the first two.</p>
+<p>An obvious solution is to change the return line in totalValue(){ to<br />
+<div class="code">return $handValue[0] + $handValue[1] + $handValue[2];</div><br />
+but there are two problems with this. Make this change, click submit, and you'll see the first one. When you have only two cards, $handValue[2] doesn't exist and so the game gives an "undefined" error. Even if it didn’t make this error, it would only add the first three cards you get; not very helpful when you have four cards in your hand.</p>
+<p>We can fix both these problems with loops. There are two kinds of loops. The first and most basic kind is a while loop. It's syntax looks like<br />
+<div class="code">while(somethingtrue){
+
+}</div><br />
+This should remind you of an if statement. When the computer reaches this while loop, it will do whatever is inside the braces { } over and over as long as the argument inside the parentheses ( ) is true. Once the argument is false, the computer will continue reading the code after the loop. But be careful! If the argument in the parentheses never becomes true, the loop will never end, and the game and possibly even your entire web browser will crash. That would really be a downer.</p>
+<p>Delete the return statement in the totalValue() function and replace it with the basic while loop structure. What we are going to do is declare a variable that holds the length of the hand. We will declare another that is a counter which will count how many times we've gone through the loop, and one more that will hold the sum of the values of the cards in your hand. This last variable is the important one: It will be returned by the function. To declare these variables, write, immediately before the while loop,<br />
+<div class="code">$length = sizeof($handValue[]); //set length to the size of the hand
+$counter = 0; //counter variable, starts at 0
+$sum = 0; //sum of card values, to be returned</div><br />
+The comments don't need to be written, of course, but will be helpful for you. Remember, you can name the variables whatever you want as long as your consistent. Take another look at the first line you just wrote. sizeof() is a function that returns the length of an array. It is built into JavaScript. Observe that $handValue[] is written inside the parentheses of this function. This is known as <em>passing a function a parameter</em>. The function needs to know what array it should find the size of, so we put the array inside its parentheses. You'll learn more about this later. Finally, note that every time this function is called, it will reset $length to the current length of this array. That is important, because the size of your hand can change every turn.</p>
+<p>Press next to continue to the next page, but DON'T PRESS SUBMIT or your program will crash.</p>
