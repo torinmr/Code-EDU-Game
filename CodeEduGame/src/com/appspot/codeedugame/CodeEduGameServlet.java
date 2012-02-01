@@ -107,7 +107,7 @@ public class CodeEduGameServlet extends HttpServlet {
             return null;
         } catch (JDOObjectNotFoundException e) {
             //this is what we want to happen
-            uag = UserAndGame.make(user.getUserId());
+            uag = UserAndGame.make(user);
             Blackjack game = new Blackjack(STARTING_MONEY, uag.getGameId());
             pm.makePersistent(uag);
             pm.makePersistent(game);
