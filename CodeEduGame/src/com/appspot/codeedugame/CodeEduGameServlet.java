@@ -216,7 +216,7 @@ public class CodeEduGameServlet extends HttpServlet {
             respObj.put("msg", error);
             respObj.put("isSuccess", false);
             if (game != null) {
-                respObj.put("gameObj", game);
+                respObj.put("gameObj", assembleGameObj(game));
             }
             resp.getWriter().print(respObj.toString());
         } catch (JSONException e) {
