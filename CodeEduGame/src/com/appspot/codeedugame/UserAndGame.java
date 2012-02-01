@@ -6,6 +6,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.users.User;
+
 @PersistenceCapable
 public class UserAndGame {
 
@@ -14,12 +16,16 @@ public class UserAndGame {
     private String token;
     
     @Persistent
+    private String username;
+    
+    @Persistent
     private String gameId;
     
     private UserAndGame() {}
-    public static UserAndGame make(String token) {
+    public static UserAndGame make(User user) {
         UserAndGame uag = new UserAndGame();
-        uag.token = token;
+        uag.token = user.getUserId();
+        uag.username = user.getNickname();
         uag.gameId = UUID.randomUUID().toString();
         return uag;
     }
@@ -30,5 +36,9 @@ public class UserAndGame {
     
     public String getGameId() {
         return gameId;
+    }
+    
+    public String getUsername() {
+        return username;
     }
 }
