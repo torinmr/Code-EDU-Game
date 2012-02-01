@@ -17,6 +17,7 @@ var les = {
 		'welcome' : {
 			action : function() {
 				// Make manual controls
+				$("#buttons").fadeIn();
 				$("#buttons").append(ui.makeButton('New Game', eg.newGame));
 				$("#buttons").append(ui.makeButton('Hit', eg.hit));
 				$("#buttons").append(ui.makeButton('Stand', eg.stand));
@@ -41,9 +42,10 @@ var les = {
 				ui.maxIns();
 				$("#codebox").removeAttr('disabled');
 				$("#eval").removeAttr('disabled');
-				$("#buttons").fadeOut().queue(function() {
+				/*$("#buttons").fadeOut().queue(function() {
 					$(this).html('');
-				});
+				});*/
+				$("#buttons").html('');
 				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
@@ -140,7 +142,7 @@ var les = {
 							&& code.indexOf('if') != -1 && code.indexOf('else') != -1);
 				},
 			} ],
-			next : 'lesson4',
+			next : 'lesson4.1',
 		},
 		'lesson4.1' : {
 			action : function() {
@@ -328,6 +330,9 @@ var les = {
 		eg.lockEval();
 		les.currLesson = lesson;
 		les.objectives = les.lessonList[les.currLesson].objectives;
+		for ( var i = 0; i < les.objectives.length; i++) {
+			les.objectives[i].complete = false;
+		}
 		les.objComplete = false, les.flags = {},
 
 		$.get('./lessons/' + lesson + '.htm', function(data) {
@@ -336,12 +341,13 @@ var les = {
 			} else {
 				data = data.replace(/\[NAME\]/g, 'friend');
 			}
+			data = data.replace(/show="([^"]*)"/g, 'href="javascript:void($(\'#$1\').toggle(300));"');
 
 			les.lessonText = data;
 			$("#instructions").fadeOut().queue(
 					function() {
 						$("#instructions").html(les.lessonText);
-						var toggle = $("<a href='#'></a>");
+						var toggle = $("<a href='javascript:void(0);'></a>");
 						toggle.bind('click', function() {
 							if (ui.sideMaxed) {
 								ui.minIns();
@@ -391,7 +397,8 @@ var les = {
 		if (!les.lessonList[les.currLesson]) {
 			// fail gracefully
 		} else {
-			les.loadLesson(les.lessonList[les.currLesson].next);
+			//les.loadLesson(les.lessonList[les.currLesson].next);
+			location.hash = les.lessonList[les.currLesson].next;
 		}
 	},
 };

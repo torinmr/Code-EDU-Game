@@ -16,7 +16,10 @@ var ui = {
 			return;
 		}
 		ui.sideMaxed = true;
-		$(".objectives").css({width:'200px',float:'right'});
+		$(".objectives").css({
+			width : '200px',
+			float : 'right'
+		});
 		$('#sidebar').animate({
 			width : '800px'
 		});
@@ -26,7 +29,11 @@ var ui = {
 			return;
 		}
 		ui.sideMaxed = false;
-		$(".objectives").css({width:'150px',float:'none',margin:'10px auto 10px auto'});
+		$(".objectives").css({
+			width : '150px',
+			float : 'none',
+			margin : '10px auto 10px auto'
+		});
 		$('#sidebar').animate({
 			width : '200px'
 		});
@@ -81,11 +88,38 @@ $(document).ready(function() {
 	$('#code').click(function() {
 		$('#codebox').focus();
 	});
-	
+
 	if (eg.useRemote) {
-		rem.rpc('startGame', function(s) {}); 
+		rem.rpc('getLogin', function(l) {
+			if (l.login) {
+				location.href = l.login;
+			} else {
+				rem.rpc('startGame', function(s) {
+				});
+			}
+		}, {
+			returnURL : document.URL
+		});
 	}
-	
+
+	// Check for bookmarks
+	if (location.hash) {
+		var lesson = location.hash.substr(1);
+		if (les.lessonList[lesson]) {
+			les.currLesson = lesson;
+		}
+	}
+
+	$(window).hashchange(function() {
+		var lesson = location.hash.substr(1);
+		if (les.lessonList[lesson]) {
+			les.currLesson = lesson;
+		} else {
+			les.currLesson = "welcome";
+		}
+		les.loadLesson(les.currLesson);
+	});
+
 	// Start the lesson!
 	les.loadLesson(les.currLesson);
 });

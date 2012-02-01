@@ -1,8 +1,32 @@
 /*
  * eg.js ()
  */
+/*function dump(arr,level) {
+	var dumped_text = "";
+	if(!level) level = 0;
+	
+	//The padding given at the beginning of the line.
+	var level_padding = "";
+	for(var j=0;j<level+1;j++) level_padding += "    ";
+	
+	if(typeof(arr) == 'object') { //Array/Hashes/Objects 
+		for(var item in arr) {
+			var value = arr[item];
+			
+			if(typeof(value) == 'object') { //If it is an array,
+				dumped_text += level_padding + "'" + item + "' ...\n";
+				dumped_text += dump(value,level+1);
+			} else {
+				dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
+			}
+		}
+	} else { //Stings/Chars/Numbers etc.
+		dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+	}
+	return dumped_text;
+}*/
 var eg = {
-	useRemote: true,
+	useRemote: false,
 	// Dimensions of the table display
 	rows : 2,
 	cols : 5,
@@ -50,30 +74,32 @@ var eg = {
 		
 		if (eg.useRemote) {
 			rem.rpc('startNextRound', function(s) {
-				rem.rpc('bet', function(b) {
+				rem.rpc('bid', function(b) {
+					if (!b.isSuccess) {
+						//alert('Everything broke. Nice job breaking it. Now it\'s broken.\n\n' + dump(b));
+					}
 					$("#money").html(b.gameObj.money);
 
 					eg.playerHand = new Array();
 					eg.dealerHand = new Array();
-					
 					eg.playerHand.push({
-						num : cards.num(b.gameObj.playerValues[0]),
-						suit: cards.suit(b.gameObj.playerSuits[0]),
+						num : b.gameObj.playerValues[0],
+						suit: b.gameObj.playerSuits[0],
 					});
 					eg.playerHand.push({
-						num : cards.num(b.gameObj.playerValues[1]),
-						suit: cards.suit(b.gameObj.playerSuits[1]),
+						num : b.gameObj.playerValues[1],
+						suit: b.gameObj.playerSuits[1],
 					});
 					eg.dealerHand.push({
-						num : cards.num(b.gameObj.playerValues[0]),
-						suit: cards.suit(b.gameObj.playerSuits[0]),
+						num : -1,
+						suit: -1,
 					});
 					eg.dealerHand.push({
-						num : cards.num(b.gameObj.playerValues[1]),
-						suit: cards.suit(b.gameObj.playerSuits[1]),
+						num : b.gameObj.dealerValues[0],
+						suit: b.gameObj.dealerSuits[0],
 					});
-					eg.redrawBoard();
 					eg.inGame = true;
+					eg.redrawBoard();
 				}, {amount : eg.getBet()});
 			});
 			return;
@@ -119,17 +145,17 @@ var eg = {
 			rem.rpc('hit', function(b) {
 				eg.inGame = true;
 				eg.playerHand.push({
-					num : cards.num(b.gameObj.playerValues.pop()),
-					suit: cards.suit(b.gameObj.playerSuits.pop()),
+					num : b.gameObj.playerValues.pop(),
+					suit: b.gameObj.playerSuits.pop(),
 				});
 				eg.redrawBoard();
-				
-				if (b.gameObj.roundIsOver) {
-					if (b.gameObj.playerIsWinner) {
+				if (b.gameObj.handIsOver) {
+					if (b.gameObj.lastRoundResult == "win") {
 						$("#gameOut").html("You win.");
 					} else {
 						$("#gameOut").html("You lose.");
 					}
+					eg.inGame = false;
 				}
 			});
 			return;
@@ -158,6 +184,27 @@ var eg = {
 			rem.rpc('stand', function(b) {
 				eg.inGame = true;
 				eg.redrawBoard();
+				if (b.gameObj.handIsOver) {
+					$('#codebox').val(dump(b.gameObj));
+					eg.dealerHand = new Array();
+					for (var i = 0; i < b.gameObj.dealerValues.length; i++) {
+						eg.dealerHand.push({
+							num : b.gameObj.dealerValues[i],
+							suit: b.gameObj.dealerSuits[i],
+						});
+					}
+					eg.redrawBoard();
+					$("#display00").html(
+							'<img src="'
+									+ cards.cardImg(eg.dealerHand[0].suit,
+											eg.dealerHand[0].num) + '" />');
+					if (b.gameObj.lastRoundResult == "win") {
+						$("#gameOut").html("You win.");
+					} else {
+						$("#gameOut").html("You lose.");
+					}
+					eg.inGame = false;
+				}
 			});
 			return;
 		}
@@ -306,7 +353,9 @@ var eg = {
 			try {
 				jQuery.globalEval(code);
 			} catch (E) {
-				$("#debug").html(E.toString());
+				var errorMsg = E.toString();
+				errorMsg = errorMsg.replace(/\w*Error:/, "<span style='color:red'>$&</span>")
+				$("#debug").html(errorMsg);
 				cb.call('error', E.toString());
 				return;
 			}

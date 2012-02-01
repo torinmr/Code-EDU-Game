@@ -3,5 +3,5 @@
 <p>The program would work a lot better if it hit every time the TOTAL value of ALL your cards was less than, say, 17, and stand otherwise. (Notice that these are the rules the dealer is playing by. Playing by these rules will improve your chances of winning, but the dealer still has a higher chance because the dealer wins in the event of a tie.)</p>
 <p>This is a bit tricky. Instead of checking the value of the last dealt card, we need to check the value of both cards. So, secondDealtCardVal() needs to be replaced by a function that returns the total value of the two cards. Let's call that function totalValue(). Replace secondDealtCardVal() with totalValue().</p>
 <p>The second part is easy. The total value needs to be less than 17, so we just replace 7 with 17! That line should now read<br />
-<div class="code">if(totalValue() &lt; 17){</div></p>
+<div class="code">if (totalValue() &lt; 17) {</div></p>
 <p>Press submit. What happens? The game tells you there is an error because a function is undefined. The problem is that totalValue() doesn't exist! secondDealtCardVal() exists because we wrote it for you, but we didn't write totalValue(). That's your job!</p>

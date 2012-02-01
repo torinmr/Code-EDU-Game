@@ -13,4 +13,20 @@ part two of comment
 part three of comment */</div><br />
 The computer will skip over all three of those lines!</p>
 <p>Add some comments to your code to remind yourself what's happening at each step, and then hit submit. Nothing different should happen!</p>
-<p>To see some commenting suggestions, click <a href="">here</a>.</p>
+<p>To see some commenting suggestions, click <a show="hidden-1">here</a>.</p>
+<div class="hiddencode" id="hidden-1">var name = "David"; //tell computer your name
+
+/*
+Function to find total value of both cards
+Returns an integer that is the total value of both cards
+*/
+function totalValue(){
+       return handValue[0] + handValue[1];
+}
+
+if(totalValue() < 17){ //if the total value of both your cards is less than 17
+       hit();
+}
+else{
+       stand();
+}</div>
