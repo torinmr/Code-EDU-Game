@@ -1,5 +1,6 @@
 package com.appspot.codeedugame;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
@@ -34,12 +35,15 @@ public class EmailerServlet extends HttpServlet {
             msg.setSubject("New comment from " + name + " at " + email);
             msg.setText(msgBody);
             Transport.send(msg);
+            resp.getWriter().print("Thank you for your comments!");
 
         } catch (AddressException e) {
             throw new RuntimeException(e);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
