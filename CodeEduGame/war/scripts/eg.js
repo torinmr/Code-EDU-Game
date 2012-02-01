@@ -247,10 +247,11 @@ var eg = {
 			eg.doubled = false;
 		}
 		// Reveal hidden card
-		$("#display00").html(
+		$("#display00").html(cards.cardImg(eg.dealerHand[0].suit, eg.dealerHand[0].num));
+		/*$("#display00").html(
 				'<img src="'
 						+ cards.cardImg(eg.dealerHand[0].suit,
-								eg.dealerHand[0].num) + '" />');
+								eg.dealerHand[0].num) + '" />');*/
 
 		// Update money
 		$("#money").html("Money: " + eg.money);
@@ -295,22 +296,24 @@ var eg = {
 			return;
 
 		// Draw the dealer's hidden card
-		$("#display00").html('<img src="' + cards.backImg() + '" />');
+		$("#display00").html(cards.backImg());
 
 		// Draw the rest of the dealer's hand
 		for ( var p = 1; p < eg.dealerHand.length; p++) {
-			$("#display0" + p).html(
+			$("#display0" + p).html(cards.cardImg(eg.dealerHand[p].suit, eg.dealerHand[p].num));
+			/*$("#display0" + p).html(
 					'<img src="'
 							+ cards.cardImg(eg.dealerHand[p].suit,
-									eg.dealerHand[p].num) + '" />');
+									eg.dealerHand[p].num) + '" />');*/
 		}
 
 		// Draw the player's hand
 		for ( var p = 0; p < eg.playerHand.length; p++) {
-			$("#display1" + p).html(
+			$("#display1" + p).html(cards.cardImg(eg.playerHand[p].suit, eg.playerHand[p].num));
+			/*$("#display1" + p).html(
 					'<img src="'
 							+ cards.cardImg(eg.playerHand[p].suit,
-									eg.playerHand[p].num) + '" />');
+									eg.playerHand[p].num) + '" />');*/
 		}
 	},
 	// Calculate the value of a hand
