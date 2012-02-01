@@ -9,8 +9,7 @@ var cards = {
 			width : "75px",
 			height : "108px",
 			backgroundImage: "url('./img/cardsprite.png')",
-			backgroundPositionX: "-0px",
-			backgroundPositionY: "-428px",
+			backgroundPosition: "-0px -428px",
 			backgroundRepeat: "no-repeat",
 			backgroundColor: "transparent",
 		});
@@ -21,11 +20,9 @@ var cards = {
 			width : "75px",
 			height : "108px",
 			backgroundImage: "url('./img/cardsprite.png')",
-			backgroundPositionX: "-" + ((n-2)*75) + "px",
-			backgroundPositionY: "-" + (s*107) + "px",
+			backgroundPosition: "-" + ((n-2)*75) + "px -" + (s*107) + "px",
 			backgroundRepeat: "no-repeat",
 			backgroundColor: "transparent",
-			overflow: "hidden",
 		});
 		// return "img/cards/" + cards.suit(s) + "-" + cards.num(n) + "-75.png";
 	},

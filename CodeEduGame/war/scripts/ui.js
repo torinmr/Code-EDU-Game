@@ -16,6 +16,7 @@ var ui = {
 			return;
 		}
 		ui.sideMaxed = true;
+		$("#toggleIns").attr('src', './img/larr.png');
 		$(".objectives").css({
 			width : '200px',
 			float : 'right'
@@ -29,6 +30,7 @@ var ui = {
 			return;
 		}
 		ui.sideMaxed = false;
+		$("#toggleIns").attr('src', './img/rarr.png');
 		$(".objectives").css({
 			width : '150px',
 			float : 'none',
@@ -101,6 +103,9 @@ $(document).ready(function() {
 			returnURL : document.URL
 		});
 	}
+	
+	var toggle = $("#toggleIns");
+	toggle.bind('click', ui.toggleIns);
 
 	// Check for bookmarks
 	if (location.hash) {

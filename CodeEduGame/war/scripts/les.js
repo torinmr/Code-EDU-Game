@@ -347,16 +347,7 @@ var les = {
 			$("#instructions").fadeOut().queue(
 					function() {
 						$("#instructions").html(les.lessonText);
-						var toggle = $("<a href='javascript:void(0);'></a>");
-						toggle.bind('click', function() {
-							if (ui.sideMaxed) {
-								ui.minIns();
-								$(this).html('&gt;');
-							} else {
-								ui.maxIns();
-								$(this).html('&lt;');
-							}
-						});
+						
 						if (les.objectives.length > 0) {
 							var objList = $("<ol></ol>");
 							for ( var i = 0; i < les.objectives.length; i++) {
@@ -370,18 +361,6 @@ var les = {
 											objList);
 							objBox.insertAfter($("#instructions h3"));
 						}
-
-						toggle.css({
-							float : 'right',
-							color : 'black',
-							textDecoration : 'none'
-						});
-						if (ui.sideMaxed) {
-							toggle.html('&lt;');
-						} else {
-							toggle.html('&gt;');
-						}
-						$("#instructions").prepend(toggle);
 
 						if (les.lessonList[les.currLesson].action) {
 							les.lessonList[les.currLesson].action();

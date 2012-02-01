@@ -1,22 +1,45 @@
 <h3>Lesson 4.3: Better Strategy &mdash; Introduction to Arrays</h3>
-<p>Ok. We know how to add numbers, but now we need to figure out what the numbers are. Before, you used secondDealtCardVal() to find the value of one card. Unfortunately for you, there's no firstDealtCardVal() function, so you need to understand how the cards in your hand are stored. The values of the cards are stored in an array called handValue. An array is a numbered list of data. To access something in this array, one types<br />
-<div class="code">handValue[position]</div><br />
-where position is replaced by a number or numerical variable representing the spot in the list you want information from. Note the dollar sign is still needed to specify that handValue is a variable. There is one confusing thing here: JavaScript, like most programming languages, starts numbering arrays at 0. So, the first spot in the array is 0, the second is 1, and so on. (This is another common mistake. Don't forget!) This means that $handValue[0] will return the value stored at the first position in the handValue array, that is, the value of the first card in your hand. Likewise, $handValue[1] returns the value of the second card. (That's all that secondDealtCardVal() is doing! So, there will be no need to use that function anymore.)</p>
-<p>As you may have guessed, you can add these values together just as you would regular numbers. So, replace<br />
-<div class="code">return 3 + 18;</div><br />
-with<br />
-<div class="code">return handValue[0] + handValue[1];</div><br />
-<p>This will add the values of your two cards and return them to the boolean expression in the if statement, where it will compare the sum to 17! Click submit, and observe how the computer only hits when the value of both cards is less than 17. Huzzah! (Yes, we know its still not a great strategy and your code ignores any other cards you are dealt, but wait till lesson 6!)</p>
-<p>If your code is not working properly, make sure it looks like <a show="hidden-1">this</a>.</p>
-<div class="hiddencode" id="hidden-1">var name = "David";
+<p>
+    Ok. We know how to add numbers, but now we need to figure out what the numbers are. Before, you used <span class="variable">secondDealtCardVal()</span> to find the value of one card. Unfortunately for you, there's no <span class="variable">firstDealtCardVal()</span> function, so you need to understand how the cards in your hand are stored. The values of the cards are stored in an array called handValue. An array is a numbered list of data. To access something in this array, one types
+    <br />
+    <div class="code">
+        handValue[position]
+    </div>
+    where position is replaced by a number or numerical variable representing the spot in the list you want information from. There is one confusing thing here: JavaScript, like most programming languages, starts numbering arrays at 0. So, the first spot in the array is 0, the second is 1, and so on. (This is another common mistake. Don't forget!) This means that <span class="variable">handValue[0]</span> will return the value stored at the first position in the handValue array, that is, the value of the first card in your hand. Likewise, <span class="variable">handValue[1]</span> returns the value of the second card. (That's all that secondDealtCardVal() is doing! So, there will be no need to use that function anymore.)
+</p>
+<p>
+    As you may have guessed, you can add these values together just as you would regular numbers. So, replace
+    <br />
+    <div class="code">
+        return 3 + 18;
+    </div>
+    <br />
+    with
+    <br />
+    <div class="code">
+        return handValue[0] + handValue[1];
+    </div>
+    <br />
+<p>
+    This will add the values of your two cards and return them to the boolean expression in the if statement, where it will compare the sum to 17! Click submit, and observe how the computer only hits when the value of both cards is less than 17. Huzzah! (Yes, we know its still not a great strategy and your code ignores any other cards you are dealt, but wait till lesson 6!)
+</p>
+<p>
+    An important note: Just like with other variables, arrays must have var in front of them if you are <em>creating</em> them. After you create any type of variable, you no longer need to refer to it with var.
+</p>
+<p>
+    If your code is not working properly, make sure it looks like <a show="hidden-1">this</a>.
+</p>
+<div class="hiddencode" id="hidden-1">
+    var name = "David";
 
-function totalValue() {
-       return handValue[0] + handValue[1];
-}
+    function totalValue() {
+    return handValue[0] + handValue[1];
+    }
 
-if(totalValue() < 17){
-       hit();
-}
-else{
-       stand();
-}</div>
+    if(totalValue() < 17){
+    hit();
+    }
+    else{
+    stand();
+    }
+</div>

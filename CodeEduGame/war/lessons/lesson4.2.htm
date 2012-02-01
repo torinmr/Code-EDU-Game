@@ -1,10 +1,10 @@
 <h3>Lesson 4.2: Better Strategy &mdash; Writing Functions</h3>
-<p>A function is a command that represents a block of code. You've been using some we wrote for you, namely hit() and stand(). Every time the command is given, the computer finds where the function is written, does what it says, and then returns to the rest of the code. To start writing a function, go to the end of your code, after the last brace of the else statement, and type
+<p>A function is a command that represents a block of code. You've been using some we wrote for you, namely <span class="variable">hit()</span> and <span class="variable">stand()</span>. Every time the command is given, the computer finds where the function is written, does what it says, and then returns to the rest of the code. To start writing a function, go to the end of your code, after the last brace of the else statement, and type
 <div class="code">function totalValue(){
 
 }</div><br />
 "function" is included at the beginning of your code to tell the computer this is a function. When it sees this, it knows to use this code when the function is called. The braces { } after totalValue() will contain the code that the function executes.</p>
-<p>Let's take a quick break here to discuss naming rules and conventions. When you name a variable or function in JavaScript, you can use letters, numbers, and underscores, but cannot start with a number. Names of two or more words are usually either written with the first word lowercase and the rest capitalized (totalValue) or every word lowercase and separated with an underscore (total_value). You can use either name for totalValue(), but you MUST use the same name every time! That is, if you write <br />
+<p>Let's take a quick break here to discuss naming rules and conventions. When you name a variable or function in JavaScript, you can use letters, numbers, and underscores, but cannot start with a number. Names of two or more words are usually either written with the first word lowercase and the rest capitalized (totalValue) or every word lowercase and separated with an underscore (total_value). You can use either name for <span class="variable">totalValue()</span>, but you MUST use the same name every time! That is, if you write <br />
 <div class="code">function total_value(){
 
 }</div><br />
@@ -14,4 +14,4 @@ above.</p>
 <p>Anyway, now we're going to make this function do something. Remember, this function needs to return a value. Between the braces of the function, type<br />
 <div class="code">return 3;</div><br />
 and run the program. totalValue() now always returns 3. Because 3 is less than 17, the computer will always hit.</p>
-<p>You can make the computer evaluate mathematical expressions, too. Replace "3" with "3 + 18" and run the program. Now totalValue() returns the sum of 3 and 18 (21) so the program will call stand(). In most programming languages, there are 5 mathematical operators available: + is used for addition, - is used for subtraction, * for multiplication, / for division, and % for modulus. Modulus divides the two numbers and returns the remainder.</p>
+<p>You can make the computer evaluate mathematical expressions, too. Replace "3" with "3 + 18" and run the program. Now <span class="variable">totalValue()</span> returns the sum of 3 and 18 (21) so the program will call stand(). In most programming languages, there are 5 mathematical operators available: + is used for addition, - is used for subtraction, * for multiplication, / for division, and % for modulus. Modulus divides the two numbers and returns the remainder.</p>

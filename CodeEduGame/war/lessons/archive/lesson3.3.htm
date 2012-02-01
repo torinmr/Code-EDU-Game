@@ -1,0 +1,20 @@
+<h3>Lesson 3.3: Hit or Stand &mdash; Using Boolean Expressions</h3>
+<p>Alright, so this is all fine and dandy, but how does it help with Blackjack? Let's start with something simple. We wrote a function for you called secondDealtCardVal(). This function does something you haven't seen before: It returns a value just like a boolean expression does. Recall that hit() and stand() simply make stuff happen but don't give any information. A function that returns a value can be treated like any other value. That means it can be set to a variable to store the value returned by the function, similar to how you set "yourname" to name. For example, if you had a function called findYourName() that returned a string containing your name, you could rewrite the first line as<br />
+<div class="code">var name = findYourName();</div><br />
+This line would do the same thing. The findYourName function doesn't exist because that would require the computer to read your mind, so don't try this one!</p>
+<p>Anyway, secondDealtCardVal() returns the value of the second card you were dealt. For instance, if the second card you got was a Jack, it would return 10. If it was a 4, it would return 4. A very simple conditional statement for this hit or stand task would be "if the second card dealt to me is less than 7, hit, otherwise, stand." This will increase your winning percentage because if one of your cards is a low number, you are less likely to bust so you can afford to hit. (Of course, this is a very imperfect strategy but we'll improve it later.) So, we need to replace somethingtrue with a statement that checks to see how the value of the second card dealt compares to 7. Remember how I said you can assign  secondDealtCardVal() to a variable? Well you can also compare it to a variable or number with the same boolean expressions described above!
+<p>We said we were going to check to see if the value of the last card dealt was less than 7, so replace somethingtrue with<br />
+<div class="code">secondDealtCardVal() &lt; 7</div>
+Don't delete the parentheses around somethingtrue!</p>
+<p>Now, hit submit and play the game a few times. Observe how your program tells the dealer it wants to hit if your second card is a 2, 3, 4, 5, or 6 and otherwise stands! (We're counting the ace as an 11 in secondDealtCardVal() and you will continue to do so in the following code we will have you write. The game engine will still count an Ace as 1 or 11, but this is more difficult to deal with, so we won't have you worry about that yet. As a result, your code won't be perfectly evaluating the game, but towards the end of the tutorial we'll have you fix the problem.)</p>
+<p>Notice that, given the 6 comparisons above, there are more ways than one to write the conditional statement inside the parentheses following if. For example, you could say that secondDealtCardVal() should be less than or equal to 6, which is the same thing as saying less than 7 since the values are whole numbers. You could also say 7 is greater than secondDealtCardVal(). What else could you say? Try it out! You can also try numbers other than 6 and see if you win more often!
+<p>Before going to the next step, let's talk a little bit about the order the computer does things. The computer starts reading your code at the top and moves down line by line. So, the first thing that happens is you tell the computer your name. Then you tell it to check if it should hit, and finally to stand, if you don't hit. If you change the order of the code, the computer will process things in a different order. For example, if you put the name declaration at the end, it will assign the name after you take a card. The computer is so fast, this probably will be hardly noticeable! You'll see a case when the order is crucial later.</p>
+<p>If your code is not working properly, make sure it looks like <a show="hidden-1">this</a>.</p>
+<div class="hiddencode" id="hidden-1">var name = "David";
+
+if (secondDealtCardVal() < 7) {
+       hit();
+}
+else {
+       stand();
+}</div>

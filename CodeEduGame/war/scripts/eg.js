@@ -342,6 +342,8 @@ var eg = {
 			return;
 		}
 		
+		$("#debug").html('');
+		
 		// Kludgy, but whatever...
 		var sub = {
 			'handValue' : '(handValue())',
