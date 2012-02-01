@@ -24,7 +24,6 @@ public class PokerDeck implements Serializable {
 
     private PokerDeck() {} 
     public static PokerDeck make() {
-    	System.out.println("Making poker deck.");
         PokerDeck deck = new PokerDeck();
         deck.quantityMap = new HashMap<String, Integer>();
         deck.deckList = new ArrayList<PokerCard>();
@@ -33,7 +32,6 @@ public class PokerDeck implements Serializable {
     }
     
     public void constructStandardDeck() {
-        System.out.println("Deck under construction");
         for (int rank = MIN_RANK; rank < MAX_RANK + 1; rank++) {
             for (int suit = 0; suit < SUITS; suit++) {
                 this.discard(new PokerCard(rank, suit));

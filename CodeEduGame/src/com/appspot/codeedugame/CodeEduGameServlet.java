@@ -296,19 +296,29 @@ public class CodeEduGameServlet extends HttpServlet {
             }
             JSONArray dealerSuits = new JSONArray();
             JSONArray dealerValues = new JSONArray();
-            for (PokerCard c : game.getDealerCards()) {
-                dealerSuits.put(c.getSuit());
-                dealerValues.put(c.getRank());
+            	
+            if (game.roundIsOver()) {
+	            for (PokerCard c : game.getDealerCards()) {
+	                dealerSuits.put(c.getSuit());
+	                dealerValues.put(c.getRank());
+	            }
+            } else {
+            	if (game.getDealerCards().size() > 0) {
+            		for (PokerCard c : game.getDealerCards().subList(1, game.getDealerCards().size())) {
+            			dealerSuits.put(c.getSuit());
+            			dealerValues.put(c.getRank());
+ 	            	}
+            	}	
             }
             gameObj.put("playerSuits", playerSuits);
             gameObj.put("playerValues", playerValues);
             gameObj.put("dealerSuits", dealerSuits);
             gameObj.put("dealerValues", dealerValues);
             
-            gameObj.put("roundIsOver", game.roundIsOver());
+            gameObj.put("handIsOver", game.roundIsOver());
             gameObj.put("isDeck", game.deckSize() != 0);
             gameObj.put("hasJustReshuffled", game.getHasReshuffled());
-            gameObj.put("playerIsWinner", game.playerIsWinner());
+            gameObj.put("lastRoundResult", game.getLastRoundResult());
             return gameObj;
         } catch (JSONException e) {
             throw new RuntimeException(e.getMessage());

@@ -37,7 +37,7 @@ public class Blackjack {
 	private boolean hasReshuffled;
 
 	@Persistent
-	private boolean playerIsWinner;
+	private String lastRoundResult;
 	
 	public static class Decks implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -53,7 +53,6 @@ public class Blackjack {
 	} 
 	
 	public Blackjack(int playerMoney, String id) {
-		System.out.println("Creating new game.");
 		this.playerMoney = playerMoney;
 		this.bid = 0;
 		this.key = KeyFactory.createKey(Blackjack.class.getSimpleName(), id);
@@ -106,8 +105,8 @@ public class Blackjack {
 		return hasReshuffled;
 	}
 	
-	public boolean playerIsWinner() {
-		return playerIsWinner;
+	public String getLastRoundResult() {
+		return lastRoundResult;
 	}
 
 	// real methods
@@ -134,7 +133,6 @@ public class Blackjack {
 			return false;
 		}
 		if (decks.get().get(3).getSize() == 0) {
-			System.out.println("In hit, calling makeBid.");
 			makeBid(0);
 		}
 		dealCard(decks.get().get(3));
@@ -203,7 +201,6 @@ public class Blackjack {
 			return false;
 		}
 		
-		System.out.println("Making bid.");
 		bid = bidAmount;
 		playerMoney -= bidAmount;
 
@@ -221,7 +218,6 @@ public class Blackjack {
 		} else if (playerValue == 21) {
 			playerBlackjack();
 		}
-		System.out.printf("At end of makeBid, size = %d.\n", decks.get().get(3).getSize());
 		hasReshuffled = false;
 		return true;
 	}
@@ -296,24 +292,24 @@ public class Blackjack {
 	}
 	
 	private void playerLose() {
-		System.out.println("Player loses!");
+		lastRoundResult = "lose";
 		roundOver = true;
 	}
 	
 	private void playerWin() {
-		System.out.println("Player wins!");
+		lastRoundResult = "win";
 		playerMoney += 2*bid;
 		roundOver = true;
 	}
 	
 	private void playerBlackjack() {
-		System.out.println("Player gets a blackjack!");
+		lastRoundResult = "blackjack";
 		playerMoney += 2.5*bid;
 		roundOver = true;
 	}
 	
 	private void tie() {
-		System.out.println("Player ties!");
+		lastRoundResult = "tie";
 		playerMoney += bid;
 		roundOver = true;
 	}
