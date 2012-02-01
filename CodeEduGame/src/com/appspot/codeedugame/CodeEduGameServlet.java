@@ -23,7 +23,7 @@ public class CodeEduGameServlet extends HttpServlet {
             throws IOException {
         String rpcName = req.getParameter("rpcName");
         if (rpcName == null) {
-            sendError("You need an rpcName field.", resp);
+            sendError("You need an rpcName field.", resp, null);
             return;
         }
         PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -36,7 +36,7 @@ public class CodeEduGameServlet extends HttpServlet {
                 return;
             }
             if (getUser() == null) {
-                sendError("You are not logged in.", resp);
+                sendError("You are not logged in.", resp, null);
                 return;
             }
             Blackjack game = null;
@@ -73,7 +73,7 @@ public class CodeEduGameServlet extends HttpServlet {
                     //don't do anything
                 } else {
                     sendError(req.getParameter("rpcName")
-                            + " is an invalid move.", resp);
+                            + " is an invalid move.", resp, game);
                 }
             }
         } finally {
@@ -103,7 +103,8 @@ public class CodeEduGameServlet extends HttpServlet {
         UserAndGame uag = null;
         try {
             uag = pm.getObjectById(UserAndGame.class, user.getUserId());
-            sendError("User " + user.getNickname() + " already is playing a game.", resp);
+            Blackjack game = pm.getObjectById(Blackjack.class, uag.getGameId());
+            sendError("User " + user.getNickname() + " already is playing a game.", resp, game);
             return null;
         } catch (JDOObjectNotFoundException e) {
             //this is what we want to happen
@@ -120,7 +121,7 @@ public class CodeEduGameServlet extends HttpServlet {
         try {
             uag = pm.getObjectById(UserAndGame.class, user.getUserId());
         } catch (JDOObjectNotFoundException e) {
-            sendError("No user object found for user " + user.getNickname() + ".", resp);
+            sendError("No user object found for user " + user.getNickname() + ".", resp, null);
             return null;
         }
         Key k = KeyFactory.createKey(Blackjack.class.getSimpleName(),
@@ -128,7 +129,7 @@ public class CodeEduGameServlet extends HttpServlet {
         try {
             return pm.getObjectById(Blackjack.class, k);
         } catch (JDOObjectNotFoundException e) {
-            sendError("No game for user " + user.getNickname() + " exists.", resp);
+            sendError("No game for user " + user.getNickname() + " exists.", resp, null);
             return null;
         }
     }
@@ -138,9 +139,9 @@ public class CodeEduGameServlet extends HttpServlet {
         if (game.startNextRound()) {
             sendSuccess(game, resp, req);
         } else if (!game.roundIsOver()) {
-            sendError("You may not start a round that isn't over.", resp);
+            sendError("You may not start a round that isn't over.", resp, game);
         } else {
-            sendError("UNKNOWN ROUND STARTING ERROR!!!!!!!", resp);
+            sendError("UNKNOWN ROUND STARTING ERROR!!!!!!!", resp, game);
         }
     }
 
@@ -149,14 +150,14 @@ public class CodeEduGameServlet extends HttpServlet {
         if (game.doubleDown()) {
             sendSuccess(game, resp, req);
         } else if (game.roundIsOver()) {
-            sendError("You may not double down because the round is over.", resp);
+            sendError("You may not double down because the round is over.", resp, game);
         } else if (game.getPlayerCards().size() > 2) {
-            sendError("You tried to double down after hitting.", resp);
+            sendError("You tried to double down after hitting.", resp, game);
         } else if (game.getBid() > game.getPlayerMoney()) {
             sendError("You bid " + game.getBid() + " but you have "
-                    + game.getPlayerMoney() + ", so you may not double down.", resp);
+                    + game.getPlayerMoney() + ", so you may not double down.", resp, game);
         } else {
-            sendError("UNKNOWN DOUBLE DOWN ERROR!!!!!!!", resp);
+            sendError("UNKNOWN DOUBLE DOWN ERROR!!!!!!!", resp, game);
         }
     }
 
@@ -165,9 +166,9 @@ public class CodeEduGameServlet extends HttpServlet {
         if (game.stand()) {
             sendSuccess(game, resp, req);
         } else if (game.roundIsOver()) {
-            sendError("You may not stand because the round is over.", resp);
+            sendError("You may not stand because the round is over.", resp, game);
         } else {
-            sendError("UNKNOWN STANDING ERROR!!!!!!!", resp);
+            sendError("UNKNOWN STANDING ERROR!!!!!!!", resp, game);
         }
     }
 
@@ -176,9 +177,9 @@ public class CodeEduGameServlet extends HttpServlet {
         if (game.hit()) {
             sendSuccess(game, resp, req);
         } else if (game.roundIsOver()) {
-            sendError("You may not hit because the round is over.", resp);
+            sendError("You may not hit because the round is over.", resp, game);
         } else {
-            sendError("UNKNOWN HITTING ERROR!!!!!!!", resp);
+            sendError("UNKNOWN HITTING ERROR!!!!!!!", resp, game);
         }
     }
 
@@ -186,34 +187,37 @@ public class CodeEduGameServlet extends HttpServlet {
             HttpServletResponse resp) {
         String amt = req.getParameter("amount");
         if (amt == null) {
-            sendError("You forgot to specify a bidding amount.", resp);
+            sendError("You forgot to specify a bidding amount.", resp, game);
         } else {
             int amount = Integer.parseInt(amt);
             boolean success = game.makeBid(amount);
             if (success) {
                 sendSuccess(game, resp, req);
             } else if (game.roundIsOver()) {
-                sendError("You may not bid because the round is over.", resp);
+                sendError("You may not bid because the round is over.", resp, game);
             } else if (!game.getPlayerCards().isEmpty()) {
-                sendError("You are trying to bid during a turn.", resp);
+                sendError("You are trying to bid during a turn.", resp, game);
             } else if (amount < 0) {
-                sendError("You specified a negative bid of " + amount + ".", resp);
+                sendError("You specified a negative bid of " + amount + ".", resp, game);
             } else if (amount > game.getPlayerMoney()) {
                 sendError(
-                    "You bid " + amount + " > " + game.getPlayerMoney() + ", your stash.", resp);
+                    "You bid " + amount + " > " + game.getPlayerMoney() + ", your stash.", resp, game);
             } else if (amount == 0) {
-                sendError("You bid nothing at the wrong time.", resp);
+                sendError("You bid nothing at the wrong time.", resp, game);
             } else {
-                sendError("UNKNOWN BIDDING ERROR!!!!!!!", resp);
+                sendError("UNKNOWN BIDDING ERROR!!!!!!!", resp, game);
             }
         }
     }
 
-    private void sendError(String error, HttpServletResponse resp) {
+    private void sendError(String error, HttpServletResponse resp, Blackjack game) {
         JSONObject respObj = new JSONObject();
         try {
             respObj.put("msg", error);
             respObj.put("isSuccess", false);
+            if (game != null) {
+                respObj.put("gameObj", game);
+            }
             resp.getWriter().print(respObj.toString());
         } catch (JSONException e) {
             throw new RuntimeException(e.getMessage());
@@ -242,7 +246,7 @@ public class CodeEduGameServlet extends HttpServlet {
     	
     	String returnURL = req.getParameter("returnURL");
         if (returnURL == null) {
-            sendError("You forgot to specify a return URL.", resp);
+            sendError("You forgot to specify a return URL.", resp, null);
         }
     	try {
 	        if (req.getUserPrincipal() != null) {
