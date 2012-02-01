@@ -15,7 +15,7 @@ h3 {
 }
 p {
 	padding-bottom: 0.5em;
-	line-height: 1.2em;
+	line-height: 1.3em;
 }
 em {
 	font-style: italic;
@@ -36,11 +36,6 @@ em {
     overflow: hidden;
 }
 
-#wrapper {
-	width: 800px;
-	height: 100%;
-	margin: 0px auto 0px auto;
-}
 #titlebar {
 	width: 100%;
 	margin: 5px;
@@ -50,22 +45,22 @@ em {
 	width: 800px;
 	height: 390px;
 	background-color: #eeeeee;
-	overflow:auto;
+	overflow: auto;
 }
 #instructions {
 	padding: 0.5em;
 }
-#inout {
-	float: right;
-	position: relative;
+#graybar {
+	background-color: #333333;
+	width: 100%;
 }
 #output {
 	font-family: Georgia;
 	background-color: #eeeeee;
-	width: 580px;
+	width: 600px;
 	height: 390px;
-	margin-left: 220px;
-	background-image:url(../img/pokertable.png);
+	margin-left: 200px;
+	background-image:url(../img/pokertable2.png);
 	color: white;
 }
 #money { 
@@ -76,14 +71,48 @@ em {
 	height: 280px;
 	
 }
-#evalButton {
-	text-align:center;
+#bottomBar {
+    background-color: #cfcfcf;
+    height:28px;
+}
+#debugWrap {
+    padding: 5px;
+}
+#debug {
+    height: 16px;
+    font-size: 13px;
+    padding: 1px 3px;
+    line-height: 16px;
+    display: block;
+    width: 685px;
+    background-color: #ffffff;
+    font-family: monospace;
+}
+#directions {
+    background-image: url(../img/directionsRibbon.png);
+    background-repeat: repeat-x;
+    background-position: top;
+}
+#directionsLabel {
+    background-color: #d2232a;
+    width: 170px;
+}
+#submit {
+    float: right;
+    cursor: pointer;
 }
 #betbox {
     float:right;
 }
 #betbox input {
     width: 3em;
+}
+#bottomRibbon {
+    width: 100%;
+    height: 16px;
+    background-image: url(../img/bottomribbon.png);
+    background-repeat: repeat-x;
+    margin-top: 16px;
 }
 .codebox {
 	width: 800px;
@@ -130,4 +159,8 @@ em {
 }
 .spacer {
 	padding: 0.5em;
+}
+.wrapper {
+    width: 800px;
+    margin: 0px auto 0px auto;
 }

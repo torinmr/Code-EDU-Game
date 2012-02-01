@@ -11,59 +11,73 @@
         <script type="text/javascript" src="./scripts/jquery-tabs.js"></script>
         <script type="text/javascript" src="./scripts/cards.js"></script>
         <script type="text/javascript" src="./scripts/cb.js"></script>
+        <script type="text/javascript" src="./scripts/rem.js"></script>
         <script type="text/javascript" src="./scripts/les.js"></script>
         <script type="text/javascript" src="./scripts/eg.js"></script>
         <script type="text/javascript" src="./scripts/ui.js"></script>
         <script type="text/javascript" src="./scripts/uf.js"></script>
     </head>
     <body id="game">
-        <div id="wrapper">
+        <div class="wrapper">
             <div id="titlebar">
-                <h1>CodeGame</h1>
+                <img src="./img/logo.png" alt"JavaJack" />
             </div>
-            <div id="content">
-                <div id="inout">
-                    <div id="sidebarwrap">
-                        <div id="sidebar">
-                            <div id="instructions"></div>
-                        </div>
-                    </div>
-                    <div id="output">
-                        <div class="spacer">
-                            <div id="betbox">
-                                Bet:
-                                <input type="text" id="bet" maxlength="6" />
-                                <span id="money"></span>
-                            </div>
-                            <div id="debug"></div>
-                            <div class="playerLabel" style="clear:both">
-                                Dealer
-                            </div>
-                            <table id="display"></table>
-                            <div class="playerLabel" id="playerName">
-                                You
+        </div>
+        <div id="graybar">
+            <div class="wrapper">
+                <div id="sidebarwrap">
+                    <div id="sidebar">
+                        <div id="directions">
+                            <div id="directionsLabel">
+                                
+                                <img src="./img/directionsLabel.png" alt="Directions" style="" />
+                                <!--<img src="./img/rarr.png" alt="&gt;" style="vertical-align: bottom" />-->
                             </div>
                         </div>
+                        <div id="instructions"></div>
                     </div>
-                    <div id="buttons" style="text-align:center"></div>
-                    <div id="codePane">
-                    <div id="code">
-                        <textarea class="codebox" id="codebox"></textarea>
-                    </div>
-                    <div id="evalButton">
-                        <input type="button" value="Evaluate!" id="eval" />
-                        <!--<input type="button" value="Eval(n)" id="evaln" />-->
-                    </div>
+                </div>
+                <div id="output">
+                    <div class="spacer">
+                        <div id="betbox">
+                            Bet:
+                            <input type="text" id="bet" maxlength="6" />
+                            <span id="money"></span>
+                        </div>
+                        <div id="gameOut"></div>
+                        <div class="playerLabel" style="clear:both">
+                            Dealer
+                        </div>
+                        <table id="display"></table>
+                        <div class="playerLabel" id="playerName">
+                            You
+                        </div>
                     </div>
                 </div>
             </div>
-            <script>
-                $(function() {
-                    $(".codebox").linedtextarea({
-                        selectedLine : 1
-                    });
+        </div>
+        <div class="wrapper">
+            <div id="buttons" style="text-align:center"></div>
+            <div id="codePane">
+                <div id="code">
+                    <textarea class="codebox" id="codebox"></textarea>
+                </div>
+                <div id="bottomBar">
+                    <img src="./img/submit.png" id="submit" alt="Submit" />
+                    <div id="debugWrap">
+                        <div id="debug"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="bottomRibbon"></div>
+        <script>
+            $(function() {
+                $(".codebox").linedtextarea({
+                    selectedLine : 1
                 });
+            });
 
-            </script>
+        </script>
     </body>
 </html>

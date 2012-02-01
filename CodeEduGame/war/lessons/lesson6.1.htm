@@ -2,7 +2,7 @@
 <p>If you've played the game a few times, you may have noticed that your program does a decent job determining if it should hit or stand the first time, but then keeps making the same decision every time until you bust! That's no good! The problem is that no matter how many card you have, totalValue() is only summing the value of the first two.</p>
 <p>An obvious solution is to change the return line in totalValue(){ to<br />
 <div class="code">return $handValue[0] + $handValue[1] + $handValue[2];</div><br />
-but there are two problems with this. Make this change, click submit, and you'll see the first one. When you have only two cards, $handValue[2] doesn't exist and so the game gives an "undefined" error. Even if it didn’t make this error, it would only add the first three cards you get; not very helpful when you have four cards in your hand.</p>
+but there are two problems with this. Make this change, click submit, and you'll see the first one. When you have only two cards, $handValue[2] doesn't exist and so JavaScript returns "undefined". For some stupid reason, it doesn't warn you of this, but you'll see that the program stands every time as a result. Even if it didn’t make this error, it would only add the first three cards you get; not very helpful when you have four cards in your hand.</p>
 <p>We can fix both these problems with loops. There are two kinds of loops. The first and most basic kind is a while loop. It's syntax looks like<br />
 <div class="code">while(somethingtrue){
 

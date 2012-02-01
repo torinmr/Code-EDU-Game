@@ -4,11 +4,13 @@ var les = {
 	lessonText : '',
 	objComplete : false,
 	objectives : {},
-	flags: {},
-	
+	flags : {},
+
 	// Invalidate code with errors
 	invalidated : false,
-	invalidate : function() { les.invalidated = true; },
+	invalidate : function() {
+		les.invalidated = true;
+	},
 
 	// References to the next lesson
 	lessonList : {
@@ -25,12 +27,12 @@ var les = {
 				cb.add('end', les.checkObjectives);
 				ui.minIns();
 			},
-			objectives : [{
+			objectives : [ {
 				text : "Play a round of Blackjack",
 				check : function() {
 					return true;
 				},
-			}],
+			} ],
 			next : 'lesson1',
 		},
 		'lesson1' : {
@@ -39,7 +41,9 @@ var les = {
 				ui.maxIns();
 				$("#codebox").removeAttr('disabled');
 				$("#eval").removeAttr('disabled');
-				$("#buttons").fadeOut().queue(function(){$(this).html('');});
+				$("#buttons").fadeOut().queue(function() {
+					$(this).html('');
+				});
 				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
@@ -72,7 +76,8 @@ var les = {
 				cb.clear();
 				ui.maxIns();
 				cb.add('error', function(E) {
-					if (E.indexOf("somethingtrue") != -1 && ui.getUserCode().indexOf("if") != -1) {
+					if (E.indexOf("somethingtrue") != -1
+							&& ui.getUserCode().indexOf("if") != -1) {
 						les.checkObjectives();
 					}
 				});
@@ -95,21 +100,28 @@ var les = {
 						text : "Evaluate an if statement with a boolean",
 						check : function() {
 							var code = ui.getUserCode();
-							return (code.indexOf('true') != -1 && code.indexOf('if') != -1 && code.indexOf('else') != -1);
+							return (code.indexOf('true') != -1
+									&& code.indexOf('if') != -1 && code
+									.indexOf('else') != -1);
 						},
 					},
 					{
 						text : "Evaluate an if statement with a numerical boolean expression",
 						check : function() {
 							var code = ui.getUserCode();
-							return (code.indexOf('==') != -1 && code.indexOf('if') != -1 && code.indexOf('else') != -1);
+							return (code.indexOf('==') != -1
+									&& code.indexOf('if') != -1 && code
+									.indexOf('else') != -1);
 						},
 					},
 					{
 						text : "Evaluate an if statement with a boolean expression using variables",
 						check : function() {
 							var code = ui.getUserCode();
-							return (code.indexOf('name') != -1 && code.indexOf('==') != -1 && code.indexOf('if') != -1 && code.indexOf('else') != -1);
+							return (code.indexOf('name') != -1
+									&& code.indexOf('==') != -1
+									&& code.indexOf('if') != -1 && code
+									.indexOf('else') != -1);
 						},
 					} ],
 			next : 'lesson3.3',
@@ -120,13 +132,14 @@ var les = {
 				ui.maxIns();
 				cb.add('exec', les.checkObjectives);
 			},
-			objectives: [{
+			objectives : [ {
 				text : "Implement a boolean expression that evaluates your cards",
 				check : function() {
 					var code = ui.getUserCode();
-					return (code.indexOf('secondDealtCardVal') != -1 && code.indexOf('if') != -1 && code.indexOf('else') != -1);
+					return (code.indexOf('secondDealtCardVal') != -1
+							&& code.indexOf('if') != -1 && code.indexOf('else') != -1);
 				},
-			}],
+			} ],
 			next : 'lesson4',
 		},
 		'lesson4.1' : {
@@ -134,17 +147,18 @@ var les = {
 				cb.clear();
 				ui.maxIns();
 				cb.add('error', function(E) {
-					if (E.indexOf("totalValue") != -1 && ui.getUserCode().indexOf("if") != -1) {
+					if (E.indexOf("totalValue") != -1
+							&& ui.getUserCode().indexOf("if") != -1) {
 						les.checkObjectives();
 					}
 				});
 			},
-			objectives: [{
+			objectives : [ {
 				text : "Create a better boolean expression",
 				check : function() {
 					return true;
 				},
-			}],
+			} ],
 			next : 'lesson4.2',
 		},
 		'lesson4.2' : {
@@ -153,7 +167,7 @@ var les = {
 				ui.maxIns();
 				cb.add('exec', les.checkObjectives);
 			},
-			objectives: [{
+			objectives : [ {
 				text : "Write a function that returns a value",
 				check : function() {
 					if (typeof totalValue == 'function' && totalValue() == 3) {
@@ -162,8 +176,7 @@ var les = {
 						return false;
 					}
 				},
-			},
-			{
+			}, {
 				text : "Evaluate a mathematical expression",
 				check : function() {
 					if (typeof totalValue == 'function' && totalValue() == 21) {
@@ -172,7 +185,7 @@ var les = {
 						return false;
 					}
 				},
-			}],
+			} ],
 			next : 'lesson4.3',
 		},
 		'lesson4.3' : {
@@ -181,17 +194,18 @@ var les = {
 				ui.maxIns();
 				cb.add('exec', les.checkObjectives);
 			},
-			objectives: [{
+			objectives : [ {
 				text : "Write a function that returns the value of your first two cards",
 				check : function() {
 					var handValues = handValue();
-					if (typeof totalValue == 'function' && totalValue() == handValues[0] + handValues[1]) {
+					if (typeof totalValue == 'function'
+							&& totalValue() == handValues[0] + handValues[1]) {
 						return true;
 					} else {
 						return false;
 					}
 				},
-			}],
+			} ],
 			next : 'lesson5',
 		},
 		'lesson5' : {
@@ -200,13 +214,14 @@ var les = {
 				ui.maxIns();
 				cb.add('exec', les.checkObjectives);
 			},
-			objectives: [{
+			objectives : [ {
 				text : "Comment your code",
 				check : function() {
 					var code = ui.getUserCode();
-					return ((code.indexOf('/*') != -1 && code.indexOf('*/') != -1) || code.indexOf('//') != -1);
+					return ((code.indexOf('/*') != -1 && code.indexOf('*/') != -1) || code
+							.indexOf('//') != -1);
 				},
-			}],
+			} ],
 			next : 'lesson6.1',
 		},
 		'lesson6.1' : {
@@ -215,12 +230,73 @@ var les = {
 				ui.maxIns();
 				les.checkObjectives();
 			},
-			objectives: [{
+			objectives : [ {
 				text : "DON'T PRESS SUBMIT!",
 				check : function() {
 					return true;
 				},
-			}],
+			} ],
+			next : 'lesson6.2',
+		},
+		'lesson6.2' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "Make a functional loop",
+				check : function() {
+					return true;
+				},
+			}, {
+				text : "Return the total value",
+				check : function() {
+					return true;
+				},
+			} ],
+			next : 'lesson7',
+		},
+		'lesson7' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "DON'T PRESS SUBMIT!",
+				check : function() {
+					return true;
+				},
+			} ],
+			next : 'lesson7',
+		},
+		'lesson8' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "DON'T PRESS SUBMIT!",
+				check : function() {
+					return true;
+				},
+			} ],
+			next : 'lesson7',
+		},
+		'lesson9' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "DON'T PRESS SUBMIT!",
+				check : function() {
+					return true;
+				},
+			} ],
 			next : 'lesson7',
 		},
 	},
@@ -252,8 +328,7 @@ var les = {
 		eg.lockEval();
 		les.currLesson = lesson;
 		les.objectives = les.lessonList[les.currLesson].objectives;
-		les.objComplete = false,
-		les.flags = {},
+		les.objComplete = false, les.flags = {},
 
 		$.get('./lessons/' + lesson + '.htm', function(data) {
 			if (name) {

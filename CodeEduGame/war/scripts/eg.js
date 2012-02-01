@@ -2,6 +2,7 @@
  * eg.js ()
  */
 var eg = {
+	useRemote: true,
 	// Dimensions of the table display
 	rows : 2,
 	cols : 5,
@@ -35,10 +36,9 @@ var eg = {
 	},
 
 	newGame : function() {
-		// Unlock other game controls
-		eg.inGame = true;
-		eg.ddAble = true;
-
+		if (eg.inGame) {
+			return;
+		}
 		// Lock the bet
 		$("#bet").val(eg.getBet());
 		$("#bet").attr('disabled', 'disabled');
@@ -48,14 +48,48 @@ var eg = {
 		// Remove leftover messages
 		eg.clearBoard();
 		
+		if (eg.useRemote) {
+			rem.rpc('startNextRound', function(s) {
+				rem.rpc('bet', function(b) {
+					$("#money").html(b.gameObj.money);
+
+					eg.playerHand = new Array();
+					eg.dealerHand = new Array();
+					
+					eg.playerHand.push({
+						num : cards.num(b.gameObj.playerValues[0]),
+						suit: cards.suit(b.gameObj.playerSuits[0]),
+					});
+					eg.playerHand.push({
+						num : cards.num(b.gameObj.playerValues[1]),
+						suit: cards.suit(b.gameObj.playerSuits[1]),
+					});
+					eg.dealerHand.push({
+						num : cards.num(b.gameObj.playerValues[0]),
+						suit: cards.suit(b.gameObj.playerSuits[0]),
+					});
+					eg.dealerHand.push({
+						num : cards.num(b.gameObj.playerValues[1]),
+						suit: cards.suit(b.gameObj.playerSuits[1]),
+					});
+					eg.redrawBoard();
+					eg.inGame = true;
+				}, {amount : eg.getBet()});
+			});
+			return;
+		}
+		
+		// Unlock other game controls
+		eg.ddAble = true;
+		eg.inGame = true;
+		
 		// No blackjacks, Jack
 		do {
+			eg.playerHand = new Array();
+			eg.dealerHand = new Array();
+			
 			// Make a random deck
 			eg.deck = cards.shuffle(cards.makeDeck());
-	
-			eg.playerHand = new Array();
-			eg.playerHandValues = new Array()
-			eg.dealerHand = new Array();
 	
 			// Deal two cards to each player
 			eg.dealerHand.push(eg.deck.pop());
@@ -78,10 +112,31 @@ var eg = {
 		if (!eg.inGame)
 			return;
 		
+		cb.call('hit');
+		
+		if (eg.useRemote) {
+			eg.inGame = false;
+			rem.rpc('hit', function(b) {
+				eg.inGame = true;
+				eg.playerHand.push({
+					num : cards.num(b.gameObj.playerValues.pop()),
+					suit: cards.suit(b.gameObj.playerSuits.pop()),
+				});
+				eg.redrawBoard();
+				
+				if (b.gameObj.roundIsOver) {
+					if (b.gameObj.playerIsWinner) {
+						$("#gameOut").html("You win.");
+					} else {
+						$("#gameOut").html("You lose.");
+					}
+				}
+			});
+			return;
+		}
+
 		eg.turnNum++;
 		
-		cb.call('hit');
-
 		// Add a card and redraw
 		eg.playerHand.push(eg.deck.pop());
 		eg.redrawBoard();		
@@ -96,16 +151,23 @@ var eg = {
 		if (!eg.inGame)
 			return;
 		
-		eg.turnNum++;
-		
 		cb.call('stand');
+		
+		if (eg.useRemote) {
+			eg.inGame = false;
+			rem.rpc('stand', function(b) {
+				eg.inGame = true;
+				eg.redrawBoard();
+			});
+			return;
+		}
+		
+		eg.turnNum++;
 
 		eg.ai();
 
 		// The user can't do anything else
 		eg.end();
-
-		cb.call('hit');
 	},
 	ai : function() {
 		// Some crappy AI
@@ -149,12 +211,12 @@ var eg = {
 		cb.call('end');
 	},
 	win : function(msg) {
-		$("#debug").html(msg);
+		$("#gameOut").html(msg);
 		eg.money += eg.getBet();
 		cb.call('won');
 	},
 	lose : function(msg) {
-		$("#debug").html(msg);
+		$("#gameOut").html(msg);
 		eg.money -= eg.getBet();
 	},
 	// Double down
@@ -169,7 +231,7 @@ var eg = {
 		eg.stand();
 	},
 	clearBoard: function() {
-		$("#debug").html('');
+		$("#gameOut").html('');
 		for ( var r = 0; r < eg.rows; r++) {
 			for ( var c = 0; c < eg.cols; c++) {
 				$("#display" + r + c).html('');
@@ -244,7 +306,7 @@ var eg = {
 			try {
 				jQuery.globalEval(code);
 			} catch (E) {
-				alert(E);
+				$("#debug").html(E.toString());
 				cb.call('error', E.toString());
 				return;
 			}

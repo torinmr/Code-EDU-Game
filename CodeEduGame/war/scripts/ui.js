@@ -66,7 +66,7 @@ $(document).ready(function() {
 	$("#money").html("Money: " + eg.money);
 
 	// Make automatic controls
-	$("#eval").bind('click', function() {
+	$("#submit").bind('click', function() {
 		eg.execCode($("#codebox").val());
 	});
 	$("#evaln").bind('click', function() {
@@ -78,7 +78,14 @@ $(document).ready(function() {
 
 	// Make the textarea fancy
 	$('#codebox').tabSupport();
-
+	$('#code').click(function() {
+		$('#codebox').focus();
+	});
+	
+	if (eg.useRemote) {
+		rem.rpc('startGame', function(s) {}); 
+	}
+	
 	// Start the lesson!
 	les.loadLesson(les.currLesson);
 });
