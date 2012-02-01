@@ -20,7 +20,7 @@ function sendRPC(rpcName)
 	xmlhttp.send();
 }
 
-function sendRPCWithArg(rpcName, argName, formArg)
+function sendRPCWithFormArg(rpcName, argName, formArg)
 {
 	var xmlhttp;
 	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -40,6 +40,26 @@ function sendRPCWithArg(rpcName, argName, formArg)
 	xmlhttp.send();
 }
 
+function sendRPCWithArg(rpcName, argName, argValue)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	}
+	else {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function() {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	  {
+	    document.getElementById("outputDiv").innerHTML=xmlhttp.responseText;
+	  }
+	}
+	xmlhttp.open("GET", "/codeedugame?rpcName=" + rpcName + "&" + argName +
+				"=" + argValue, true);
+	xmlhttp.send();
+}
+
 </script>
 </head> 
 
@@ -48,7 +68,7 @@ function sendRPCWithArg(rpcName, argName, formArg)
 <div id="outputDiv"><h2>Output goes here.</h2></div>
 
 <p>
-<button type="button" onclick="sendRPC('getLogin')">Get login/logout URL</button>
+<button type="button" onclick="sendRPCWithArg('getLogin', 'returnURL', document.URL)">Get login/logout URL</button>
 <button type="button" onclick="sendRPC('getName')">Get Name</button>
 <button type="button" onclick="sendRPC('startGame')">Start Game</button>
 <button type="button" onclick="sendRPC('deleteGame')">End Game</button> 
@@ -57,7 +77,7 @@ function sendRPCWithArg(rpcName, argName, formArg)
 <p>
 <button type="button" onclick="sendRPC('startNextRound')">Start New Round</button>
 <form action="">Amount:<input type="text" name="amount" value="">
-<input type="button" onclick="sendRPCWithArg('bid', 'amount', this.form)" value="Bid">
+<input type="button" onclick="sendRPCWithFormArg('bid', 'amount', this.form)" value="Bid">
 </form>
 <button type="button" onclick="sendRPC('hit')">Hit</button>
 <button type="button" onclick="sendRPC('stand')">Stand</button>

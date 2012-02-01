@@ -239,12 +239,16 @@ public class CodeEduGameServlet extends HttpServlet {
     private void sendURL(HttpServletResponse resp, HttpServletRequest req) {
     	JSONObject respObj = new JSONObject();
     	UserService userService = UserServiceFactory.getUserService();
-    	String thisURL = req.getRequestURI();
+    	
+    	String returnURL = req.getParameter("returnURL");
+        if (returnURL == null) {
+            sendError("You forgot to specify a return URL.", resp);
+        }
     	try {
 	        if (req.getUserPrincipal() != null) {
-	            respObj.put("logout", userService.createLogoutURL(thisURL));
+	            respObj.put("logout", userService.createLogoutURL(returnURL));
 	        } else {
-	            respObj.put("login", userService.createLoginURL(thisURL));
+	            respObj.put("login", userService.createLoginURL(returnURL));
 	        }
 	        resp.getWriter().print(respObj.toString());
     	} catch (JSONException e) {
