@@ -302,6 +302,7 @@ public class CodeEduGameServlet extends HttpServlet {
             gameObj.put("roundIsOver", game.roundIsOver());
             gameObj.put("isDeck", game.deckSize() != 0);
             gameObj.put("hasJustReshuffled", game.getHasReshuffled());
+            gameObj.put("playerIsWinner", game.playerIsWinner());
             return gameObj;
         } catch (JSONException e) {
             throw new RuntimeException(e.getMessage());
