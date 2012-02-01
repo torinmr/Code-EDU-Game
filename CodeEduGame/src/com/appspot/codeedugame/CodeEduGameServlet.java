@@ -102,14 +102,15 @@ public class CodeEduGameServlet extends HttpServlet {
         try {
             uag = pm.getObjectById(UserAndGame.class, user.getUserId());
             sendError("User " + user.getNickname() + " already is playing a game.", resp);
+            return null;
         } catch (JDOObjectNotFoundException e) {
             //this is what we want to happen
+            uag = UserAndGame.make(user.getUserId());
+            Blackjack game = new Blackjack(STARTING_MONEY, uag.getGameId());
+            pm.makePersistent(uag);
+            pm.makePersistent(game);
+            return uag.getGameId();
         }
-        uag = UserAndGame.make(user.getUserId());
-        Blackjack game = new Blackjack(STARTING_MONEY, uag.getGameId());
-        pm.makePersistent(uag);
-        pm.makePersistent(game);
-        return uag.getGameId();
     }
     
     private Blackjack getGame(User user, PersistenceManager pm, HttpServletResponse resp) {
