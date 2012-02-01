@@ -35,6 +35,9 @@ public class Blackjack {
 	
 	@Persistent
 	private boolean hasReshuffled;
+
+	@Persistent
+	private boolean playerIsWinner;
 	
 	public static class Decks implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -101,6 +104,10 @@ public class Blackjack {
 	
 	public boolean getHasReshuffled() {
 		return hasReshuffled;
+	}
+	
+	public boolean playerIsWinner() {
+		return playerIsWinner;
 	}
 
 	// real methods
