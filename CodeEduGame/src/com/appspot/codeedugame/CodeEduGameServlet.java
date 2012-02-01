@@ -42,13 +42,15 @@ public class CodeEduGameServlet extends HttpServlet {
             Blackjack game = null;
             if (rpcName.equals("startGame")) {
                 String id = getNewGameId(getUser(), pm, resp);
-                JSONObject respObj = new JSONObject();
-                try {
-                    respObj.put("isSuccess", true);
-                    respObj.put("msg", "You have started a new game.");
-                    resp.getWriter().print(respObj);
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                if (id != null) {
+                    JSONObject respObj = new JSONObject();
+                    try {
+                        respObj.put("isSuccess", true);
+                        respObj.put("msg", "You have started a new game.");
+                        resp.getWriter().print(respObj);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             } else {
                 game = getGame(getUser(), pm, resp);
