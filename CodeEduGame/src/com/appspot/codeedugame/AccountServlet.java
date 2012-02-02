@@ -83,13 +83,23 @@ public class AccountServlet extends HttpServlet {
             sendError("You forgot to specify a return URL.", resp);
             return;
         }
+        
+        String resultURL;
+        if (req.getUserPrincipal() != null) {
+            resultURL = userService.createLogoutURL(returnURL);
+        } else {
+            resultURL = userService.createLoginURL(returnURL);
+        }
+        
+        // sanitize url from potential Google screw-up.
+        int index = resultURL.indexOf('<');
+        if (index != -1) {
+        	resultURL = resultURL.substring(0, index);
+        }
+        System.out.println(resultURL);
         try {
         	respObj.put("isLoggedIn", req.getUserPrincipal() != null);
-            if (req.getUserPrincipal() != null) {
-                respObj.put("logout", userService.createLogoutURL(returnURL));
-            } else {
-                respObj.put("login", userService.createLoginURL(returnURL));
-            }
+            respObj.put("URL", resultURL);
             resp.getWriter().print(respObj.toString());
         } catch (JSONException e) {
             throw new RuntimeException(e.getMessage());
