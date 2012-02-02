@@ -21,12 +21,15 @@ public class UserAndGame {
     @Persistent
     private String gameId;
     
+    @Persistent
+    private UserProgress progress;
+    
     private UserAndGame() {}
     public static UserAndGame make(User user) {
         UserAndGame uag = new UserAndGame();
         uag.token = user.getUserId();
         uag.username = user.getNickname();
-        uag.gameId = UUID.randomUUID().toString();
+        uag.gameId = "EMPTY";
         return uag;
     }
     
@@ -40,5 +43,25 @@ public class UserAndGame {
     
     public String getUsername() {
         return username;
+    }
+    
+    public void deleteGameId() {
+        if (!gameId.equals("EMPTY")) {
+            this.gameId = "EMPTY";
+        } else {
+            throw new IllegalStateException("Should not be deleting an empty gameId.");
+        }
+    }
+    
+    public void createGameId() {
+        if (gameId.equals("EMPTY")) {
+            this.gameId = UUID.randomUUID().toString();
+        } else {
+            throw new IllegalStateException("Should not be reseting a nonempty gameId.");
+        }
+    }
+    
+    public UserProgress getProgress() {
+    	return progress;
     }
 }

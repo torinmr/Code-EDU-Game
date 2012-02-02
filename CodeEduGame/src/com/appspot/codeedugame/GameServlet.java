@@ -12,8 +12,6 @@ import com.appspot.codeedugame.deck.PokerCard;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.api.users.UserService;
 
 @SuppressWarnings("serial")
 public class GameServlet extends HttpServlet {
@@ -21,6 +19,11 @@ public class GameServlet extends HttpServlet {
     
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
+        User user = UserUtilities.getUser();
+        if (user == null) {
+            sendError("You are not logged in.", resp, null);
+            return;
+        }
         String rpcName = req.getParameter("rpcName");
         if (rpcName == null) {
             sendError("You need an rpcName field.", resp, null);
@@ -28,20 +31,9 @@ public class GameServlet extends HttpServlet {
         }
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
-            if (rpcName.equals("getLogin")) {
-                sendURL(resp, req);
-                return;
-            } else if (rpcName.equals("getName")) {
-                sendName(resp);
-                return;
-            }
-            if (getUser() == null) {
-                sendError("You are not logged in.", resp, null);
-                return;
-            }
             Blackjack game = null;
             if (rpcName.equals("startGame")) {
-                String id = getNewGameId(getUser(), pm, resp);
+                String id = getNewGameId(user, pm, resp);
                 if (id != null) {
                     JSONObject respObj = new JSONObject();
                     try {
@@ -53,7 +45,7 @@ public class GameServlet extends HttpServlet {
                     }
                 }
             } else {
-                game = getGame(getUser(), pm, resp);
+                game = getGame(user, pm, resp);
             }
           
             if (game != null) {
@@ -68,7 +60,7 @@ public class GameServlet extends HttpServlet {
                 } else if (rpcName.equals("startNextRound")) {
                     attemptStartNextRound(game, req, resp);
                 } else if (rpcName.equals("deleteGame")) {
-                    deleteGame(game, pm, resp);
+                    deleteGame(user, game, pm, resp);
                 } else if (rpcName.equals("startGame")) {
                     //don't do anything
                 } else {
@@ -81,16 +73,16 @@ public class GameServlet extends HttpServlet {
         }
     }
 
-    private void deleteGame(Blackjack game, PersistenceManager pm, HttpServletResponse resp) {
+    private void deleteGame(User user, Blackjack game, PersistenceManager pm, HttpServletResponse resp) {
         pm.deletePersistent(game);
-        UserAndGame uag = pm.getObjectById(UserAndGame.class, getUser().getUserId());
-        pm.deletePersistent(uag);
+        UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+        uag.deleteGameId();
         
         JSONObject respObj = new JSONObject();
         try {
             respObj.put("isSuccess", true);
             respObj.put("msg", "You successfully deleted a game for user "
-                    + getUser().getNickname() + ".");
+                    + user.getNickname() + ".");
             resp.getWriter().print(respObj);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -98,7 +90,7 @@ public class GameServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-
+    
     private String getNewGameId(User user, PersistenceManager pm, HttpServletResponse resp) {
         UserAndGame uag = null;
         try {
@@ -108,9 +100,8 @@ public class GameServlet extends HttpServlet {
             return null;
         } catch (JDOObjectNotFoundException e) {
             //this is what we want to happen
-            uag = UserAndGame.make(user);
+            uag.createGameId();
             Blackjack game = new Blackjack(STARTING_MONEY, uag.getGameId());
-            pm.makePersistent(uag);
             pm.makePersistent(game);
             return uag.getGameId();
         }
@@ -238,52 +229,6 @@ public class GameServlet extends HttpServlet {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-
-    private void sendURL(HttpServletResponse resp, HttpServletRequest req) {
-    	JSONObject respObj = new JSONObject();
-    	UserService userService = UserServiceFactory.getUserService();
-    	
-    	String returnURL = req.getParameter("returnURL");
-        if (returnURL == null) {
-            sendError("You forgot to specify a return URL.", resp, null);
-        }
-    	try {
-	        if (req.getUserPrincipal() != null) {
-	            respObj.put("logout", userService.createLogoutURL(returnURL));
-	        } else {
-	            respObj.put("login", userService.createLoginURL(returnURL));
-	        }
-	        resp.getWriter().print(respObj.toString());
-    	} catch (JSONException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-    
-    // sends the current user's nickname if logged in, sends "Anonymous" otherwise.
-    private void sendName(HttpServletResponse resp) {
-    	JSONObject respObj = new JSONObject();
-    	User user = getUser();
-    	try {
-    		if (user != null) {
-    			respObj.put("name", user.getNickname());
-    		} else {
-    			respObj.put("name", "anonymous");
-    		}
-    		resp.getWriter().print(respObj.toString());
-    	} catch (JSONException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }	
-    }
-    
-    // returns the current user if logged in, otherwise returns null.
-    private User getUser() {
-    	UserService userService = UserServiceFactory.getUserService();
-    	return userService.getCurrentUser();
     }
     
     private JSONObject assembleGameObj(Blackjack game) {
