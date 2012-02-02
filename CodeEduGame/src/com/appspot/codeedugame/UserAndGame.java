@@ -21,6 +21,9 @@ public class UserAndGame {
     @Persistent
     private String gameId;
     
+    @Persistent
+    private UserProgress progress;
+    
     private UserAndGame() {}
     public static UserAndGame make(User user) {
         UserAndGame uag = new UserAndGame();
@@ -40,5 +43,9 @@ public class UserAndGame {
     
     public String getUsername() {
         return username;
+    }
+    
+    public UserProgress getProgress() {
+    	return progress;
     }
 }

@@ -12,8 +12,6 @@ import com.appspot.codeedugame.deck.PokerCard;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.api.users.UserService;
 
 @SuppressWarnings("serial")
 public class GameServlet extends HttpServlet {
@@ -30,7 +28,7 @@ public class GameServlet extends HttpServlet {
         try {
             Blackjack game = null;
             if (rpcName.equals("startGame")) {
-                String id = getNewGameId(getUser(), pm, resp);
+                String id = getNewGameId(UserUtilities.getUser(), pm, resp);
                 if (id != null) {
                     JSONObject respObj = new JSONObject();
                     try {
@@ -42,7 +40,7 @@ public class GameServlet extends HttpServlet {
                     }
                 }
             } else {
-                game = getGame(getUser(), pm, resp);
+                game = getGame(UserUtilities.getUser(), pm, resp);
             }
           
             if (game != null) {
@@ -72,14 +70,14 @@ public class GameServlet extends HttpServlet {
 
     private void deleteGame(Blackjack game, PersistenceManager pm, HttpServletResponse resp) {
         pm.deletePersistent(game);
-        UserAndGame uag = pm.getObjectById(UserAndGame.class, getUser().getUserId());
+        UserAndGame uag = pm.getObjectById(UserAndGame.class, UserUtilities.getUser().getUserId());
         pm.deletePersistent(uag);
         
         JSONObject respObj = new JSONObject();
         try {
             respObj.put("isSuccess", true);
             respObj.put("msg", "You successfully deleted a game for user "
-                    + getUser().getNickname() + ".");
+                    + UserUtilities.getUser().getNickname() + ".");
             resp.getWriter().print(respObj);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -227,12 +225,6 @@ public class GameServlet extends HttpServlet {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-    
-    // returns the current user if logged in, otherwise returns null.
-    private User getUser() {
-    	UserService userService = UserServiceFactory.getUserService();
-    	return userService.getCurrentUser();
     }
     
     private JSONObject assembleGameObj(Blackjack game) {
