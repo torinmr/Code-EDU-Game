@@ -16,7 +16,7 @@ function sendRPC(rpcName)
 	    document.getElementById("outputDiv").innerHTML=xmlhttp.responseText;
 	  }
 	}
-	xmlhttp.open("GET", "/codeedugame?rpcName=" + rpcName, true);
+	xmlhttp.open("GET", rpcName, true);
 	xmlhttp.send();
 }
 
@@ -35,7 +35,7 @@ function sendRPCWithFormArg(rpcName, argName, formArg)
 	    document.getElementById("outputDiv").innerHTML=xmlhttp.responseText;
 	  }
 	}
-	xmlhttp.open("GET", "/codeedugame?rpcName=" + rpcName + "&" + argName +
+	xmlhttp.open("GET", rpcName + "&" + argName +
 				"=" + formArg.amount.value, true);
 	xmlhttp.send();
 }
@@ -55,7 +55,7 @@ function sendRPCWithArg(rpcName, argName, argValue)
 	    document.getElementById("outputDiv").innerHTML=xmlhttp.responseText;
 	  }
 	}
-	xmlhttp.open("GET", "/codeedugame?rpcName=" + rpcName + "&" + argName +
+	xmlhttp.open("GET", rpcName + "&" + argName +
 				"=" + argValue, true);
 	xmlhttp.send();
 }
@@ -68,20 +68,33 @@ function sendRPCWithArg(rpcName, argName, argValue)
 <div id="outputDiv"><h2>Output goes here.</h2></div>
 
 <p>
-<button type="button" onclick="sendRPCWithArg('getLogin', 'returnURL', document.URL)">Get login/logout URL</button>
-<button type="button" onclick="sendRPC('getName')">Get Name</button>
-<button type="button" onclick="sendRPC('startGame')">Start Game</button>
-<button type="button" onclick="sendRPC('deleteGame')">End Game</button> 
+<button type="button" onclick="sendRPC('/codeedugame?rpcName=startGame')">Start Game</button>
+<button type="button" onclick="sendRPC('/codeedugame?rpcName=deleteGame')">End Game</button> 
+<button type="button" onclick="sendRPC('/codeedugame?rpcName=startNextRound')">Start New Round</button>
+
 </p>
 
 <p>
-<button type="button" onclick="sendRPC('startNextRound')">Start New Round</button>
 <form action="">Amount:<input type="text" name="amount" value="">
-<input type="button" onclick="sendRPCWithFormArg('bid', 'amount', this.form)" value="Bid">
+<input type="button" onclick="sendRPCWithFormArg('/codeedugame?rpcName=bid', 'amount', this.form)" value="Bid">
 </form>
-<button type="button" onclick="sendRPC('hit')">Hit</button>
-<button type="button" onclick="sendRPC('stand')">Stand</button>
-<button type="button" onclick="sendRPC('doubleDown')">Double Down</button>
+<button type="button" onclick="sendRPC('/codeedugame?rpcName=hit')">Hit</button>
+<button type="button" onclick="sendRPC('/codeedugame?rpcName=stand')">Stand</button>
+<button type="button" onclick="sendRPC('/codeedugame?rpcName=doubleDown')">Double Down</button>
+</p>
+
+<p>
+<button type="button" onclick="sendRPCWithArg('/accounts?rpcName=getLogin', 'returnURL', document.URL)">Get login/logout URL</button>
+
+<button type="button" onclick="sendRPC('/accounts?rpcName=getName')">Get Name</button>
+</p>
+
+<p>
+<form action="">Level:<input type="text" name="amount" value="">
+<input type="button" onclick="sendRPCWithFormArg('/accounts?rpcName=setLevelInProgress', 'level', this.form)" value="Set Level to 'In Progress'">
+<input type="button" onclick="sendRPCWithFormArg('/accounts?rpcName=setLevelDone', 'level', this.form)" value="Set Level to 'Done'">
+</form>
+<button type="button" onclick="sendRPC('/accounts?rpcName=getProgress')">Get Progress</button>
 </p>
 
 </body>
