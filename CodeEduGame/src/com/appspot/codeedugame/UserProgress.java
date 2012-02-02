@@ -1,5 +1,6 @@
 package com.appspot.codeedugame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,13 +17,9 @@ import com.appspot.codeedugame.json.JSONException;
 import com.appspot.codeedugame.json.JSONObject;
 import com.google.appengine.api.datastore.Key;
 
-@PersistenceCapable
-public class UserProgress {
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
-	
-	@Persistent(serialized = "true")
+public class UserProgress implements Serializable {
+    static final long serialVersionUID = 1;
+    
 	private HashMap<String, Integer> lessonProgress;
 	
 	private UserProgress () {}
