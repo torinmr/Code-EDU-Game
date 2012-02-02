@@ -123,7 +123,7 @@ $(document).ready(function() {
 		if (les.lessonList[lesson]) {
 			les.currLesson = lesson;
 		} else {
-			les.currLesson = "welcome";
+			les.currLesson = "lesson0";
 		}
 		les.loadLesson(les.currLesson);
 	});

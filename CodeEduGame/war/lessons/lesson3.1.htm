@@ -1,12 +1,22 @@
 <h3>Lesson 3.1: Hit or Stand &mdash; Conditional Statements</h3>
 <p>Alrighty, [NAME]! You are now successfully playing Blackjack. You'll bust every time, but that's what we're about to fix. We're going to get into some serious stuff here, so this lesson will be divided into multiple parts.</p>
-<p>In Blackjack you obviously don't want to hit every time because you'll end up busting. What you want to do is hit under some circumstances and stand under others. Fortunately, programming languages have a simple way to do these kinds of conditional actions with if-else statements. Esentially you tell the computer if something is true, do A, otherwise do B. In JavaScript, the syntax for this statement is<br />
+<p>In Blackjack you obviously don't want to hit every time because you'll end up busting. What you want to do is hit under some circumstances and stand under others. Fortunately, programming languages have a simple way to do these kinds of conditional actions with if-else statements. Esentially you tell the computer if something is true, do A, otherwise do B. In JavaScript, the syntax for this statement is</p>
 <div class="code">if (somethingtrue) {
        A;
 }
 else {
        B;
 }
-</div><br />
-Else is JavaScript's word for "otherwise." Delete <span class="variable">hit();</span> and type the above statement into the box below, below your name-setting command. We'll fill it in soon. Notice that there are semicolons after the commands A and B but not after <span class="variable">if()</span> and <span class="variable">else</span>. The braces <span class="variable">{ }</span> following <span class="variable">if()</span> and else surround the command (A or B) that is performed in each case. Just like it doesn't matter how many blank lines are between two commands, the indentations don't matter either. They just make it easier to read, which is especially important if you are working with other people.</p>
-<p>Now we need to replace somethingtrue, A, and B with commands the computer can read. A and B are easy. We want to hit if something is true and stand if it's not, so replace A with <span class="variable">hit();</span> and B with <span class="variable">stand();</span>.<span class="variable"> stand()</span> is another function we wrote for you. Press submit to check your work. (The game will return an "undefined" error because it doesn't know what somethingtrue means, but we'll fix that next.)</p>
+</div>
+<p>
+Else is JavaScript's word for "otherwise." Delete <span class="variable">hit();</span> and type the above statement into the box on the right below your name-setting command. We'll fill it in soon. Notice that there are semicolons after the commands A and B but not after <span class="variable">if()</span> and <span class="variable">else</span>. The braces <span class="variable">{ }</span> following <span class="variable">if()</span> and else surround the command (A or B) that is performed in each case. Just like it doesn't matter how many blank lines are between two commands, the indentations don't matter either. They just make it easier to read, which is especially important if you are working with other people.</p>
+<p>Now we need to replace somethingtrue, A, and B with commands the computer can read. A and B are easy. We want to hit if something is true and stand if it's not, so replace A with <span class="variable">hit();</span> and B with <span class="variable">stand();</span>.<span class="variable"> stand()</span> is another function we wrote for you. Your code should now look like</p>
+<div class="code">if (somethingtrue) {
+       hit();
+}
+else {
+       stand();
+}
+</div>
+<p>
+Press submit to check your work. (The game will return an "undefined" error because it doesn't know what somethingtrue means, but we'll fix that next.)</p>

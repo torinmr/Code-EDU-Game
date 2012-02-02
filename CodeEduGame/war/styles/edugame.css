@@ -90,27 +90,31 @@ h3 {
     height: 35px;
 }
 #notification {
-    width: 400px;
-    height: 100px;
+    width: 700px;
+    height: 318px;
     position: fixed;
     top: 50%;
     left: 50%;
-    margin-left: -200px;
-    margin-top: -50px;
-    background-color: white;
+    margin-left: -350px;
+    margin-top: -159px;
+    background-color: transparent;
     z-index: 10;
-    padding: 20px;
-    background-color: #eee;
-    display:none;
+    background-image:url(../img/objectivecomplete.png);
+    display: none;
 }
 #notification h2 {
-    font-weight: bold;
-    font-size: 140%;
+    font-size: 50px;
+    position: absolute;
+    top: 55px;
+    left: 130px;
 }
 #notification ul {
     margin: 1em 2em;
-    list-style-type: disc;
-    font-size: 110%;
+    list-style-type: square;
+    font-size: 20px;
+    position: absolute;
+    top: 110px;
+    left: 40px;
 }
 #output {
     background-color: #fff;
@@ -120,6 +124,7 @@ h3 {
     height: 390px;
     margin-left: 200px;
     width: 600px;
+    font-weight: bold;
 }
 #sidebar {
     background-color: #fff;

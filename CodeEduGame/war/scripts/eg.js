@@ -346,7 +346,33 @@ var eg = {
 
 		var turns = 0;
 		eg.newGame();
-		while (turns < 10 && eg.inGame) {
+		ui.minIns();
+		
+		// A-NI-MA-TION!!!!!!!!
+		
+		var animation = window.setInterval(function() {
+			if (turns > 10 || !eg.inGame) {
+				eg.ai();
+				eg.end();
+				cb.call('exec');
+				window.clearInterval(animation);
+				return;
+			}
+			try {
+				jQuery.globalEval(code);
+			} catch (E) {
+				var errorMsg = E.toString();
+				errorMsg = errorMsg.replace(/\w*Error:/, "<span style='color:red'>$&</span>")
+				$("#debug").html(errorMsg);
+				cb.call('error', E.toString());
+				window.clearInterval(animation);
+				return;
+			}
+			eg.redrawBoard();
+			turns++;
+		}, 500);
+		
+		/*while (turns < 10 && eg.inGame) {
 			try {
 				jQuery.globalEval(code);
 			} catch (E) {
@@ -358,11 +384,10 @@ var eg = {
 			}
 			turns++;
 		}
-		ui.minIns();
 		eg.redrawBoard();
 		eg.ai();
 		eg.end();
 		
-		cb.call('exec');
+		cb.call('exec');*/
 	}
 }

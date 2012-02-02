@@ -1,6 +1,6 @@
 var les = {
 	// Store lesson information
-	currLesson : 'welcome',
+	currLesson : 'lesson0',
 	lessonText : '',
 	objComplete : false,
 	objectives : {},
@@ -14,7 +14,7 @@ var les = {
 
 	// References to the next lesson
 	lessonList : {
-		'welcome' : {
+		'lesson0' : {
 			action : function() {
 				// Make manual controls
 				$("#buttons").fadeIn();
@@ -62,12 +62,20 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('hit', les.checkObjectives);
+				cb.add('hit', function() {
+					les.lessonList.lesson2.complete = true;
+				});
+				cb.add('exec', les.checkObjectives);
 			},
+			complete: false,
 			objectives : [ {
 				text : "Hit every turn",
 				check : function() {
-					return true;
+					if (les.lessonList.lesson2.complete) {
+						les.lessonList.lesson2.complete = false;
+						return true;
+					}
+					return false;
 				},
 			} ],
 			next : 'lesson3.1',
@@ -78,7 +86,9 @@ var les = {
 				ui.maxIns();
 				cb.add('error', function(E) {
 					if (E.indexOf("somethingtrue") != -1
-							&& ui.getUserCode().indexOf("if") != -1) {
+							&& ui.getUserCode().indexOf("if") != -1
+							&& ui.getUserCode().indexOf("hit()") != -1
+							&& ui.getUserCode().indexOf("stand()") != -1) {
 						les.checkObjectives();
 					}
 				});
@@ -404,6 +414,7 @@ var les = {
 					les.objectives[i].complete = true;
 					$(".objective" + i).append(
 							$("<img src='./img/check.png' alt='O' />"));
+					$("#lessonNumberForThisNotification").html(les.currLesson.substr(6));
 					$("#objectiveThatIsComplete").html(les.objectives[i].text);
 					$("#notification").show().delay(1500).fadeOut();
 				} else {
@@ -417,6 +428,17 @@ var les = {
 			$("#continueBox").show();
 			les.objComplete = true;
 		}
+	},
+	
+	showHint : function(e) {
+		$(e).toggle(100).queue(function() {
+			// Why does jQuery not work...
+			
+			//$('#instructions').attr('scrollTop', $('#instructions').attr('scrollHeight'));
+			var instructions = document.getElementById("instructions");
+			instructions.scrollTop = instructions.scrollHeight;
+			$(this).dequeue();
+		});
 	},
 
 	loadLesson : function(lesson) {
@@ -438,13 +460,13 @@ var les = {
 			} else {
 				data = data.replace(/\[NAME\]/g, 'friend');
 			}
-			data = data.replace(/show="([^"]*)"/g, 'href="javascript:void($(\'#$1\').toggle(300));"');
+			data = data.replace(/show="([^"]*)"/g, 'href="javascript:void(les.showHint(\'#$1\'));"');
 
 			les.lessonText = data;
+			
 			$("#instructions").fadeOut().queue(
 					function() {
 						$("#instructions").html(les.lessonText);
-						$("#instructions").scrollTop();
 						
 						if (les.objectives.length > 0) {
 							var objList = $("<ol></ol>");
@@ -459,6 +481,14 @@ var les = {
 											objList);
 							objBox.insertAfter($("#instructions h3"));
 						}
+						
+						if (!ui.sideMaxed) {
+							$(".objectives").css({
+								width : '150px',
+								float : 'none',
+								margin : '10px auto 10px auto'
+							});
+						}
 
 						if (les.lessonList[les.currLesson].action) {
 							les.lessonList[les.currLesson].action();
@@ -466,6 +496,7 @@ var les = {
 						$(this).dequeue();
 					}).fadeIn().queue(function() {
 				eg.unlockEval();
+				document.getElementById("instructions").scrollTop = 0;
 				$(this).dequeue();
 			});
 		});
