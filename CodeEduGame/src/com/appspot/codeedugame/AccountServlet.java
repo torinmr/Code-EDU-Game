@@ -2,7 +2,6 @@ package com.appspot.codeedugame;
 
 import java.io.IOException;
 
-import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,10 +30,6 @@ public class AccountServlet extends HttpServlet {
                 return;
             } else if (rpcName.equals("getName")) {
                 sendName(resp);
-                return;
-            }
-            if (getUser() == null) {
-                sendError("You are not logged in.", resp);
                 return;
             }
         } finally {

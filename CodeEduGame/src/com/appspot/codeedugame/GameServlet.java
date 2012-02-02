@@ -73,7 +73,7 @@ public class GameServlet extends HttpServlet {
     private void deleteGame(Blackjack game, PersistenceManager pm, HttpServletResponse resp) {
         pm.deletePersistent(game);
         UserAndGame uag = pm.getObjectById(UserAndGame.class, getUser().getUserId());
-        pm.deletePersistent(uag);
+        uag.deleteGameId();
         
         JSONObject respObj = new JSONObject();
         try {
@@ -97,9 +97,8 @@ public class GameServlet extends HttpServlet {
             return null;
         } catch (JDOObjectNotFoundException e) {
             //this is what we want to happen
-            uag = UserAndGame.make(user);
+            uag.createGameId();
             Blackjack game = new Blackjack(STARTING_MONEY, uag.getGameId());
-            pm.makePersistent(uag);
             pm.makePersistent(game);
             return uag.getGameId();
         }
