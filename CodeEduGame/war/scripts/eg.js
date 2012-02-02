@@ -51,21 +51,16 @@ var eg = {
 		eg.evalLocked = false;
 	},
 
-	// Game controls
-	getBet : function() {
-		var bet = parseInt($("#bet").val());
-		if (isNaN(bet)) {
-			bet = eg.betValue;
-		}
-		return bet;
-	},
-
 	newGame : function() {
 		if (eg.inGame) {
 			return;
 		}
 		// Lock the bet
-		$("#bet").val(eg.getBet());
+		eg.betValue = parseInt($("#bet").val());
+		if (isNaN(eg.betValue)) {
+			eg.betValue = 0;
+		}
+		$("#bet").val(eg.betValue);
 		$("#bet").attr('disabled', 'disabled');
 
 		eg.turnNum = 0;
@@ -107,7 +102,6 @@ var eg = {
 		}
 		
 		// Unlock other game controls
-		eg.ddAble = true;
 		eg.inGame = true;
 		
 		// No blackjacks, Jack
@@ -246,10 +240,6 @@ var eg = {
 		} else {
 			eg.lose("You lose!");
 		}
-		if (eg.doubled) {
-			$("#bet").val(eg.getBet() / 2);
-			eg.doubled = false;
-		}
 		$("#bet").removeAttr('disabled');
 		// Reveal hidden card
 		$("#display00").html(cards.cardImg(eg.dealerHand[0].suit, eg.dealerHand[0].num));
@@ -261,21 +251,20 @@ var eg = {
 	},
 	win : function(msg) {
 		$("#gameOut").html(msg);
-		eg.money += eg.getBet();
+		eg.money += eg.betValue;
 		cb.call('won');
 	},
 	lose : function(msg) {
 		$("#gameOut").html(msg);
-		eg.money -= eg.getBet();
+		eg.money -= eg.betValue;
 	},
 	// Double down
 	doubleDown : function() {
-		if (!eg.ddAble) {
+		if (eg.turnNum != 0) {
 			return;
 		}
-		eg.ddAble = false;
 		eg.doubled = true;
-		$("#bet").val(2 * eg.getBet());
+		eg.betValue *= 2;
 		eg.hit();
 		eg.stand();
 	},
@@ -357,7 +346,7 @@ var eg = {
 
 		var turns = 0;
 		eg.newGame();
-		while (turns < 5 && eg.inGame) {
+		while (turns < 10 && eg.inGame) {
 			try {
 				jQuery.globalEval(code);
 			} catch (E) {

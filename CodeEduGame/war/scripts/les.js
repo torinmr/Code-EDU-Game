@@ -444,6 +444,7 @@ var les = {
 			$("#instructions").fadeOut().queue(
 					function() {
 						$("#instructions").html(les.lessonText);
+						$("#instructions").scrollTop();
 						
 						if (les.objectives.length > 0) {
 							var objList = $("<ol></ol>");
