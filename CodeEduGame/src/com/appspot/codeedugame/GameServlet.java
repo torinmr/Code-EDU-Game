@@ -19,6 +19,11 @@ public class GameServlet extends HttpServlet {
     
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
+        User user = UserUtilities.getUser();
+        if (user == null) {
+            sendError("You are not logged in.", resp, null);
+            return;
+        }
         String rpcName = req.getParameter("rpcName");
         if (rpcName == null) {
             sendError("You need an rpcName field.", resp, null);
@@ -28,7 +33,7 @@ public class GameServlet extends HttpServlet {
         try {
             Blackjack game = null;
             if (rpcName.equals("startGame")) {
-                String id = getNewGameId(UserUtilities.getUser(), pm, resp);
+                String id = getNewGameId(user, pm, resp);
                 if (id != null) {
                     JSONObject respObj = new JSONObject();
                     try {
@@ -40,7 +45,7 @@ public class GameServlet extends HttpServlet {
                     }
                 }
             } else {
-                game = getGame(UserUtilities.getUser(), pm, resp);
+                game = getGame(user, pm, resp);
             }
           
             if (game != null) {
@@ -55,7 +60,7 @@ public class GameServlet extends HttpServlet {
                 } else if (rpcName.equals("startNextRound")) {
                     attemptStartNextRound(game, req, resp);
                 } else if (rpcName.equals("deleteGame")) {
-                    deleteGame(game, pm, resp);
+                    deleteGame(user, game, pm, resp);
                 } else if (rpcName.equals("startGame")) {
                     //don't do anything
                 } else {
@@ -68,16 +73,16 @@ public class GameServlet extends HttpServlet {
         }
     }
 
-    private void deleteGame(Blackjack game, PersistenceManager pm, HttpServletResponse resp) {
+    private void deleteGame(User user, Blackjack game, PersistenceManager pm, HttpServletResponse resp) {
         pm.deletePersistent(game);
-        UserAndGame uag = pm.getObjectById(UserAndGame.class, UserUtilities.getUser().getUserId());
-        pm.deletePersistent(uag);
+        UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+        uag.deleteGameId();
         
         JSONObject respObj = new JSONObject();
         try {
             respObj.put("isSuccess", true);
             respObj.put("msg", "You successfully deleted a game for user "
-                    + UserUtilities.getUser().getNickname() + ".");
+                    + user.getNickname() + ".");
             resp.getWriter().print(respObj);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -95,9 +100,8 @@ public class GameServlet extends HttpServlet {
             return null;
         } catch (JDOObjectNotFoundException e) {
             //this is what we want to happen
-            uag = UserAndGame.make(user);
+            uag.createGameId();
             Blackjack game = new Blackjack(STARTING_MONEY, uag.getGameId());
-            pm.makePersistent(uag);
             pm.makePersistent(game);
             return uag.getGameId();
         }
