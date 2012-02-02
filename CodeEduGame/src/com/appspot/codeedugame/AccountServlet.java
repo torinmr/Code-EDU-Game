@@ -96,7 +96,7 @@ public class AccountServlet extends HttpServlet {
         if (index != -1) {
         	resultURL = resultURL.substring(0, index);
         }
-        System.out.println(resultURL);
+        
         try {
         	respObj.put("isLoggedIn", req.getUserPrincipal() != null);
             respObj.put("URL", resultURL);
