@@ -1,7 +1,6 @@
 package com.appspot.codeedugame;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
@@ -17,8 +16,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 @SuppressWarnings("serial")
 public class AccountServlet extends HttpServlet {
-    private static final Logger log = Logger.getLogger(AccountServlet.class.getName());
-   
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         String rpcName = req.getParameter("rpcName");
