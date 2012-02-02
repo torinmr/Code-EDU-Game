@@ -2,6 +2,7 @@ package com.appspot.codeedugame;
 
 import java.io.IOException;
 
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -94,6 +95,16 @@ public class AccountServlet extends HttpServlet {
         }   
     }
     
-    
-
+    private void sendProgress(User user, PersistenceManager pm, HttpServletResponse resp) {
+		UserAndGame uag = null;
+        try {
+            uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+            JSONObject respObj = uag.getProgress().getJSONObject();
+            resp.getWriter().print(respObj.toString());
+        } catch (JDOObjectNotFoundException e) {
+            sendError("No user object found for user " + user.getNickname() + ".", resp);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        } 
+	}
 }

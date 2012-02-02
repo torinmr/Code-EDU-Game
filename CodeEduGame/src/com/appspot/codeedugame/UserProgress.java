@@ -1,5 +1,6 @@
 package com.appspot.codeedugame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class UserProgress {
 		lessonProgress.put(level, 2);
 	}
 
-	public JSONObject getProgress() {
+	public JSONObject getJSONObject() {
 		JSONObject progressObj = new JSONObject();
         try {
         	ArrayList<Map.Entry<String, Integer>> progressArray =
