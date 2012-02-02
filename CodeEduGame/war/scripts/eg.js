@@ -31,8 +31,9 @@ var eg = {
 	rows : 2,
 	cols : 5,
 
-	// Values that change in game
+	// Cashmonies
 	money : 500,
+	betValue: 0,
 
 	// Values that are for internal use
 	deck : null,
@@ -53,8 +54,8 @@ var eg = {
 	// Game controls
 	getBet : function() {
 		var bet = parseInt($("#bet").val());
-		if (!bet) {
-			bet = 0;
+		if (isNaN(bet)) {
+			bet = eg.betValue;
 		}
 		return bet;
 	},
@@ -76,7 +77,7 @@ var eg = {
 			rem.rpc('startNextRound', function(s) {
 				rem.rpc('bid', function(b) {
 					if (!b.isSuccess) {
-						//alert('Everything broke. Nice job breaking it. Now it\'s broken.\n\n' + dump(b));
+						// Argh
 					}
 					$("#money").html(b.gameObj.money);
 
@@ -140,6 +141,8 @@ var eg = {
 		
 		cb.call('hit');
 		
+		eg.turnNum++;
+		
 		if (eg.useRemote) {
 			eg.inGame = false;
 			rem.rpc('hit', function(b) {
@@ -178,6 +181,7 @@ var eg = {
 			return;
 		
 		cb.call('stand');
+		eg.turnNum++;
 		
 		if (eg.useRemote) {
 			eg.inGame = false;
@@ -246,12 +250,9 @@ var eg = {
 			$("#bet").val(eg.getBet() / 2);
 			eg.doubled = false;
 		}
+		$("#bet").removeAttr('disabled');
 		// Reveal hidden card
 		$("#display00").html(cards.cardImg(eg.dealerHand[0].suit, eg.dealerHand[0].num));
-		/*$("#display00").html(
-				'<img src="'
-						+ cards.cardImg(eg.dealerHand[0].suit,
-								eg.dealerHand[0].num) + '" />');*/
 
 		// Update money
 		$("#money").html("Money: " + eg.money);
@@ -343,10 +344,12 @@ var eg = {
 		}
 		
 		$("#debug").html('');
+		eg.betValue = 0;
 		
 		// Kludgy, but whatever...
 		var sub = {
 			'handValue' : '(handValue())',
+			'handStart' : '(handStart())',
 		};
 		for (raw in sub) {
 			code = code.replace(new RegExp(raw, 'g'), sub[raw]);

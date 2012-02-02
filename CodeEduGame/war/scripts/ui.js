@@ -4,7 +4,6 @@
  * Sets up said interface.
  */
 var ui = {
-	nextButton : '<p style="text-align:center"><input type="button" value="Continue" onclick="les.nextLesson()" /></p>',
 	sideMaxed : true,
 	makeButton : function(label, func) {
 		var but = $("<input type='button' value='" + label + "' />");
@@ -89,6 +88,10 @@ $(document).ready(function() {
 	$('#codebox').tabSupport();
 	$('#code').click(function() {
 		$('#codebox').focus();
+	});
+	
+	$("#continueButton").click(function() {
+		les.nextLesson();
 	});
 
 	if (eg.useRemote) {

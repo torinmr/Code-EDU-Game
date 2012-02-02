@@ -21,7 +21,8 @@ var les = {
 				$("#buttons").append(ui.makeButton('New Game', eg.newGame));
 				$("#buttons").append(ui.makeButton('Hit', eg.hit));
 				$("#buttons").append(ui.makeButton('Stand', eg.stand));
-
+				$("#betbox").html('Bet:<input type="text" id="bet" maxlength="6" value="10" />');
+				
 				$("#codebox").attr('disabled', 'disabled');
 				$("#eval").attr('disabled', 'disabled');
 				cb.add('end', les.checkObjectives);
@@ -42,6 +43,7 @@ var les = {
 				/*$("#buttons").fadeOut().queue(function() {
 					$(this).html('');
 				});*/
+				$("#betbox").html('');
 				$("#buttons").html('');
 				cb.add('exec', les.checkObjectives);
 			},
@@ -302,6 +304,7 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
+				eg.money = 500;
 				les.checkObjectives();
 			},
 			objectives : [ {
@@ -310,7 +313,7 @@ var les = {
 					return true;
 				},
 			} ],
-			next : 'lesson8.2',
+			next : 'lesson9.1',
 		},
 		'lesson9.1' : {
 			action : function() {
@@ -409,7 +412,9 @@ var les = {
 			}
 		}
 		if (allDone) {
-			$("#instructions").append($(ui.nextButton));
+			//$("#instructions").append($(ui.nextButton));
+			$("#instructions").css({height:"310px"});
+			$("#continueBox").show();
 			les.objComplete = true;
 		}
 	},
@@ -419,6 +424,8 @@ var les = {
 		les.currLesson = lesson;
 		$("#codebox").removeAttr('disabled');
 		$("#eval").removeAttr('disabled');
+		$("#continueBox").hide();
+		$("#instructions").css({height:"340px"});
 		les.objectives = les.lessonList[les.currLesson].objectives;
 		for ( var i = 0; i < les.objectives.length; i++) {
 			les.objectives[i].complete = false;
@@ -464,9 +471,8 @@ var les = {
 	},
 	nextLesson : function() {
 		if (!les.lessonList[les.currLesson]) {
-			// fail gracefully
+			
 		} else {
-			//les.loadLesson(les.lessonList[les.currLesson].next);
 			location.hash = les.lessonList[les.currLesson].next;
 		}
 	},

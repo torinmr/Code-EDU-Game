@@ -16,7 +16,7 @@ h3 {
     font-weight: 700;
     margin-bottom: .5em;
 }
-#betbox input {
+#moneybox input {
     width: 3em;
 }
 #bottomBar {
@@ -29,6 +29,13 @@ h3 {
     height: 16px;
     margin-top: 16px;
     width: 100%;
+}
+#continueBox {
+    text-align: center;
+    display: none;
+}
+#continueButton {
+    cursor: pointer;
 }
 #debug {
     background-color: #fff;
@@ -51,7 +58,7 @@ h3 {
     height: 280px;
     margin-left: 100px;
 }
-#gameTitle, #betbox {
+#gameTitle, #moneybox {
     float: right;
 }
 #graybar {
@@ -107,7 +114,7 @@ h3 {
 }
 #output {
     background-color: #fff;
-    background-image: url(../img/pokertable2.png);
+    background-image: url(../img/pokertable.jpg);
     color: #FFF;
     font-family: Georgia;
     height: 390px;
