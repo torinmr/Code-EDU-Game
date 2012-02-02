@@ -28,17 +28,6 @@ public class GameServlet extends HttpServlet {
         }
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
-            if (rpcName.equals("getLogin")) {
-                sendURL(resp, req);
-                return;
-            } else if (rpcName.equals("getName")) {
-                sendName(resp);
-                return;
-            }
-            if (getUser() == null) {
-                sendError("You are not logged in.", resp, null);
-                return;
-            }
             Blackjack game = null;
             if (rpcName.equals("startGame")) {
                 String id = getNewGameId(getUser(), pm, resp);
@@ -98,7 +87,7 @@ public class GameServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-
+    
     private String getNewGameId(User user, PersistenceManager pm, HttpServletResponse resp) {
         UserAndGame uag = null;
         try {
@@ -238,46 +227,6 @@ public class GameServlet extends HttpServlet {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-
-    private void sendURL(HttpServletResponse resp, HttpServletRequest req) {
-    	JSONObject respObj = new JSONObject();
-    	UserService userService = UserServiceFactory.getUserService();
-    	
-    	String returnURL = req.getParameter("returnURL");
-        if (returnURL == null) {
-            sendError("You forgot to specify a return URL.", resp, null);
-        }
-    	try {
-	        if (req.getUserPrincipal() != null) {
-	            respObj.put("logout", userService.createLogoutURL(returnURL));
-	        } else {
-	            respObj.put("login", userService.createLoginURL(returnURL));
-	        }
-	        resp.getWriter().print(respObj.toString());
-    	} catch (JSONException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-    
-    // sends the current user's nickname if logged in, sends "Anonymous" otherwise.
-    private void sendName(HttpServletResponse resp) {
-    	JSONObject respObj = new JSONObject();
-    	User user = getUser();
-    	try {
-    		if (user != null) {
-    			respObj.put("name", user.getNickname());
-    		} else {
-    			respObj.put("name", "anonymous");
-    		}
-    		resp.getWriter().print(respObj.toString());
-    	} catch (JSONException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }	
     }
     
     // returns the current user if logged in, otherwise returns null.
