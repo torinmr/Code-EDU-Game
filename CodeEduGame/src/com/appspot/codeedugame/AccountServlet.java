@@ -41,6 +41,18 @@ public class AccountServlet extends HttpServlet {
 	                return;
 	            }
 	            sendProgress(user, pm, resp);
+            } else if (rpcName.equals("setLevelDone")) {
+            	if (user == null) {
+	                sendError("You are not logged in.", resp);
+	                return;
+	            }
+            	setLevelDone(user, pm, resp, req);
+            } else if (rpcName.equals("setLevelInProgress")) {
+            	if (user == null) {
+	                sendError("You are not logged in.", resp);
+	                return;
+	            }
+            	setLevelInProgress(user, pm, resp, req);
             } else {
             	sendError("Unknown rpc name.", resp);
             }
@@ -69,6 +81,7 @@ public class AccountServlet extends HttpServlet {
         String returnURL = req.getParameter("returnURL");
         if (returnURL == null) {
             sendError("You forgot to specify a return URL.", resp);
+            return;
         }
         try {
             if (req.getUserPrincipal() != null) {
@@ -102,9 +115,8 @@ public class AccountServlet extends HttpServlet {
     }
     
     private void sendProgress(User user, PersistenceManager pm, HttpServletResponse resp) {
-		UserAndGame uag = null;
-        try {
-            uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+    	try {
+            UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
             JSONObject respObj = uag.getProgress().getJSONObject();
             resp.getWriter().print(respObj.toString());
         } catch (JDOObjectNotFoundException e) {
@@ -113,4 +125,48 @@ public class AccountServlet extends HttpServlet {
             throw new RuntimeException(e.getMessage());
         } 
 	}
+    
+    private void setLevelDone(User user, PersistenceManager pm, HttpServletResponse resp, HttpServletRequest req) {
+    	String level = req.getParameter("level");
+        if (level == null) {
+            sendError("You forgot to specify a level.", resp);
+            return;
+        }
+    	try {
+            UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+            uag.getProgress().setLevelDone(level);
+            
+            JSONObject respObj = new JSONObject();
+            respObj.put("isSuccess", true);
+            resp.getWriter().print(respObj.toString());
+        } catch (JDOObjectNotFoundException e) {
+            sendError("No user object found for user " + user.getNickname() + ".", resp);
+        } catch (JSONException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        } 
+    }
+    
+    private void setLevelInProgress(User user, PersistenceManager pm, HttpServletResponse resp, HttpServletRequest req) {
+    	String level = req.getParameter("level");
+        if (level == null) {
+            sendError("You forgot to specify a level.", resp);
+            return;
+        }
+    	try {
+            UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
+            uag.getProgress().setLevelInProgress(level);
+            
+            JSONObject respObj = new JSONObject();
+            respObj.put("isSuccess", true);
+            resp.getWriter().print(respObj.toString());
+        } catch (JDOObjectNotFoundException e) {
+            sendError("No user object found for user " + user.getNickname() + ".", resp);
+        } catch (JSONException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        } 
+    }
 }
