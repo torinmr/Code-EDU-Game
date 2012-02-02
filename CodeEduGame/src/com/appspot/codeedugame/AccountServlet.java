@@ -32,6 +32,10 @@ public class AccountServlet extends HttpServlet {
                 sendName(resp);
                 return;
             }
+            if (UserUtilities.getUser() == null) {
+                sendError("You are not logged in.", resp);
+                return;
+            }
         } finally {
             pm.close();
         }
@@ -75,7 +79,7 @@ public class AccountServlet extends HttpServlet {
     // sends the current user's nickname if logged in, sends "Anonymous" otherwise.
     private void sendName(HttpServletResponse resp) {
         JSONObject respObj = new JSONObject();
-        User user = getUser();
+        User user = UserUtilities.getUser();
         try {
             if (user != null) {
                 respObj.put("name", user.getNickname());
@@ -90,11 +94,6 @@ public class AccountServlet extends HttpServlet {
         }   
     }
     
-    // returns the current user if logged in, otherwise returns null.
-    private User getUser() {
-        UserService userService = UserServiceFactory.getUserService();
-        return userService.getCurrentUser();
-    }
     
 
 }

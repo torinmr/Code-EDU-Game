@@ -21,6 +21,9 @@ public class UserAndGame {
     @Persistent
     private String gameId;
     
+    @Persistent
+    private UserProgress progress;
+    
     private UserAndGame() {}
     public static UserAndGame make(User user) {
         UserAndGame uag = new UserAndGame();
@@ -56,5 +59,9 @@ public class UserAndGame {
         } else {
             throw new IllegalStateException("Should not be reseting a nonempty gameId.");
         }
+    }
+    
+    public UserProgress getProgress() {
+    	return progress;
     }
 }
