@@ -39,12 +39,26 @@ public class UserProgress {
 	}
 
 	public JSONObject getJSONObject() {
+    	final Comparator<Map.Entry<String, Integer>> KEY_ORDER =
+    			new Comparator<Map.Entry<String, Integer>>() {
+    		public int compare(Map.Entry<String, Integer> m1,
+    				Map.Entry<String, Integer> m2) {
+    			return m1.getKey().compareTo(m2.getKey());
+    		}
+    	};
+    			
+    	ArrayList<Map.Entry<String, Integer>> progressArray =
+    			new ArrayList<Map.Entry<String, Integer>>(lessonProgress.entrySet());
+        
+    	Collections.sort(progressArray, KEY_ORDER);
+    
 		JSONObject progressObj = new JSONObject();
-        try {
-        	ArrayList<Map.Entry<String, Integer>> progressArray =
-        			new ArrayList<Map.Entry<String, Integer>>(lessonProgress.entrySet());
-            
+        JSONArray levels =  new JSONArray();
+		
+		try {	
             for (Map.Entry<String, Integer> e : progressArray) {
+            	JSONArray level = new JSONArray();
+            	
             	String value;
             	int v = e.getValue();
             	if (v == 1) {
@@ -54,8 +68,11 @@ public class UserProgress {
             	} else {
             		value = "undefined";
             	}
-                progressObj.put(e.getKey(), value);
+            	level.put(e.getKey());
+            	level.put(value);
+            	levels.put(level);
             }
+            progressObj.put("levels", levels);
             return progressObj;
         } catch (JSONException e) {
             throw new RuntimeException(e.getMessage());

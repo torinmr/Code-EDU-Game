@@ -84,6 +84,7 @@ public class AccountServlet extends HttpServlet {
             return;
         }
         try {
+        	respObj.put("isLoggedIn", req.getUserPrincipal() != null);
             if (req.getUserPrincipal() != null) {
                 respObj.put("logout", userService.createLogoutURL(returnURL));
             } else {
