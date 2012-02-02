@@ -16,7 +16,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.users.UserService;
 
 @SuppressWarnings("serial")
-public class CodeEduGameServlet extends HttpServlet {
+public class GameServlet extends HttpServlet {
     private final int STARTING_MONEY = 100;
     
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
