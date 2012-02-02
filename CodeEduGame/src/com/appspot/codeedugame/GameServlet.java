@@ -19,7 +19,9 @@ public class GameServlet extends HttpServlet {
     
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        User user = UserUtilities.getUser();
+    	PersistenceManager pm = PMF.get().getPersistenceManager();
+    	
+        User user = UserUtilities.getUser(pm);
         if (user == null) {
             sendError("You are not logged in.", resp, null);
             return;
@@ -29,7 +31,7 @@ public class GameServlet extends HttpServlet {
             sendError("You need an rpcName field.", resp, null);
             return;
         }
-        PersistenceManager pm = PMF.get().getPersistenceManager();
+        
         try {
             Blackjack game = null;
             if (rpcName.equals("startGame")) {
