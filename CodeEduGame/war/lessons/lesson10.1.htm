@@ -1,0 +1,45 @@
+<h3>Lesson 10.1: Hit or Stand Based on the Dealer's Hand &mdash; More Practice with If Statements and Boolean Expressions</h3>
+<p>You're pretty much an if statement master now, so let's use your knowledge to further improve your program's logic. Currently the program hits when you have a total value of no more than 16 and stands otherwise. This is what the dealer is forced to do, so you have no advantage over the dealer. We're going to give you an advantage by changing whether your program hits or stands based on the value of the dealer's face-up card. If the dealer has a high up card, he/she probably will not be required to take a hit and so will probably not bust. Therefore, you will need a high hand to win. However, if the dealer has a low card showing, he/she will have to hit and is likely to bust. Notice that this logic is based on the fact that the most likely card value a player will draw is 10.</p>
+<p>Let's take this a step at a time. First, modify your program so it hits if you have a total card value of less than 17 and the dealer's upcard is higher than 6. Here are some helpful hints:</p>
+<ul>
+<li>You will need to use <span class="variables">dealerUpCard()</span> in addition to <span class="variables">totalValue()</span>.</li>
+<li>You only need to change one line!</li>
+</ul>
+<p>If your code is not working properly, take a look at <a show="hidden-1">this</a> example. This is not the only way to do this. You could also use nested if statements instead of &amp;&amp;s, but that tends to get very messy so &amp;&amp;s are generally preferred.</p>
+<div class="hiddencode" id="hidden-1">
+var name = "David";
+
+if (handStart) {
+       safeBet(4, 0);
+}
+else {
+       /*The only change from the last section is that the following
+       line checks both totalValue() and dealerUpCard().*/
+       if(totalValue() == 10 &amp;&amp; dealerUpCard() &gt; 6){
+               doubleDown();
+       }
+       else if(totalValue() &lt; 17){
+               hit();
+       }
+       else{
+               stand();
+       }
+}
+
+function safeBet(betAmount, limit){
+       if (totalValue() - betAmount &lt; limit) {
+               betAmount = totalMoney() - limit;
+       }
+       bet(betAmount);
+}
+
+function totalValue(){
+       var length = handValue.length;
+       var sum = 0;
+       var counter = 0;
+       for (counter = 0; counter &lt; length; counter++) {
+               sum = sum + handValue[counter];
+       }
+       return sum;
+}
+</div>

@@ -1,0 +1,17 @@
+<h3>Lesson 7.1: Cleaning Up Your Code--Incrementation Shortcuts</h3>
+<p>Programmers are lazy. We don't like to type more than we have to if at all possible. As a result, programming languages have many shortcuts. Since you're going to be a programmer, you should learn to be lazy too.</p>
+<p>Our <span class="variables">totalValue()</span> function could benefit from a few of these shortcuts. First, we'll take a look at the section<br />
+<div class="code">sum = sum + handValue[counter];
+counter = counter + 1;</div><br />
+Just look at all that unnecessary repetition! <span class="variables">sum = sum</span>? Clearly typing that's a waste of effort. Fortunately, we can modify both of those statements using the operator +=. Using this operator, the first line now reads<br />
+<div class="code">sum += handValue[counter];</div><br />
+This line does exactly the same thing as the line it replaces! Pretty awesome. Change the second line yourself following this example and then press submit. The program will work in exactly the same way. The same thing can be done with the other 4 operators: -=, *=, /=, and %=.</p>
+<p>Think that's enough simplification? Wrong. Programmers are even lazier than that. Take a look at the second line, and imagine how often you would have to write<br />
+<div class="code">+= 1</div><br />
+if you were to keep making loops with counters. Too much work! Try replacing the second line with<br />
+<div class="code">counter++;</div><br />
+and press submit. The code does the same thing. This shortcut only exists for incrementing by 1. If you want to increment by any other number, you have to write it out. There is, however, also a shortcut for<br />
+<div class="code">variable -= 1;</div><br />
+It is<br />
+<div class="code">variable--;</div></p>
+<p>That's as lazy as we're going to get with incrementing, but don't fear! There are more shortcuts to know.</p>

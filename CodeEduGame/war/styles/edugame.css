@@ -1,185 +1,208 @@
 body {
+    color: #111;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 13px;
-    color: #111111;
-}
-h1 {
-    font-size: 180%;
-    font-weight: bold;
-    color: black;
-}
-h3 {
-    font-weight: bold;
-    border-bottom: 1px solid #999999;
-    margin-bottom: 0.5em;
-}
-p {
-    padding-bottom: 0.5em;
-    line-height: 1.3em;
 }
 em {
     font-style: italic;
 }
-#navbar {
-    height: 35px;
+h1 {
+    color: #000;
+    font-size: 180%;
+    font-weight: 700;
 }
-#gameTitle {
-    float: right;
+h3 {
+    border-bottom: 1px solid #999;
+    font-weight: 700;
+    margin-bottom: .5em;
 }
-#start {
-    display: block;
-    background-color: #158519;
-    width: 200px;
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    font-size: 20px;
-    color: white;
-    text-decoration: none;
-    margin: 0px auto 0px auto;
-}
-#codePane {
-
-}
-#titlebar {
-    width: 100%;
-    margin: 5px;
-}
-#sidebar {
-    position: absolute;
-    width: 800px;
-    height: 390px;
-    background-color: #ffffff;
-}
-#instructions {
-    padding: 0.5em;
-    overflow: auto;
-    height: 350px;
-}
-#graybar {
-    background-color: #333333;
-    width: 100%;
-    height: 400px;
-}
-#output {
-    font-family: Georgia;
-    background-color: #ffffff;
-    width: 600px;
-    height: 390px;
-    margin-left: 200px;
-    background-image: url(../img/pokertable2.png);
-    color: white;
-}
-#money {
-    text-align: right;
-}
-#display {
-    margin-left: 100px;
-    height: 280px;
+#betbox input {
+    width: 3em;
 }
 #bottomBar {
     background-color: #cfcfcf;
     height: 28px;
 }
-#debugWrap {
-    padding: 5px;
+#bottomRibbon {
+    background-image: url(../img/bottomribbon.png);
+    background-repeat: repeat-x;
+    height: 16px;
+    margin-top: 16px;
+    width: 100%;
 }
 #debug {
-    height: 16px;
-    font-size: 11px;
-    padding: 1px 3px;
-    line-height: 16px;
+    background-color: #fff;
     display: block;
-    width: 685px;
-    background-color: #ffffff;
     font-family: "Courier New", Courier, monospace;
-    font-weight: bold;
+    font-size: 11px;
+    font-weight: 700;
+    height: 16px;
+    line-height: 16px;
+    padding: 1px 3px;
+    width: 685px;
+}
+#debugWrap {
+    padding: 5px;
 }
 #directions {
     background-color: #d2232a;
 }
-#directionsLabel {
-
+#display {
+    height: 280px;
+    margin-left: 100px;
 }
-#toggleIns {
+#gameTitle, #betbox {
     float: right;
-    padding: 8px;
-    cursor: pointer;
+}
+#graybar {
+    background-color: #333;
+    height: 400px;
+    width: 100%;
+}
+#instructions {
+    height: 340px;
+    overflow: auto;
+    padding: .5em;
+}
+#instructions p {
+    line-height: 1.3em;
+    padding-bottom: .5em;
+}
+#instructions ul {
+    list-style: disc;
+}
+#instructions li {
+    margin-left: 2em;
+    line-height: 1.3em;
+    
+}
+#money {
+    text-align: right;
+}
+#navbar {
+    height: 35px;
+}
+#notification {
+    width: 400px;
+    height: 100px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -50px;
+    background-color: white;
+    z-index: 10;
+    padding: 20px;
+    background-color: #eee;
+    display:none;
+}
+#notification h2 {
+    font-weight: bold;
+    font-size: 140%;
+}
+#notification ul {
+    margin: 1em 2em;
+    list-style-type: disc;
+    font-size: 110%;
+}
+#output {
+    background-color: #fff;
+    background-image: url(../img/pokertable2.png);
+    color: #FFF;
+    font-family: Georgia;
+    height: 390px;
+    margin-left: 200px;
+    width: 600px;
+}
+#sidebar {
+    background-color: #fff;
+    height: 390px;
+    position: absolute;
+    width: 800px;
+}
+#start {
+    background-color: #158519;
+    color: #FFF;
+    display: block;
+    font-size: 20px;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 auto;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
 }
 #submit {
-    float: right;
     cursor: pointer;
-}
-#betbox {
     float: right;
 }
-#betbox input {
-    width: 3em;
-}
-#bottomRibbon {
+#titlebar {
+    margin: 5px;
     width: 100%;
-    height: 16px;
-    background-image: url(../img/bottomribbon.png);
-    background-repeat: repeat-x;
-    margin-top: 16px;
 }
-.codebox {
-    width: 790px;
-    height: 200px;
-    background-color: #ffffff;
+#toggleIns {
+    cursor: pointer;
+    float: right;
+    padding: 8px;
 }
 .code {
-    white-space: pre;
-    font-family: "Courier New", Courier, monospace;
     background-color: #cfcfcf;
-    padding: 0.3em;
+    font-family: "Courier New", Courier, monospace;
+    padding: .3em;
+    white-space: pre;
+    margin-bottom: 1em;
+}
+.codebox {
+    background-color: #fff;
+    height: 200px;
+    width: 790px;
 }
 .hiddencode {
-    white-space: pre;
-    font-family: "Courier New", Courier, monospace;
     background-color: #cfcfcf;
     display: none;
-    padding: 0.3em;
-}
-.playerLabel {
-    text-align: center;
-    font-weight: bold;
-    font-size: 120%;
-}
-.obnox {
-    font-size: 70px;
-    text-align: center;
-    margin-bottom: 20px;
+    font-family: "Courier New", Courier, monospace;
+    padding: .3em;
+    white-space: pre;
 }
 .objectives {
+    background-color: #eee;
+    border: 1px solid #000;
     float: right;
-    width: 200px;
-    margin: 5px;
     font-size: 90%;
-    border: 1px solid black;
-    background-color: #EEEEEE;
+    margin: 5px;
+    width: 200px;
 }
 .objectives h4 {
-    font-weight: bold;
     font-size: 110%;
-    margin-bottom: 0.5em;
+    font-weight: 700;
+    margin-bottom: .5em;
     padding: 3px;
+}
+.objectives li {
+    margin-bottom: .5em;
+    margin-left: 2em;
 }
 .objectives ol {
     list-style: decimal;
     margin-bottom: 1em;
 }
-.objectives li {
-    margin-left: 2em;
-    margin-bottom: 0.5em;
+.obnox {
+    font-size: 70px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.playerLabel {
+    font-size: 120%;
+    font-weight: 700;
+    text-align: center;
 }
 .spacer {
-    padding: 0.5em;
-}
-.wrapper {
-    width: 800px;
-    margin: 0px auto 0px auto;
+    padding: .5em;
 }
 .variable {
     font-family: "Courier New", Courier, monospace;
+}
+.wrapper {
+    margin: 0 auto;
+    width: 800px;
 }
