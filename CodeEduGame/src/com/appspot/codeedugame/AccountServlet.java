@@ -24,18 +24,25 @@ public class AccountServlet extends HttpServlet {
             sendError("You need an rpcName field.", resp);
             return;
         }
+        
         PersistenceManager pm = PMF.get().getPersistenceManager();
+        User user = UserUtilities.getUser(pm);
+        
         try {
             if (rpcName.equals("getLogin")) {
                 sendURL(resp, req);
                 return;
             } else if (rpcName.equals("getName")) {
-                sendName(resp);
+                sendName(user, resp);
                 return;
-            }
-            if (UserUtilities.getUser() == null) {
-                sendError("You are not logged in.", resp);
-                return;
+            } else if (rpcName.equals("getProgress")) {
+	            if (user == null) {
+	                sendError("You are not logged in.", resp);
+	                return;
+	            }
+	            sendProgress(user, pm, resp);
+            } else {
+            	sendError("Unknown rpc name.", resp);
             }
         } finally {
             pm.close();
@@ -78,9 +85,8 @@ public class AccountServlet extends HttpServlet {
     }
     
     // sends the current user's nickname if logged in, sends "Anonymous" otherwise.
-    private void sendName(HttpServletResponse resp) {
+    private void sendName(User user, HttpServletResponse resp) {
         JSONObject respObj = new JSONObject();
-        User user = UserUtilities.getUser();
         try {
             if (user != null) {
                 respObj.put("name", user.getNickname());

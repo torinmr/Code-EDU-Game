@@ -30,6 +30,7 @@ public class UserAndGame {
         uag.token = user.getUserId();
         uag.username = user.getNickname();
         uag.gameId = "EMPTY";
+        uag.progress = UserProgress.make();
         return uag;
     }
     
