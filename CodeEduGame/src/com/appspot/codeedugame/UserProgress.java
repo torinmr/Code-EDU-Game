@@ -12,7 +12,7 @@ import com.appspot.codeedugame.json.JSONException;
 import com.appspot.codeedugame.json.JSONObject;
 
 public class UserProgress implements Serializable {
-    static final long serialVersionUID = 1;
+    static final long serialVersionUID = 2;
     
 	private HashMap<String, Integer> lessonProgress;
 	
