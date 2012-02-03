@@ -1,0 +1,181 @@
+<a name="top"></a><h2>Glossary</h2>
+<h3>Contents</h3>
+<ul>
+<li><a href="#concepts">JavaScript Syntax and Programming Concepts</a>
+	<ul>
+    <li><a href="#arithmetic">Arithmetic Operators</a></li>
+    <li><a href="#arrays">Arrays</a></li>
+    <li><a href="#boolean">Boolean Expressions</a></li>
+    <li><a href="#commenting">Commenting</a></li>
+    <li><a href="#for">For Loops</a></li>
+    <li><a href="#function">Function Definitions</a></li>
+    <li><a href="#if">If-Else Statements</a></li>
+    <li><a href="#incrementation">Incrementation Shortcuts</a></li>
+    <li><a href="#naming">Naming Rules and Conventions</a></li>
+    <li><a href="#variable">Variable Declaration</a></li>
+    <li><a href="#while">While Loops</a></li>
+    </ul>
+</li>
+<li><a href="#variables">Variables and Functions that We Wrote for You</a></li>
+<li><a href="#rules">Rules of Blackjack</a></li>
+</ul>
+
+<a name="concepts"></a><h3>JavaScript Syntax and Programming Concepts</h3>
+<a name="arithmetic"></a><h4>Arithmetic Operators</h4>
+<ul>
+<li>addition: +</li>
+<li>subtraction: -</li>
+<li>multiplication: *</li>
+<li>division: /</li>
+<li>modulus*: %</li></ul>
+<p>*Modulus divides two numbers and returns the remainder.</p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="commenting"></a><h4>Commenting</h4>
+<p>A single line comment is written like this:<br />
+<div class="code">//type your comment here</div></p>
+<p>A multiple line comment is written like this:<br />
+<div class="code">/* part 1 of comment
+part two of comment
+part three of comment */</div></p>
+<p>Comment everything so you don't forget what something does!</p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="arrays"></a><h4>Arrays</h4>
+<p>An <em>array</em> is a numbered list of data. It has different positions and a value can be stored at each position. The first position is number 0.</p>
+<p>To access a particular position in an array to set or retrieve its value, write<br />
+<div class="code">arrayName[position]</div><br />
+where <span class="variables">position</span> is a number or variable representing a number.</p>
+<p>To set an entire array, write<br />
+<div class="code">arrayName = array(value1, value2, value3, ...)</div><br />
+where each value is the value to be set to that position, counting positions from 0. You can also use a <a href="#for">for loop</a> to go through the array and set each position individually.</p>
+<p>To find the size of an array, write<br />
+<div class="code">arrayName.length</div></p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="boolean"></a><h4>Boolean Expressions</h4>
+<p>Boolean comparisons:</p>
+<ul>
+<li>equals*: ===</li>
+<li>less than: &lt;</li>
+<li>greater than: &lt;</li>
+<li>less than or equal to: &lt;=</li>
+<li>greater than or equal to: &gt;=</li>
+<li>not equals: !==</li>
+</ul>
+<p>*Equals is not just =. = is used for setting variables. === is used for comparisons.</p>
+<p>Combining boolean comparisons:</p>
+<ul><li>and: &amp;&amp;</li>
+<li>or*: ||</li></ul>
+<p>Remember to use parentheses to separate components of longer expressions.</p>
+<p>*The vertical line can be typed by pressing shift and \. \ is located above your return/enter key.</p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="for"></a><h4>For Loops</h4>
+<p>A <em>for loop</em> is a modification of a <a href="#while">while loop</a> that makes it easier to do something a certain number of times. The basic for loop structure is:<br />
+<div class="code">declare counter;
+for(initialize counter; counter boundary (boolean expression); counter incrementation){
+	//do something here
+}</div><br />
+Example:<br />
+<div class="code">var counter = 0;
+for(counter = 0; counter &lt; 3; counter++){
+	//do something here
+}</div></p>
+<p>This for loop will do something three times (once at <span class="variables">counter === 0</span>, once at <span class="variables">1</span>, and once at <span class="variables">2</span>). Make sure the boundary condition will be reached or you will get an infinite loop and the program will crash. Keep in mind that you have access to <span class="variables">counter</span> inside the for loop.</p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="function"></a><h4>Function Definitions</h4>
+<p>To define a function with no parameters, write<br />
+<div class="code">function functionName(){
+	//code goes here
+}</div></p>
+<p>To define a function with one parameter, write<br />
+<div class="code">function functionName(parameter){
+	//code goes here
+}</div></p>
+<p>To define a function with more than one parameter, write<br />
+<div class="code">function functionName(parameter1, parameter2, parameter3){
+	//code goes here
+}</div><br />
+Make sure you assign the parameters in the correct order when calling your function!</p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="if"></a><h4>If-Else Statements</h4>
+<p>The basic structure for an if-else statement is:
+<div class="code">if(booleanExpression1){
+	//do first thing
+}
+elseif(booleanExpression2){
+	//do second thing
+}
+else{
+	//do third thing
+}
+</div></p>
+<p>If <span class="variables">booleanExpression1</span> is true, the first thing will be done and the second and third things will be skipped. If it is false and <span class="variables">booleanExpression2</span> is true, the second thing will be done and the first and third will be skipped. If neither boolean expression is true, the third thing will be done and the first and second will be skipped.</p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="incrementation"></a><h4>Incrementation Shortcuts</h4>
+<p><div class="code">variable = variable + value;</div><br />
+is the same as<br />
+<div class="code">variable += value;</div><br />
+This can be done with every <a href="#arithmetic">arithmetic operator</a>.</p>
+<p><div class="code">variable = variable + 1;</div><br />
+is also the same as<br />
+<div class="code">variable++;</div></p>
+<p><div class="code">variable = variable - 1;</div><br />
+is also the same as<br />
+<div class="code">variable--;</div></p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="naming"></a><h4>Naming Rules and Conventions</h4>
+<ul><li>No two variables or functions can have the same name.</li> 
+<li>Names can contain letters, numbers, and underscores.</li>
+<li>Names cannot start with a number.</li>
+<li>Names of two or more words are usually either written with the first word lowercase and all other words capitalized (variableName) or every word lowercase and separated with an underscore (variable_name).</li>
+</ul>
+<p><a href="#top">Back to top</a></p>
+
+<a name="variable"></a><h4>Variable Declaration</h4>
+<p>To declare a variable, write<br />
+<div class="code">var variableName = value;</div></p>
+<p>You only write <span class="variables">var</span> when declaring a variable. If <span class="variables">value</span> is a string, it must be in quotes.</p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="while"></a><h4>While Loops</h4>
+<p>A <em>while loop</em> is used to repeat a section of code over and over. Its basic syntax looks like this:<br />
+<div class="code">while(booleanExpression){
+	//do something
+}</div></p>
+<p>The code in the while loop will be executed as long as <span class="variables">booleanExpression</span> is true. If it never becomes false, the program will enter an infinite loop and crash. While loops can be used for doing things a certain number of times, but a better option in that case is often a <a href="#for">for loop</a>.</p>
+<p><a href="#top">Back to top</a></p>
+
+<a name="variables"></a><h3>Variables and Functions that We Wrote for You</h3>
+<p>We've written many different pieces of code to allow your program to interact with the game and the dealer. You have access to the following functions:</p>
+<ul>
+<li><span class="variables">bet()</span> -- Needs a parameter that is the amount of money you want to bet. Bets this amount of money.</li>
+<li><span class="variables">dealerUpCard()</span> -- Returns the value of the dealer's face-up card.</li>
+<li><span class="variables">doubleDown()</span> -- Doubles down.</li>
+<li><span class="variables">hit()</span> -- Hits.</li>
+<li><span class="variables">secondDealtCardVal()</span> -- Returns the value of the second card you were dealt.</li>
+<li><span class="variables">stand()</span> -- Stands.</li>
+<li><span class="variables">totalMoney()</span> -- Returns how much money you have.</li>
+</ul>
+<p>You have access to the following boolean variables:</p>
+<ul>
+<li><span class="variables">handEnd</span> -- Is true at the end of a hand, false otherwise.</li>
+<li><span class="variables">handStart</span> -- Is true at the beginning of a hand, false otherwise.</li>
+<li><span class="variables">reshuffled</span> -- Is set to true when the deck has been reshuffled. You must reset it to false.</li>
+<li><span class="variables">wonLastHand</span> -- Is true when you won the previous hand.</li>
+</ul>
+<p>You have access to the following arrays:</p>
+<ul>
+<li><span class="variables">dealerHandValue</span> -- Contains the values of the face-up cards in the dealer's hand.</li>
+<li><span class="variables">handValue</span> -- Contains the values of the cards in your hand.</li>
+</ul>
+<p><a href="#top">Back to top</a></p>
+
+<a name="rules"></a><h3>Rules of Blackjack</h3>
+<p>Every player tries to get a hand with a value of as close to, but no more than, 21 as possible. Face cards are worth 10 points, the Ace can be 1 or 11, and every other card is worth its face value. You play against a dealer. You and the dealer will each be dealt two cards at the beginning of the game. You will be able to see one of the dealer's. You will then have the option to "hit" (get another card) as many times as you'd like. Once you don't want any more cards, you "stand." Be careful! If the value of your cards exceeds 21, you "bust," that is, you lose! Once you stand, the dealer will draw cards. The dealer must hit if the total value of his/her cards is less than 17, and must stand if it is 17 or greater. When determining this, an Ace is counted as an 11. If the dealer busts and you don't, you win. If no one busts, whoever has a higher hand wins. If either player is initially dealt 21, that's a "Blackjack" and that player wins. If the players tie, the dealer wins (unless both players have Blackjack. Then it's just a tie.) If you get 5 cards without busting, you win. You bet at the very beginning of a hand, before you are dealt cards. If you lose the hand, the dealer takes your money. If you win, you get your money back and the dealer pays you as much as you bet. If you win with a Blackjack, the dealer pays you 150% of what you bet. You can also "double down." This means you double your bet and then only get one more card. You can only double down immediately after being dealt to; That is, you cannot hit and then double down. If you want more information, click <a href="http://www.blackjackinfo.com/blackjack-rules.php" target="_blank">here</a>.
+<p><a href="#top">Back to top</a></p>

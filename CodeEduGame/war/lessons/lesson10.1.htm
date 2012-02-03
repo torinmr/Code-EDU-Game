@@ -27,7 +27,7 @@ else {
 }
 
 function safeBet(betAmount, limit){
-       if (totalValue() - betAmount &lt; limit) {
+       if (totalMoney() - betAmount &lt; limit) {
                betAmount = totalMoney() - limit;
        }
        bet(betAmount);

@@ -6,11 +6,21 @@ var uf = {
 		
 }
 
-var hit = eg.hit;
-var stand = eg.stand;
+var hit = function() {
+	if (eg.playerHand.length == 0) {
+		throw "Error: you must bet first.";
+	}
+	eg.hit();
+}
+var stand = function() {
+	if (eg.playerHand.length == 0) {
+		throw "Error: you must bet first.";
+	}
+	eg.stand();
+}
 var value = function() {
 	return eg.value(eg.playerHand);
-}
+};
 var handValue = function() {
 	var hand = new Array();
 	for ( var i = 0; i < eg.playerHand.length; i++) {
@@ -23,10 +33,10 @@ var handValue = function() {
 		}
 	}
 	return hand;
-}
+};
 var secondDealtCardVal = function() {
 	return (handValue())[1];
-}
+};
 
 var bet = function(b) {
 	b = parseInt(b);
@@ -40,14 +50,21 @@ var bet = function(b) {
 		eg.betValue = b;
 		eg.bet();
 	}
-}
+};
+
+var doubleDown = function() {
+	if (eg.turnNum > 1) {
+		throw "Error: doubleDown() must be called on the first turn.";
+	}
+	eg.doubleDown();
+};
 
 var handStart = function() {
 	return eg.turnNum == 0;
-}
+};
 
 var totalMoney = function() {
 	return eg.money;
-}
+};
 
 var name = '';

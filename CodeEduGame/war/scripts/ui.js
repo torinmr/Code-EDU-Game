@@ -3,6 +3,17 @@
  * Provides functions dealing with the user interface of the lessons.
  * Sets up said interface.
  */
+
+// Preload images
+(function() {
+	var preloads = [ "./img/cardsprite.png", "./img/objectivecomplete.png" ];
+	var imgCache = new Array();
+	for (var i = 0; i < preloads.length; i++) {
+		imgCache[i] = new Image();
+		imgCache[i].src = preloads[i];
+	}
+})();
+
 var ui = {
 	sideMaxed : true,
 	isLoggedIn : false,
@@ -84,30 +95,37 @@ $(document).ready(function() {
 	$('#code').click(function() {
 		$('#codebox').focus();
 	});
-	
+
+	if ($.cookie("c")) {
+		$("#codebox").val($.cookie("c"));
+	}
+
+	$("#codebox").change(function() {
+		$.cookie("c", $("#codebox").val(), {
+			expires : 7
+		});
+	});
+
+	$("#previousButton").click(function() {
+		les.prevLesson();
+	});
+
 	$("#continueButton").click(function() {
 		les.nextLesson();
 	});
-	
+
 	$("#resetMoney").click(function() {
 		eg.money = eg.defaultMoney;
 		$("#money").html("Money: " + eg.money);
 	});
-	
-	rem.acc('getLogin', function(l) {
-		if (!l.isLoggedIn) {
-			$("#log").attr('href', l.URL);
-			$("#log").html('Login');
-		} else {
-			ui.isLoggedIn = true;
-			$("#log").html('Logout');
-			$("#log").attr('href', l.URL);
-			rem.acc('getName', function(n) {
-				$("#accName").html(n.name);
-			});
-		}
-	},{returnURL : document.URL});
-	
+	/*
+	 * rem.acc('getLogin', function(l) { if (!l.isLoggedIn) {
+	 * $("#log").attr('href', l.URL); $("#log").html('Login'); } else {
+	 * ui.isLoggedIn = true; $("#log").html('Logout'); $("#log").attr('href',
+	 * l.URL); rem.acc('getName', function(n) { $("#accName").html(n.name); }); }
+	 * },{returnURL : document.URL});
+	 */
+
 	var toggle = $("#toggleIns");
 	toggle.bind('click', ui.toggleIns);
 

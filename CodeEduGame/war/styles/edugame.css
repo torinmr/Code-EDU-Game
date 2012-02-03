@@ -35,7 +35,9 @@ h3 {
 }
 #continueBox {
     text-align: center;
-    display: none;
+}
+#previousButton {
+    cursor: pointer;
 }
 #continueButton {
     cursor: pointer;
@@ -73,7 +75,7 @@ h3 {
     width: 100%;
 }
 #instructions {
-    height: 340px;
+    height: 310px;
     overflow: auto;
     padding: .5em;
 }
@@ -175,6 +177,9 @@ h3 {
     background-color: #fff;
     height: 200px;
     width: 790px;
+}
+.hidden {
+    display:none;
 }
 .hiddencode {
     background-color: #cfcfcf;

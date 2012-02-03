@@ -5,6 +5,7 @@ var les = {
 	objComplete : false,
 	objectives : {},
 	flags : {},
+	hintUnlocked: false,
 
 	// Invalidate code with errors
 	invalidated : false,
@@ -24,6 +25,9 @@ var les = {
 				}));
 				$("#buttons").append(ui.makeButton('Hit', eg.hit));
 				$("#buttons").append(ui.makeButton('Stand', eg.stand));
+				//$("#buttons").append(ui.makeButton('Double', eg.doubleDown));
+				$("#previousButton").hide();
+				$("#instructions").css({height:'340px'});
 				$("#betbox")
 						.html(
 								'Bet:<input type="text" id="bet" maxlength="6" value="10" />');
@@ -42,6 +46,7 @@ var les = {
 					return true;
 				},
 			} ],
+			prev : '',
 			next : 'lesson1',
 		},
 		'lesson1' : {
@@ -64,6 +69,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson0',
 			next : 'lesson2',
 		},
 		'lesson2' : {
@@ -87,6 +93,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson1',
 			next : 'lesson3.1',
 		},
 		'lesson3.1' : {
@@ -109,11 +116,13 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson2',
 			next : 'lesson3.2',
 		},
 		'lesson3.2' : {
 			action : function() {
 				cb.clear();
+				ui.maxIns();
 				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [
@@ -146,6 +155,7 @@ var les = {
 						},
 					} ],
 			noBet : true,
+			prev : 'lesson3.1',
 			next : 'lesson3.3',
 		},
 		'lesson3.3' : {
@@ -163,6 +173,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson3.2',
 			next : 'lesson4.1',
 		},
 		'lesson4.1' : {
@@ -183,6 +194,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson3.3',
 			next : 'lesson4.2',
 		},
 		'lesson4.2' : {
@@ -211,6 +223,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson4.1',
 			next : 'lesson4.3',
 		},
 		'lesson4.3' : {
@@ -232,6 +245,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson4.2',
 			next : 'lesson5',
 		},
 		'lesson5' : {
@@ -249,6 +263,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson4.3',
 			next : 'lesson6.1',
 		},
 		'lesson6.1' : {
@@ -264,6 +279,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson5',
 			next : 'lesson6.2',
 		},
 		'lesson6.2' : {
@@ -289,6 +305,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson6.1',
 			next : 'lesson7.1',
 		},
 		'lesson7.1' : {
@@ -315,6 +332,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson6.2',
 			next : 'lesson7.2',
 		},
 		'lesson7.2' : {
@@ -340,6 +358,7 @@ var les = {
 				},
 			} ],
 			noBet : true,
+			prev : 'lesson7.1',
 			next : 'lesson8.1',
 		},
 		'lesson8.1' : {
@@ -358,20 +377,26 @@ var les = {
 				},
 			} ],
 			complete: false,
+			prev : 'lesson7.2',
 			next : 'lesson8.2',
 		},
 		'lesson8.2' : {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
+				les.lessonList['lesson8.2'].prevMoney = eg.money;
 				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
 				text : "Ensure you won't bet more than you can afford",
 				check : function() {
-					return eg.money === 0;
+					var allIn = (eg.money === 0 || eg.money === 2*les.lessonList['lesson8.2'].prevMoney);
+					les.lessonList['lesson8.2'].prevMoney = eg.money;
+					return allIn;
 				},
 			} ],
+			prevMoney: 0,
+			prev : 'lesson8.1',
 			next : 'lesson9.1',
 		},
 		'lesson9.1' : {
@@ -386,6 +411,8 @@ var les = {
 					return true;
 				},
 			} ],
+			riggedDeck: [],
+			prev : 'lesson8.2',
 			next : 'lesson9.2',
 		},
 		'lesson9.2' : {
@@ -400,6 +427,7 @@ var les = {
 					return true;
 				},
 			} ],
+			prev : 'lesson9.1',
 			next : 'lesson9.3',
 		},
 		'lesson9.3' : {
@@ -419,6 +447,7 @@ var les = {
 					return true;
 				},
 			} ],
+			prev : 'lesson9.2',
 			next : 'lesson10.1',
 		},
 		'lesson10.1' : {
@@ -433,6 +462,7 @@ var les = {
 					return true;
 				},
 			} ],
+			prev : 'lesson9.3',
 			next : 'lesson10.2',
 		},
 		'lesson10.2' : {
@@ -447,6 +477,7 @@ var les = {
 					return true;
 				},
 			} ],
+			prev : 'lesson10.1',
 			next : '',
 		},
 	},
@@ -481,15 +512,17 @@ var les = {
 				});
 			}
 			// $("#instructions").append($(ui.nextButton));
-			$("#instructions").css({
-				height : "310px"
-			});
-			$("#continueBox").show();
+			$("#continueButton").show();
+			$("#instructions").css({height:'310px'});
 			les.objComplete = true;
 		}
 	},
 
 	showHint : function(e) {
+		if (!les.hintUnlocked) {
+			alert('Please try the lesson yourself first before looking at our hints!');
+			return;
+		}
 		$(e).toggle(100).queue(function() {
 			// Why does jQuery not work...
 
@@ -504,6 +537,7 @@ var les = {
 	loadLesson : function(lesson) {
 		eg.lockEval();
 		les.currLesson = lesson;
+		les.hintUnlocked = false;
 		if (ui.isLoggedIn) {
 			rem.acc('setLevelInProgress', function(n) {
 
@@ -515,10 +549,9 @@ var les = {
 		$("#buttons").html('');
 		$("#codebox").removeAttr('disabled');
 		$("#eval").removeAttr('disabled');
-		$("#continueBox").hide();
-		$("#instructions").css({
-			height : "340px"
-		});
+		$("#previousButton").show();
+		$("#continueButton").hide();
+		$("#instructions").css({height:'310px'});
 		les.objectives = les.lessonList[les.currLesson].objectives;
 		if (les.lessonList[les.currLesson].noBet) {
 			$("#resetMoneyBox").css({
@@ -581,6 +614,13 @@ var les = {
 				$(this).dequeue();
 			});
 		});
+	},
+	prevLesson : function() {
+		if (!les.lessonList[les.currLesson]) {
+
+		} else {
+			location.hash = les.lessonList[les.currLesson].prev;
+		}
 	},
 	nextLesson : function() {
 		if (!les.lessonList[les.currLesson]) {

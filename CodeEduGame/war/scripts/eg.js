@@ -119,6 +119,10 @@ var eg = {
 		if (!isNaN(uiBet)) {
 			eg.betValue = uiBet;
 		}
+		
+		if (eg.turns > -1 && !les.lessonList[les.currLesson].noBet) {
+			eg.turnActions[eg.turns] = true;
+		}
 
 		eg.turnNum++;
 		
@@ -300,7 +304,7 @@ var eg = {
 	},
 	// Double down
 	doubleDown : function() {
-		if (eg.turnNum != 0) {
+		if (eg.turnNum > 1) {
 			return;
 		}
 		eg.doubled = true;
@@ -366,6 +370,8 @@ var eg = {
 		
 		$("#debug").html('');
 		eg.betValue = 0;
+		
+		les.hintUnlocked = true;
 		
 		// Kludgy, but whatever...
 		var sub = {

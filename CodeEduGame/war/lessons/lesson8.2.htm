@@ -51,7 +51,7 @@ if (handStart) {
     safeBet(4, 0); //safeBet() has replaced bet()
 }
 else {
-    if (totalMoney() &lt; 17) {
+    if (totalValue() &lt; 17) {
         hit();
     }
     else {
@@ -62,7 +62,7 @@ else {
 function safeBet(betAmount, limit){
     /*The if statement we told you to write. Notice it
     is just a direct translation of the instructions.*/
-    if(totalValue() - betAmount &lt; limit){
+    if(totalMoney() - betAmount &lt; limit){
         betAmount = totalMoney() - limit;
     }
     // Since there is no else statement here, this function will always bet. That's good!
