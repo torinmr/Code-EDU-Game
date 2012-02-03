@@ -1,7 +1,7 @@
 /*
  * eg.js ()
  */
-/*function dump(arr,level) {
+function dump(arr,level) {
 	var dumped_text = "";
 	if(!level) level = 0;
 	
@@ -24,7 +24,7 @@
 		dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
 	}
 	return dumped_text;
-}*/
+}
 var eg = {
 	useRemote: false,
 	// Dimensions of the table display
@@ -32,7 +32,9 @@ var eg = {
 	cols : 5,
 
 	// Cashmonies
+	defaultMoney : 500,
 	money : 500,
+	
 	betValue: 0,
 
 	// Values that are for internal use
@@ -55,13 +57,6 @@ var eg = {
 		if (eg.inGame) {
 			return;
 		}
-		// Lock the bet
-		eg.betValue = parseInt($("#bet").val());
-		if (isNaN(eg.betValue)) {
-			eg.betValue = 0;
-		}
-		$("#bet").val(eg.betValue);
-		$("#bet").attr('disabled', 'disabled');
 
 		eg.turnNum = 0;
 
@@ -72,7 +67,7 @@ var eg = {
 			rem.rpc('startNextRound', function(s) {
 				rem.rpc('bid', function(b) {
 					if (!b.isSuccess) {
-						// Argh
+						alert(dump(b))
 					}
 					$("#money").html(b.gameObj.money);
 
@@ -96,13 +91,29 @@ var eg = {
 					});
 					eg.inGame = true;
 					eg.redrawBoard();
-				}, {amount : eg.getBet()});
+				}, {amount : eg.betValue});
 			});
 			return;
 		}
 		
 		// Unlock other game controls
 		eg.inGame = true;
+		
+		if (les.lessonList[les.currLesson].noBet) {
+			eg.bet();
+		}
+	},
+	bet : function() {
+		if (!eg.inGame) {
+			return;
+		}
+		// Lock the bet
+		eg.betValue = parseInt($("#bet").val());
+		if (isNaN(eg.betValue)) {
+			eg.betValue = 0;
+		}
+		$("#bet").val(eg.betValue);
+		$("#bet").attr('disabled', 'disabled');
 		
 		// No blackjacks, Jack
 		do {
@@ -351,7 +362,14 @@ var eg = {
 		// A-NI-MA-TION!!!!!!!!
 		
 		var animation = window.setInterval(function() {
-			if (turns > 10 || !eg.inGame) {
+			// Figure out the turn cap
+			var turncap;
+			if (code.indexOf('hit()') == -1 && code.indexOf('stand()') == -1) {
+				turncap = 1;
+			} else {
+				turncap = 10;
+			}
+			if (turns > turncap || !eg.inGame) {
 				eg.ai();
 				eg.end();
 				cb.call('exec');

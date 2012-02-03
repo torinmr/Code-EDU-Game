@@ -18,11 +18,19 @@ var les = {
 			action : function() {
 				// Make manual controls
 				$("#buttons").fadeIn();
-				$("#buttons").append(ui.makeButton('New Game', eg.newGame));
+				$("#buttons").append(ui.makeButton('New Game', function() {
+					eg.newGame();
+					eg.bet();
+				}));
 				$("#buttons").append(ui.makeButton('Hit', eg.hit));
 				$("#buttons").append(ui.makeButton('Stand', eg.stand));
-				$("#betbox").html('Bet:<input type="text" id="bet" maxlength="6" value="10" />');
-				
+				$("#betbox")
+						.html(
+								'Bet:<input type="text" id="bet" maxlength="6" value="10" />');
+				$("#bet").css({
+					width : '3em'
+				});
+
 				$("#codebox").attr('disabled', 'disabled');
 				$("#eval").attr('disabled', 'disabled');
 				cb.add('end', les.checkObjectives);
@@ -40,11 +48,10 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				/*$("#buttons").fadeOut().queue(function() {
-					$(this).html('');
-				});*/
-				$("#betbox").html('');
-				$("#buttons").html('');
+				/*
+				 * $("#buttons").fadeOut().queue(function() { $(this).html('');
+				 * });
+				 */
 				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
@@ -56,6 +63,7 @@ var les = {
 					return false;
 				},
 			} ],
+			noBet : true,
 			next : 'lesson2',
 		},
 		'lesson2' : {
@@ -67,7 +75,7 @@ var les = {
 				});
 				cb.add('exec', les.checkObjectives);
 			},
-			complete: false,
+			complete : false,
 			objectives : [ {
 				text : "Hit every turn",
 				check : function() {
@@ -78,6 +86,7 @@ var les = {
 					return false;
 				},
 			} ],
+			noBet : true,
 			next : 'lesson3.1',
 		},
 		'lesson3.1' : {
@@ -99,6 +108,7 @@ var les = {
 					return true;
 				},
 			} ],
+			noBet : true,
 			next : 'lesson3.2',
 		},
 		'lesson3.2' : {
@@ -135,6 +145,7 @@ var les = {
 									.indexOf('else') != -1);
 						},
 					} ],
+			noBet : true,
 			next : 'lesson3.3',
 		},
 		'lesson3.3' : {
@@ -151,6 +162,7 @@ var les = {
 							&& code.indexOf('if') != -1 && code.indexOf('else') != -1);
 				},
 			} ],
+			noBet : true,
 			next : 'lesson4.1',
 		},
 		'lesson4.1' : {
@@ -170,6 +182,7 @@ var les = {
 					return true;
 				},
 			} ],
+			noBet : true,
 			next : 'lesson4.2',
 		},
 		'lesson4.2' : {
@@ -197,6 +210,7 @@ var les = {
 					}
 				},
 			} ],
+			noBet : true,
 			next : 'lesson4.3',
 		},
 		'lesson4.3' : {
@@ -217,6 +231,7 @@ var les = {
 					}
 				},
 			} ],
+			noBet : true,
 			next : 'lesson5',
 		},
 		'lesson5' : {
@@ -233,6 +248,7 @@ var les = {
 							.indexOf('//') != -1);
 				},
 			} ],
+			noBet : true,
 			next : 'lesson6.1',
 		},
 		'lesson6.1' : {
@@ -247,53 +263,83 @@ var les = {
 					return true;
 				},
 			} ],
+			noBet : true,
 			next : 'lesson6.2',
 		},
 		'lesson6.2' : {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
-				text : "Make a functional loop",
+				text : "Make a functional loop and return the total value",
 				check : function() {
-					return true;
-				},
-			}, {
-				text : "Return the total value",
-				check : function() {
-					return true;
+					var handValues = handValue();
+					var sum = 0;
+					for ( var i = 0; i < handValues.length; i++) {
+						sum += handValues[i];
+					}
+					if (typeof totalValue == 'function' && totalValue() == sum
+							&& ui.getUserCode().indexOf('while') != -1) {
+						return true;
+					} else {
+						return false;
+					}
 				},
 			} ],
+			noBet : true,
 			next : 'lesson7.1',
 		},
 		'lesson7.1' : {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
 				text : "Simplify incrementation",
 				check : function() {
-					return true;
+					var handValues = handValue();
+					var sum = 0;
+					for ( var i = 0; i < handValues.length; i++) {
+						sum += handValues[i];
+					}
+					if (typeof totalValue == 'function' && totalValue() == sum
+							&& ui.getUserCode().indexOf('while') != -1
+							&& ui.getUserCode().indexOf('++') != -1) {
+						return true;
+					} else {
+						return false;
+					}
 				},
 			} ],
+			noBet : true,
 			next : 'lesson7.2',
 		},
 		'lesson7.2' : {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
 				text : "Turn a while loop into a for loop",
 				check : function() {
-					return true;
+					var handValues = handValue();
+					var sum = 0;
+					for ( var i = 0; i < handValues.length; i++) {
+						sum += handValues[i];
+					}
+					if (typeof totalValue == 'function' && totalValue() == sum
+							&& ui.getUserCode().indexOf('for') != -1) {
+						return true;
+					} else {
+						return false;
+					}
 				},
 			} ],
+			noBet : true,
 			next : 'lesson8.1',
 		},
 		'lesson8.1' : {
@@ -314,7 +360,6 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				eg.money = 500;
 				les.checkObjectives();
 			},
 			objectives : [ {
@@ -364,7 +409,7 @@ var les = {
 				check : function() {
 					return true;
 				},
-			},{
+			}, {
 				text : "Use a combined \"and-or\" statement",
 				check : function() {
 					return true;
@@ -414,7 +459,8 @@ var les = {
 					les.objectives[i].complete = true;
 					$(".objective" + i).append(
 							$("<img src='./img/check.png' alt='O' />"));
-					$("#lessonNumberForThisNotification").html(les.currLesson.substr(6));
+					$("#lessonNumberForThisNotification").html(
+							les.currLesson.substr(6));
 					$("#objectiveThatIsComplete").html(les.objectives[i].text);
 					$("#notification").show().delay(1500).fadeOut();
 				} else {
@@ -423,18 +469,28 @@ var les = {
 			}
 		}
 		if (allDone) {
-			//$("#instructions").append($(ui.nextButton));
-			$("#instructions").css({height:"310px"});
+			if (ui.isLoggedIn) {
+				rem.acc('setLevelDone', function(n) {
+
+				}, {
+					level : les.currLesson
+				});
+			}
+			// $("#instructions").append($(ui.nextButton));
+			$("#instructions").css({
+				height : "310px"
+			});
 			$("#continueBox").show();
 			les.objComplete = true;
 		}
 	},
-	
+
 	showHint : function(e) {
 		$(e).toggle(100).queue(function() {
 			// Why does jQuery not work...
-			
-			//$('#instructions').attr('scrollTop', $('#instructions').attr('scrollHeight'));
+
+			// $('#instructions').attr('scrollTop',
+			// $('#instructions').attr('scrollHeight'));
 			var instructions = document.getElementById("instructions");
 			instructions.scrollTop = instructions.scrollHeight;
 			$(this).dequeue();
@@ -444,11 +500,31 @@ var les = {
 	loadLesson : function(lesson) {
 		eg.lockEval();
 		les.currLesson = lesson;
+		if (ui.isLoggedIn) {
+			rem.acc('setLevelInProgress', function(n) {
+
+			}, {
+				level : les.currLesson
+			});
+		}
+		$("#betbox").html('');
+		$("#buttons").html('');
 		$("#codebox").removeAttr('disabled');
 		$("#eval").removeAttr('disabled');
 		$("#continueBox").hide();
-		$("#instructions").css({height:"340px"});
+		$("#instructions").css({
+			height : "340px"
+		});
 		les.objectives = les.lessonList[les.currLesson].objectives;
+		if (les.lessonList[les.currLesson].noBet) {
+			$("#resetMoneyBox").css({
+				display : 'none'
+			});
+		} else {
+			$("#resetMoneyBox").css({
+				display : 'inline'
+			});
+		}
 		for ( var i = 0; i < les.objectives.length; i++) {
 			les.objectives[i].complete = false;
 		}
@@ -460,14 +536,15 @@ var les = {
 			} else {
 				data = data.replace(/\[NAME\]/g, 'friend');
 			}
-			data = data.replace(/show="([^"]*)"/g, 'href="javascript:void(les.showHint(\'#$1\'));"');
+			data = data.replace(/show="([^"]*)"/g,
+					'href="javascript:void(les.showHint(\'#$1\'));"');
 
 			les.lessonText = data;
-			
+
 			$("#instructions").fadeOut().queue(
 					function() {
 						$("#instructions").html(les.lessonText);
-						
+
 						if (les.objectives.length > 0) {
 							var objList = $("<ol></ol>");
 							for ( var i = 0; i < les.objectives.length; i++) {
@@ -481,7 +558,7 @@ var les = {
 											objList);
 							objBox.insertAfter($("#instructions h3"));
 						}
-						
+
 						if (!ui.sideMaxed) {
 							$(".objectives").css({
 								width : '150px',
@@ -503,7 +580,7 @@ var les = {
 	},
 	nextLesson : function() {
 		if (!les.lessonList[les.currLesson]) {
-			
+
 		} else {
 			location.hash = les.lessonList[les.currLesson].next;
 		}

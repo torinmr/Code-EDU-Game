@@ -1,17 +1,24 @@
-<h3>Lesson 7.2: Cleaning Up Your Code--For Loops</h3>
-Take a look at your while loop. Wouldn't it be better with a fewer lines of code? Yes, it would. There is a special kind of while loop for use with counters called a for loop. A for loop basically combines all of the manipulations of the counter variable into one line. The following function is exactly the same as the one you are using with a while loop<br />
+<h3>Mission 7.2: Cleaning Up Your Code--For Loops</h3>
+<p>Take a look at your while loop. Wouldn't it be better with a fewer lines of code? Yes, it would. There is a special kind of while loop for use with counters called a for loop. A for loop basically combines all of the manipulations of the while loop and counter variable into one line. The following function is exactly the same as the one you are using with a while loop
+</p>
 <div class="code">function totalValue(){
-   var length = handValue.length;
-   var sum = 0;
-   var counter = 0;
-   for(counter = 0; counter &lt; length; counter++){
-       sum += handValue[counter];
-   }
-   return sum;
-}</div><br />
-Much prettier! All that happened is "while" was changed to "for" and the initialization and incrementation were moved into the parentheses. So, the basic for loop structure is<br />
+    var length = handValue.length;
+    var sum = 0;
+    var counter = 0;
+    for(counter = 0; counter &lt; length; counter++){
+        sum += handValue[counter];
+    }
+    return sum;
+}</div>
+<p>
+Much prettier! All that happened is "while" was changed to "for" and the incrementation of the counter was moved into the parentheses. So, the basic for loop structure is
+</p>
 <div class="code">for(initialize counter; counter boundary (boolean expression); counter incrementation){
 
-}</div><br />
+}</div>
+<p>
 Note each command in the parentheses is separated by semicolons, but there is no semicolon after the last command. You can think of this as three separate lines of code with the parentheses. Press submit, and notice the program does exactly the same thing with the for loop as it did with the while loop. There are instances when you should use a while loop and not a for loop, but we won't go into them in this tutorial. Also note that a poorly set boundary condition in a for loop will cause an infinite loop and crash your program just like it does in a while loop.</p>
-<p>Alright, we're satisfied. Enough laziness for now! (It's not all about laziness though...having fewer lines of code is easier to read!)</p>
+
+<p>
+    Alright, we're satisfied. Enough laziness for now! (It's not all about laziness though...In general, having fewer lines of code is easier to read!)
+</p>

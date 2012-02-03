@@ -1,47 +1,70 @@
-<h3>Lesson 8.1: Betting--Nested Conditionals and More Functions with Parameters</h3>
-<p>Now that your code has been modified to reflect the lazy programmer you're becoming, it's time to get back to the game. As you may have realized, Blackjack is a little boring if there's nothing on the line. So, we're going to introduce betting.</p>
-<p>For those of you who don't know, you bet at the very beginning of a hand, before you are dealt cards. If you lose the hand, the dealer takes your money. If you win, you get your money back and the dealer pays you as much as you bet. If you win with a Blackjack, the dealer pays you 150% of what you bet.</p>
-<p>We've written a bet function for you, called <span class="variables">bet()</span>. Clearly, <span class="variables">bet()</span> needs to know how much you want to bet. So, we need some way to give it information. We will do this by <em>passing a parameter</em>. A parameter is data passed, or given, to a function and is written inside a function's parentheses. (Now you know what those are for!) <span class="variables">bet()</span> requires a parameter that is a number that represents how much you want to bet. So, if you want to bet $4, you would write<br />
-<div class="code">bet(4);</div><br />
-Easy, right? The problem is you can only bet at the beginning of the hand, so we need some way of telling the program that. Sounds like a job for if statements! Basically, you need to say, if it's the beginning of hand, bet a certain amount, but on every other turn determine whether you should hit or stand. Try this on your own! The following information and hints will be helpful:</p>
+<h3>Mission 8.1: Betting--Nested Conditionals and More Functions with Parameters</h3>
+<p>
+    Now that your code has been modified to reflect the lazy programmer you're becoming, it's time to get back to the game. As you may have realized, Blackjack is a little boring if there's nothing on the line. So, we're going to introduce betting.
+</p>
+<p>
+    For those of you who don't know, you bet at the very beginning of a hand, before you are dealt cards. If you lose the hand, the dealer takes your money. If you win, you get your money back and the dealer pays you as much as you bet. If you win with a Blackjack, the dealer pays you 150% of what you bet.
+</p>
+<p>
+    We've written a bet function for you, called <span class="variables">bet()</span>. Clearly, <span class="variables">bet()</span> needs to know how much you want to bet. So, we need some way to give it information. We will do this by <em>passing a parameter</em>. A parameter is data passed, or given, to a function and is written inside a function's parentheses. (Now you know what those are for!) <span class="variables">bet()</span> requires a parameter that is a number that represents how much you want to bet. So, if you want to bet $4, you would write
+</p>
+    <div class="code">bet(4);</div>
+<p>
+    Easy, right? The problem is you can only bet at the beginning of the hand, so we need some way of telling the program that. Sounds like a job for if statements! Basically, you need to say, if it's the beginning of hand, bet a certain amount, but on every other turn determine whether you should hit or stand. Try this on your own! The following information and hints will be helpful:
+</p>
 <ul>
-<li>We have made a boolean called <span class="variables">handStart</span> that is true if it is the start of the hand and false if it is not.</li>
-<li>You only need to add an if statement, an else statement, and a <span class="variables">bet()</span> call.</li>
-<li>You do not need to delete any of your current code!</li>
-<li>Don't change the difinition (the code) of the function <span class="variables">totalValue()</span>. Function creation is not evaluated in a sequential manner. This code can sit at the end of all of your code and will just be used when called.</li>
-<li>Make sure you have opening { and closing } braces for all of your if and else statements.</li>
-<li>If and else statements can be inside other if and else statements. When this is done, the braces pair themselves from the inside out. Take a look at this code
-<div class="code">if(true){
-   if(true){
-   }
-}</div><br />
-Obviously this will do nothing, but it is important to see how the braces pair. The opening brace on line 2 is closed by the closing brace on line 3. The opening brace on line 1 is closed by the closing brace on line 4. This means that the second if statement is completely inside the first one and therefore will only be reached if the first one is true.</li>
+    <li>
+        We have made a boolean called <span class="variables">handStart</span> that is true if it is the start of the hand and false if it is not.
+    </li>
+    <li>
+        You only need to add an if statement, an else statement, and a <span class="variables">bet()</span> call.
+    </li>
+    <li>
+        You do not need to delete any of your current code!
+    </li>
+    <li>
+        Don't change the difinition (the code) of the function <span class="variables">totalValue()</span>. Function creation is not evaluated in a sequential manner. This code can sit at the end of all of your code and will just be used when called.
+    </li>
+    <li>
+        Make sure you have opening { and closing } braces for all of your if and else statements.
+    </li>
+    <li>
+        If and else statements can be inside other if and else statements. When this is done, the braces pair themselves from the inside out. Take a look at this code:
+        <div class="code">if (true) {
+    if (true) {
+        
+    }
+}
+</div>
+        Obviously this will do nothing, but it is important to see how the braces pair. The opening brace on line 2 is closed by the closing brace on line 3. The opening brace on line 1 is closed by the closing brace on line 4. This means that the second if statement is completely inside the first one and therefore will only be reached if the first one is true.
+    </li>
 </ul>
-<p>See what you can figure out, and don't be frustrated if you can't get it! This is hard stuff. When you get it to work, press submit a few times to see if your program makes or loses money.</p>
-<p>If your code is not working properly, make sure it looks like <a show="hidden-1">this</a>. Notice your name variable and function definitions are still all alone at the top and bottom of the code, respectively. In this new code, an if statement checking to see if it's the beginning of the hand was added as the second thing the computer reads. If it is the beginning of the hand, the program will bet. An else statement now completely surrounds the original if-else statements. Notice the arrangement of braces. The brace immediately after else is closed by the last brace before the part where you made <span class="variables">totalValue()</span>. This means that if it is not the beginning of the hand, the computer will then check to see if it should hit or stand and will not bet, just as it did originally.</p>
-
-<div class="hiddencode" id="hidden-1">
-var name = "David";
+<p>
+    See what you can figure out, and don't be frustrated if you can't get it! This is hard stuff. When you get it to work, press submit a few times to see if your program makes or loses money. (From now on you will get an error if your program does not bet money. If you run out of money, press the "reset money" button.)
+</p>
+<p>
+    If your code is not working properly, make sure it looks like <a show="hidden-1">this</a>. Notice your name variable and function definitions are still all alone at the top and bottom of the code, respectively. In this new code, an if statement checking to see if it's the beginning of the hand was added as the second thing the computer reads. If it is the beginning of the hand, the program will bet. An else statement now completely surrounds the original if-else statements. Notice the arrangement of braces. The brace immediately after else is closed by the last brace before the part where you made <span class="variables">totalValue()</span>. This means that if it is not the beginning of the hand, the computer will then check to see if it should hit or stand and will not bet, just as it did originally.
+</p>
+<div class="hiddencode" id="hidden-1">var name = "David";
 
 if (handStart) {
-       bet(4); //this will bet $4
+    bet(4); //this will bet $4
 }
 else { //This brace opens the else statement
-       if (totalValue() &lt; 17) {
-               hit();
-       }
-       else {
-               stand();
-       }
+    if (totalValue() &lt; 17) {
+        hit();
+    }
+    else {
+        stand();
+    }
 } //This braces closes the else statement
 
 function totalValue(){
-       var length = handValue.length;
-       var sum = 0;
-       var counter = 0;
-       for(counter = 0; counter &lt; length; counter++){
-               sum = sum + handValue[counter];
-       }
-       return sum;
-}
-</div>
+    var length = handValue.length;
+    var sum = 0;
+    var counter;
+    for(counter = 0; counter &lt; length; counter++){
+        sum += handValue[counter];
+    }
+    return sum;
+}</div>

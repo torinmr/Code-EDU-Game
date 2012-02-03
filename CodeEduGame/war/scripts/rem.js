@@ -11,4 +11,12 @@ var rem = {
         rem.lockedGame = true;
         $.getJSON('/codeedugame', args, callback);
     },
+    acc : function(funcName, callback, args) {
+        if(!args) {
+            args = {};
+        }
+        args.rpcName = funcName;
+        rem.lockedGame = true;
+        $.getJSON('/accounts', args, callback);
+    },
 }

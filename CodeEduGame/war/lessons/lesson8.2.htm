@@ -1,6 +1,6 @@
-<h3>Lesson 8.2: Betting--Writing Functions with Parameters</h3>
+<h3>Mission 8.2: Betting--Do it Yourself: Functions with Parameters</h3>
 <p>
-    Dang, that was a real toughie! We took the training wheels off in that one, but you made it through, and now your game will be much more fun. However, take a moment and try to bet more money than you actually have. You will be left with a negative amount of money! A casino would never let you bet more money than you actually have, so we need to modify your program so it doesn't bet more money than you have. (We'll reset your money now, but don't do that again!)
+    Dang, that was a real toughie! We took the training wheels off in that one, but you made it through, and now your game will be much more fun. However, take a moment and try to bet more money than you actually have. You will be left with a negative amount of money! A casino would never let you bet more money than you actually have, so we need to modify your program so it doesn't bet more money than you have. (Reset your money before continuing.)
 </p>
 <p>
     This is going to require writing an improved bet function. We'll call it <span class="variables">safeBet()</span>. (Remember, you can call your function anything you want as long as you're consistent.) This function is going to be a bit different than the last function you wrote, <span class="variables">totalValue()</span>, in two ways. First, <span class="variables">totalValue()</span> returned something: the value of your cards. <span class="variables">safeBet()</span> is going to be a replacement for<span class="variables"> bet()</span>, so it needs to bet but not return anything.
@@ -18,7 +18,7 @@
     Write this at the bottom of your code, either before or after the <span class="variables">totalValue()</span> declaration.
 </p>
 <p>
-    Now, replace the <span class="variables">bet()</span> command you wrote in lesson 8.1 with <span class="variables">safeBet()</span>. When you include parameters in a function, you must pass these parameters when calling it; otherwise it won't work. To bet $4 and ensure that you will not have a negative amount of money, write
+    Now, replace the <span class="variables">bet()</span> command you wrote in mission 8.1 with <span class="variables">safeBet()</span>. When you include parameters in a function, you must pass these parameters when calling it; otherwise it won't work. To bet $4 and ensure that you will not have a negative amount of money, write
 </p>
 <div class="code">safeBet(4, 0);</div>
 <p>

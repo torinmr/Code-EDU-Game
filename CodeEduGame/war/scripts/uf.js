@@ -3,7 +3,7 @@
  * Provides variables and functions for the student to use
  */
 var uf = {
-
+		
 }
 
 var hit = eg.hit;

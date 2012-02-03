@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>EduGame</title>
+        <link rel="shortcut icon" href="./favicon.ico" />
         <link href="./styles/reset.css" rel="stylesheet" type="text/css" />
         <link href="./styles/edugame.css" rel="stylesheet" type="text/css" />
         <link href="./styles/jquery-linedtextarea.css" rel="stylesheet" type="text/css" />
@@ -21,11 +22,16 @@
     <body id="game">
         <div id="notification">
             <h2 id="lessonNumberForThisNotification">1</h2>
-            <ul>
+            <ul id="whyAreTheseIdsSoEffingLong">
                 <li id="objectiveThatIsComplete">Obtain the Chartreuse Stork of the +5 Teapots</li>
             </ul>
         </div>
         <div class="wrapper">
+            <div id="account">
+                <span id="accName"></span>
+                <a href="javascript:void(0);"></a>
+                <a href="javascript:void(0);" id="log"></a>
+            </div>
             <div id="titlebar">
                 <img src="./img/logo.png" alt"JavaJack" />
             </div>
@@ -58,6 +64,7 @@
                     <div class="spacer">
                         <div id="moneybox">
                             <span id="betbox"></span>
+                            <span id="resetMoneyBox"><input type="button" id="resetMoney" value="Reset Money" /></span>
                             <span id="money"></span>
                         </div>
                         <div id="gameOut"></div>

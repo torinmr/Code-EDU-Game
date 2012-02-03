@@ -1,4 +1,4 @@
-<h3>Lesson 6.1: Total Value With More than Two Cards &mdash; Loop Setup</h3>
+<h3>Mission 6.1: Total Value With More than Two Cards &mdash; Loop Setup</h3>
 <p>
     If you've played the game a few times, you may have noticed that your program does a decent job determining if it should hit or stand the first time, but then keeps making the same decision every time until you bust! That's no good! The problem is that no matter how many card you have, <span class="variables">totalValue()</span> is only summing the value of the first two.
 </p>
@@ -7,7 +7,7 @@
 </p>
 <div class="code">return handValue[0] + handValue[1] + handValue[2];</div>
 <p>
-    but there are two problems with this. Make this change, click submit, and you'll see the first one. When you have only two cards, <span class="variables">handValue[2]</span> doesn't exist and so JavaScript returns "undefined". For some stupid reason, it doesn't warn you of this, but you'll see that the program stands every time as a result. Even if it didn’t make this error, it would only add the first three cards you get; not very helpful when you have four cards in your hand.
+    but there are two problems with this. Make this change, click submit, and you'll see the first one. When you have only two cards, <span class="variables">handValue[2]</span> (which would check the third card) doesn't exist and so JavaScript returns "undefined". For some stupid reason, it doesn't warn you of this, but you'll see that the program stands every time as a result. Even if it didn’t make this error, it would only add the first three cards you get; not very helpful when you have four cards in your hand.
 </p>
 <p>
     We can fix both these problems with loops. There are two kinds of loops. The first and most basic kind is a while loop. It's syntax looks like
@@ -16,7 +16,7 @@
 
 }</div>
 <p>
-    This should remind you of an if statement. When the computer reaches this while loop, it will do whatever is inside the braces { } over and over as long as the argument inside the parentheses ( ) is true. Once the argument is false, the computer will continue reading the code after the loop. But be careful! If the argument in the parentheses never becomes true, the loop will never end, and the game and possibly even your entire web browser will crash. That would really be a downer.
+    This should remind you of an if statement. When the computer reaches this while loop, it will do whatever is inside the braces { } over and over as long as the argument inside the parentheses ( ) remains true. Once the argument is false, the computer will skip the loop and continue reading the code after the loop. But be careful! If the argument in the parentheses is always, the loop will never end, and the game and possibly even your entire web browser will crash. That would really be a downer. But don’t worry too much: We automatically save your progress, so you won’t have to start over from mission 1 if that happens.
 </p>
 <p>
     Delete the return statement in the <span class="variables">totalValue()</span> function and replace it with the basic while loop structure. What we are going to do is declare a variable that holds the length of the hand. We will declare another that is a counter which will count how many times we've gone through the loop, and one more that will hold the sum of the values of the cards in your hand. This last variable is the important one: It will be returned by the function. To declare these variables, write, immediately before the while loop,
@@ -28,5 +28,5 @@ var sum = 0; //sum of card values, to be returned</div>
     The comments don't need to be written, of course, but will be helpful for you. Remember, you can name the variables whatever you want as long as your consistent. Take another look at the first line you just wrote. <span class="variables">length</span> is a variable defined by JavaScript that holds the length of the array. Writing <span class="variables">arrayName.length</span> returns the length of the array. Finally, note that every time this function is called, it will reset <span class="variables">length</span> to the current length of this array. That is important, because the size of your hand can change every turn.
 </p>
 <p>
-    Press next to continue to the next page, but DON'T PRESS SUBMIT or your program will crash.
+    Press continue to go on to the next page, but DON'T PRESS SUBMIT or your program will crash.
 </p>

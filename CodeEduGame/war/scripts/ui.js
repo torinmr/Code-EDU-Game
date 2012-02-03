@@ -5,6 +5,7 @@
  */
 var ui = {
 	sideMaxed : true,
+	isLoggedIn : false,
 	makeButton : function(label, func) {
 		var but = $("<input type='button' value='" + label + "' />");
 		but.bind('click', func);
@@ -77,12 +78,6 @@ $(document).ready(function() {
 	$("#submit").bind('click', function() {
 		eg.execCode($("#codebox").val());
 	});
-	$("#evaln").bind('click', function() {
-		var n = parseInt(prompt('Enter how many games you want to play:', ''));
-		for ( var i = 0; i < n; i++) {
-			eg.execCode(ui.getUserCode());
-		}
-	});
 
 	// Make the textarea fancy
 	$('#codebox').tabSupport();
@@ -93,19 +88,25 @@ $(document).ready(function() {
 	$("#continueButton").click(function() {
 		les.nextLesson();
 	});
-
-	if (eg.useRemote) {
-		rem.rpc('getLogin', function(l) {
-			if (l.login) {
-				location.href = l.login;
-			} else {
-				rem.rpc('startGame', function(s) {
-				});
-			}
-		}, {
-			returnURL : document.URL
-		});
-	}
+	
+	$("#resetMoney").click(function() {
+		eg.money = eg.defaultMoney;
+		$("#money").html("Money: " + eg.money);
+	});
+	
+	rem.acc('getLogin', function(l) {
+		if (!l.isLoggedIn) {
+			$("#log").attr('href', l.URL);
+			$("#log").html('Login');
+		} else {
+			ui.isLoggedIn = true;
+			$("#log").html('Logout');
+			$("#log").attr('href', l.URL);
+			rem.acc('getName', function(n) {
+				$("#accName").html(n.name);
+			});
+		}
+	},{returnURL : document.URL});
 	
 	var toggle = $("#toggleIns");
 	toggle.bind('click', ui.toggleIns);
