@@ -19,7 +19,7 @@ if(handStart){
        safeBet(4, 0);
 }
 else {
-       if (totalValue() == 10) {
+       if (totalValue() === 10) {
                doubleDown();
        }
        else if(totalValue() &lt; 17 &amp;&amp; dealerUpCard() &gt; 6){ /*this is the statement
@@ -62,7 +62,7 @@ if (handStart) {
        safeBet(4, 0);
 }
 else {
-       if (totalValue() == 10) {
+       if (totalValue() === 10) {
                doubleDown();
        }
        /*In this example, the following line is the only one that has been changed from mission 10.1. This

@@ -10,7 +10,7 @@ if (handStart) {
        safeBet(4, 0); //this will bet 4
 }
 else {
-       if(totalValue() == 10){
+       if(totalValue() === 10){
                doubleDown();
        }
        else if(totalValue() &lt; 17){
@@ -22,7 +22,7 @@ else {
 }
 
 function safeBet(betAmount, limit){
-       if(totalValue() - betAmount &lt; limit){
+       if(totalMoney() - betAmount &lt; limit){
                betAmount = totalMoney() - limit;
        }
        bet(betAmount);

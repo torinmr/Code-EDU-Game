@@ -38,6 +38,7 @@ var bet = function(b) {
 		return;
 	} else {
 		eg.betValue = b;
+		eg.bet();
 	}
 }
 

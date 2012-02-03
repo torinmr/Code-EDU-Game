@@ -36,6 +36,8 @@ var eg = {
 	money : 500,
 	
 	betValue: 0,
+	
+	turnActions : new Array(),
 
 	// Values that are for internal use
 	deck : null,
@@ -44,6 +46,9 @@ var eg = {
 	doubled : false,
 	playerHand : new Array(),
 	dealerHand : new Array(),
+	
+	// For exec()
+	turns: -1,
 
 	evalLocked : false,
 	lockEval : function() {
@@ -62,6 +67,8 @@ var eg = {
 
 		// Remove leftover messages
 		eg.clearBoard();
+		
+		eg.turnActions = new Array();
 		
 		if (eg.useRemote) {
 			rem.rpc('startNextRound', function(s) {
@@ -108,10 +115,13 @@ var eg = {
 			return;
 		}
 		// Lock the bet
-		eg.betValue = parseInt($("#bet").val());
-		if (isNaN(eg.betValue)) {
-			eg.betValue = 0;
+		var uiBet = parseInt($("#bet").val());
+		if (!isNaN(uiBet)) {
+			eg.betValue = uiBet;
 		}
+
+		eg.turnNum++;
+		
 		$("#bet").val(eg.betValue);
 		$("#bet").attr('disabled', 'disabled');
 		
@@ -133,6 +143,8 @@ var eg = {
 
 		// Display the new game
 		eg.redrawBoard();
+		
+		cb.call('bet');
 
 		// Does anyone have blackjack?
 		if (eg.value(eg.dealerHand) == 21 || eg.value(eg.playerHand) == 21) {
@@ -144,9 +156,15 @@ var eg = {
 		if (!eg.inGame)
 			return;
 		
-		cb.call('hit');
+		if (eg.turns > -1 && eg.turnActions[eg.turns]) {
+			throw "Error: Can't perform more than one action per round";
+			return;
+		}
+		if (eg.turns > -1) {
+			eg.turnActions[eg.turns] = true;
+		}
 		
-		eg.turnNum++;
+		cb.call('hit');
 		
 		if (eg.useRemote) {
 			eg.inGame = false;
@@ -184,6 +202,14 @@ var eg = {
 		// Check the game lock
 		if (!eg.inGame)
 			return;
+		
+		if (eg.turns > -1 && eg.turnActions[eg.turns]) {
+			throw "Error: Can't perform more than one action per round";
+			return;
+		}
+		if (eg.turns > -1) {
+			eg.turnActions[eg.turns] = true;
+		}
 		
 		cb.call('stand');
 		eg.turnNum++;
@@ -226,6 +252,9 @@ var eg = {
 		eg.end();
 	},
 	ai : function() {
+		if (eg.playerHand.length == 0) {
+			throw "Error: you must bet first.";
+		}
 		// Some crappy AI
 		while (eg.value(eg.dealerHand) < 15) {
 			eg.dealerHand.push(eg.deck.pop());
@@ -302,19 +331,11 @@ var eg = {
 		// Draw the rest of the dealer's hand
 		for ( var p = 1; p < eg.dealerHand.length; p++) {
 			$("#display0" + p).html(cards.cardImg(eg.dealerHand[p].suit, eg.dealerHand[p].num));
-			/*$("#display0" + p).html(
-					'<img src="'
-							+ cards.cardImg(eg.dealerHand[p].suit,
-									eg.dealerHand[p].num) + '" />');*/
 		}
 
 		// Draw the player's hand
 		for ( var p = 0; p < eg.playerHand.length; p++) {
 			$("#display1" + p).html(cards.cardImg(eg.playerHand[p].suit, eg.playerHand[p].num));
-			/*$("#display1" + p).html(
-					'<img src="'
-							+ cards.cardImg(eg.playerHand[p].suit,
-									eg.playerHand[p].num) + '" />');*/
 		}
 	},
 	// Calculate the value of a hand
@@ -355,7 +376,7 @@ var eg = {
 			code = code.replace(new RegExp(raw, 'g'), sub[raw]);
 		}
 
-		var turns = 0;
+		eg.turns = 0;
 		eg.newGame();
 		ui.minIns();
 		
@@ -369,14 +390,19 @@ var eg = {
 			} else {
 				turncap = 10;
 			}
-			if (turns > turncap || !eg.inGame) {
-				eg.ai();
-				eg.end();
-				cb.call('exec');
-				window.clearInterval(animation);
-				return;
-			}
 			try {
+				if (eg.turns > turncap || !eg.inGame) {
+					if (eg.playerHand.length == 0) {
+						throw "Error: you must bet first.";
+					}
+					eg.ai();
+					eg.end();
+					cb.call('exec');
+					window.clearInterval(animation);
+					eg.turns = -1;
+					return;
+				}
+			
 				jQuery.globalEval(code);
 			} catch (E) {
 				var errorMsg = E.toString();
@@ -384,10 +410,12 @@ var eg = {
 				$("#debug").html(errorMsg);
 				cb.call('error', E.toString());
 				window.clearInterval(animation);
+				eg.turns = -1;
+				eg.inGame = false;
 				return;
 			}
 			eg.redrawBoard();
-			turns++;
+			eg.turns++;
 		}, 500);
 		
 		/*while (turns < 10 && eg.inGame) {

@@ -346,26 +346,30 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('bet', function() {
+					les.lessonList['lesson8.1'].complete = true;
+				});
+				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
 				text : "Bet, at the beginning of the hand only",
 				check : function() {
-					return true;
+					return les.lessonList['lesson8.1'].complete;
 				},
 			} ],
+			complete: false,
 			next : 'lesson8.2',
 		},
 		'lesson8.2' : {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
 				text : "Ensure you won't bet more than you can afford",
 				check : function() {
-					return true;
+					return eg.money === 0;
 				},
 			} ],
 			next : 'lesson9.1',

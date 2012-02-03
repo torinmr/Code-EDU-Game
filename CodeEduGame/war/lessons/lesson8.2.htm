@@ -40,7 +40,7 @@
     <div class="code">betAmount = totalMoney() - limit;</div>
 <p>
     Let's talk about the logic here. Betting <span class="variables">totalMoney() - limit</span> will mean that the amount of money you have after the function is called is <span class="variables">[totalMoney() - betAmount]</span> which equals <span class="variables">[totalMoney() - (totalMoney() - limit)]</span> which equals <span class="variables">[totalMoney() - totalMoney() + limit]</span> which equals <span class="variables">limit</span>.
-    Since this command will be run if <span class="variables">betAmount</span> would reduce your total money to less than <span class="variables">limit</span>, this command will reset <span class="variables">betAmount</span> so it only reduces your total money to <span class="variables">limit</span>. Nice! Press submit, and test it out.
+    Since this command will be run if <span class="variables">betAmount</span> would reduce your total money to less than <span class="variables">limit</span>, this command will reset <span class="variables">betAmount</span> so it only reduces your total money to <span class="variables">limit</span>. Nice! Set your limit to 0, bet more money than you have, and press submit to test it out. You should be left with no money!
 </p>
 <p>
     If your code is not working properly, make sure it looks like <a show="hidden-1">this</a>.
@@ -51,7 +51,7 @@ if (handStart) {
     safeBet(4, 0); //safeBet() has replaced bet()
 }
 else {
-    if (totalValue() &lt; 17) {
+    if (totalMoney() &lt; 17) {
         hit();
     }
     else {
