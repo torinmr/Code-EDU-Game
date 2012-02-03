@@ -1,11 +1,14 @@
 package com.appspot.codeedugame;
 
+import java.io.Serializable;
+
 import java.util.UUID;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.appspot.codeedugame.json.JSONObject;
 import com.google.appengine.api.users.User;
 
 @PersistenceCapable
@@ -21,8 +24,20 @@ public class UserAndGame {
     @Persistent
     private String gameId;
     
-    @Persistent
-    private UserProgress progress;
+    @Persistent(serialized = "true")
+    private UserProgressWrapper progress;
+    
+    public static class UserProgressWrapper implements Serializable {
+		private static final long serialVersionUID = 1L;
+		private final UserProgress progress;
+
+		public UserProgressWrapper(UserProgress progress) {
+			this.progress = progress;
+		}
+		public UserProgress get() {
+			return this.progress;
+		}
+	} 
     
     private UserAndGame() {}
     public static UserAndGame make(User user) {
@@ -30,7 +45,7 @@ public class UserAndGame {
         uag.token = user.getUserId();
         uag.username = user.getNickname();
         uag.gameId = "EMPTY";
-        uag.progress = UserProgress.make();
+        uag.progress = new UserProgressWrapper(UserProgress.make());
         return uag;
     }
     
@@ -62,7 +77,17 @@ public class UserAndGame {
         }
     }
     
-    public UserProgress getProgress() {
-    	return progress;
-    }
+    public void setLevelInProgress(String level) {
+		progress.get().setLevelInProgress(level);
+		progress = new UserProgressWrapper(progress.get());
+	}
+    
+    public void setLevelDone(String level) {
+		progress.get().setLevelDone(level);
+		progress = new UserProgressWrapper(progress.get());
+	}
+
+	public JSONObject getProgressJSONObject() {
+		return progress.get().getJSONObject();
+	}
 }

@@ -16,7 +16,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 @SuppressWarnings("serial")
 public class AccountServlet extends HttpServlet {
-    
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         String rpcName = req.getParameter("rpcName");
@@ -90,13 +90,7 @@ public class AccountServlet extends HttpServlet {
         } else {
             resultURL = userService.createLoginURL(returnURL);
         }
-        
-        // sanitize url from potential Google screw-up.
-        int index = resultURL.indexOf('<');
-        if (index != -1) {
-        	resultURL = resultURL.substring(0, index);
-        }
-        
+
         try {
         	respObj.put("isLoggedIn", req.getUserPrincipal() != null);
             respObj.put("URL", resultURL);
@@ -128,7 +122,7 @@ public class AccountServlet extends HttpServlet {
     private void sendProgress(User user, PersistenceManager pm, HttpServletResponse resp) {
     	try {
             UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
-            JSONObject respObj = uag.getProgress().getJSONObject();
+            JSONObject respObj = uag.getProgressJSONObject();
             resp.getWriter().print(respObj.toString());
         } catch (JDOObjectNotFoundException e) {
             sendError("No user object found for user " + user.getNickname() + ".", resp);
@@ -145,7 +139,7 @@ public class AccountServlet extends HttpServlet {
         }
     	try {
             UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
-            uag.getProgress().setLevelDone(level);
+            uag.setLevelDone(level);
             
             JSONObject respObj = new JSONObject();
             respObj.put("isSuccess", true);
@@ -167,7 +161,7 @@ public class AccountServlet extends HttpServlet {
         }
     	try {
             UserAndGame uag = pm.getObjectById(UserAndGame.class, user.getUserId());
-            uag.getProgress().setLevelInProgress(level);
+            uag.setLevelInProgress(level);
             
             JSONObject respObj = new JSONObject();
             respObj.put("isSuccess", true);
