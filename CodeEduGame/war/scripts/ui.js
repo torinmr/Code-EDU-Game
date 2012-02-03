@@ -6,9 +6,10 @@
 
 // Preload images
 (function() {
-	var preloads = [ "./img/cardsprite.png", "./img/objectivecomplete.png" ];
+	var preloads = [ "./img/cardsprite.png", "./img/objectivecomplete.png",
+			"./img/continuesmall.png" ];
 	var imgCache = new Array();
-	for (var i = 0; i < preloads.length; i++) {
+	for ( var i = 0; i < preloads.length; i++) {
 		imgCache[i] = new Image();
 		imgCache[i].src = preloads[i];
 	}

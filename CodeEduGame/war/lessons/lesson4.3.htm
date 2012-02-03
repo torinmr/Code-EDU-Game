@@ -23,17 +23,15 @@
 <p>
     If your code is not working properly, make sure it looks like <a show="hidden-1">this</a>.
 </p>
-<div class="hiddencode" id="hidden-1">
-    var name = "David";
+<div class="hiddencode" id="hidden-1">var name = "David";
 
-    function totalValue() {
-    return handValue[0] + handValue[1];
-    }
-
-    if(totalValue() < 17){
+if(totalValue() &lt; 17){
     hit();
-    }
-    else{
+}
+else{
     stand();
-    }
-</div>
+}
+
+function totalValue() {
+    return handValue[0] + handValue[1];
+}</div>

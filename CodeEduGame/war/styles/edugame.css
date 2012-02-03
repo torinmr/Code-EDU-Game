@@ -66,8 +66,18 @@ h3 {
 #gameTitle, #moneybox {
     float: right;
 }
+#gameOut {
+    color: #CC0000;
+    font-size: 200%;
+}
 #resetMoney {
     
+}
+#holycow {
+    position:fixed;
+    bottom:0px;
+    left:0px;
+    display: none;
 }
 #graybar {
     background-color: #333;

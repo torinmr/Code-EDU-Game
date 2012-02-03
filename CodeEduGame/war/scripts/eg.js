@@ -404,6 +404,11 @@ var eg = {
 					eg.ai();
 					eg.end();
 					cb.call('exec');
+					if (typeof name !== 'undefined' && name.match(/david/i)) {
+						$("#holycow").show();
+					} else {
+						$("#holycow").hide();
+					}
 					window.clearInterval(animation);
 					eg.turns = -1;
 					return;
