@@ -32,25 +32,26 @@ public class UserProgress implements Serializable {
 	}
 
 	public JSONObject getJSONObject() {
-    	final Comparator<Map.Entry<String, Integer>> KEY_ORDER =
+    	/*
+		final Comparator<Map.Entry<String, Integer>> KEY_ORDER =
     			new Comparator<Map.Entry<String, Integer>>() {
     		public int compare(Map.Entry<String, Integer> m1,
     				Map.Entry<String, Integer> m2) {
     			return m1.getKey().compareTo(m2.getKey());
     		}
     	};
-    			
+    		*/	
     	ArrayList<Map.Entry<String, Integer>> progressArray =
     			new ArrayList<Map.Entry<String, Integer>>(lessonProgress.entrySet());
         
-    	Collections.sort(progressArray, KEY_ORDER);
-    
+    	//Collections.sort(progressArray, KEY_ORDER);
+    	
 		JSONObject progressObj = new JSONObject();
-        JSONArray levels =  new JSONArray();
+        //JSONArray levels =  new JSONArray();
 		
 		try {	
             for (Map.Entry<String, Integer> e : progressArray) {
-            	JSONArray level = new JSONArray();
+            	//JSONArray level = new JSONArray();
             	
             	String value;
             	int v = e.getValue();
@@ -61,11 +62,13 @@ public class UserProgress implements Serializable {
             	} else {
             		value = "undefined";
             	}
+            	/*
             	level.put(e.getKey());
             	level.put(value);
-            	levels.put(level);
+            	levels.put(level); */
+            	progressObj.put(e.getKey(), value);
             }
-            progressObj.put("levels", levels);
+            //progressObj.put("levels", levels);
             return progressObj;
         } catch (JSONException e) {
             throw new RuntimeException(e.getMessage());
