@@ -100,21 +100,14 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('error', function(E) {
-					var hitMatch = ui.getUserCode().match(/hit/g);
-					var standMatch = ui.getUserCode().match(/stand/g);
-					if (E.indexOf("somethingtrue") != -1
-							&& ui.getUserCode().indexOf("if") != -1
-							&& hitMatch.length === 1
-							&& standMatch.length === 1) {
-						les.checkObjectives();
-					}
-				});
+				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
 				text : "Learn structure of if-else statement",
 				check : function() {
-					return true;
+					var code = ui.getUserCode();
+					 return code.match(/if\s*\(\s*true\s*\)\s*\{\s*hit\(\);\s*\}\s*else\s*\{\s*stand\(\);\s*\}/);
+					 
 				},
 			} ],
 			noBet : true,
@@ -128,15 +121,6 @@ var les = {
 				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [
-					{
-						text : "Evaluate an if statement with a boolean",
-						check : function() {
-							var code = ui.getUserCode();
-							return ((code.indexOf('true') != -1 || code.indexOf('false') != -1)
-									&& code.indexOf('if') != -1 
-									&& code.indexOf('else') != -1);
-						},
-					},
 					{
 						text : "Evaluate an if statement with a numerical boolean expression",
 						check : function() {
@@ -170,7 +154,7 @@ var les = {
 				check : function() {
 					var code = ui.getUserCode();
 					return (code.indexOf('secondDealtCardVal') != -1
-							&& code.indexOf('<') != -1 && code.indexOf('>') != -1 
+							&& (code.indexOf('<') != -1 || code.indexOf('>') != -1) 
 							&& code.indexOf('if') != -1 && code.indexOf('else') != -1);
 				},
 			} ],
@@ -185,7 +169,7 @@ var les = {
 				cb.add('error', function(E) {
 					var code = ui.getUserCode();
 					if (E.indexOf("totalValue") != -1
-						&& (code.match(/totalValue()\s*<=?\s*\d/) || code.match(/\d\s*>=?\s*totalValue()/))
+						&& (code.match(/totalValue\(\)\s*<=?\s*\d/) || code.match(/\d\s*>=?\s*totalValue\(\)/))
 						&& code.indexOf('if') != -1 && code.indexOf('else') != -1) {
 						les.checkObjectives();
 					}
@@ -211,7 +195,7 @@ var les = {
 				text : "Write a function that returns a value",
 				check : function() {
 					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9]+)\(\)/);
+					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
 					if (!funcName) { return false; }
 					if (typeof window[funcName[1]] === 'function' && typeof window[funcName[1]]() === 'number'
 						&& (code.match(new RegExp(funcName[1]+'\\(\\)\\s*<=?\\s*\\d')) 
@@ -226,7 +210,7 @@ var les = {
 				text : "Evaluate a mathematical expression",
 				check : function() {
 					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9]+)\(\)/);
+					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
 					if (!funcName) { return false; }
 					if (code.match(/(\+|-|\*|\/|%)/)
 						&& typeof window[funcName[1]] === 'function' && typeof window[funcName[1]]() === 'number'
@@ -253,7 +237,7 @@ var les = {
 				check : function() {
 					var handValues = handValue();
 					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9]+)\(\)/);
+					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
 					if (!funcName) { return false; }
 					if (typeof window[funcName[1]] === 'function' 
 						&& window[funcName[1]]() == handValues[0] + handValues[1]) {
@@ -278,7 +262,7 @@ var les = {
 				check : function() {
 					var handValues = handValue();
 					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9]+)\(\)/);
+					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
 					if (!funcName) { return false; }
 					if (typeof window[funcName[1]] === 'function' 
 						&& window[funcName[1]]() == handValues[0] + handValues[1]
@@ -297,12 +281,15 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('error', function(E) {
+					les.checkObjectives();
+				});
 			},
 			objectives : [ {
-				text : "DON'T PRESS SUBMIT!",
+				text : "Set up basic while loop structure.",
 				check : function() {
-					return true;
+					var code = ui.getUserCode();
+					return code.match(/while\s*\(.*\)\s*\{\s*.*\s*\}/);
 				},
 			} ],
 			noBet : true,
@@ -319,12 +306,19 @@ var les = {
 				text : "Make a functional loop and return the total value",
 				check : function() {
 					var handValues = handValue();
+					var code = ui.getUserCode();
+					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
+					if (!funcName) { return false; }
+					
 					var sum = 0;
 					for ( var i = 0; i < handValues.length; i++) {
 						sum += handValues[i];
 					}
-					if (typeof totalValue == 'function' && totalValue() == sum
-							&& ui.getUserCode().indexOf('while') != -1) {
+					
+					if (typeof window[funcName[1]] === 'function'  
+							&& window[funcName[1]]() == sum
+							&& code.indexOf('while') != -1
+							&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
 						return true;
 					} else {
 						return false;
@@ -345,13 +339,18 @@ var les = {
 				text : "Simplify incrementation",
 				check : function() {
 					var handValues = handValue();
+					var code = ui.getUserCode();
+					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
+					if (!funcName) { return false; }
 					var sum = 0;
 					for ( var i = 0; i < handValues.length; i++) {
 						sum += handValues[i];
 					}
-					if (typeof totalValue == 'function' && totalValue() == sum
-							&& ui.getUserCode().indexOf('while') != -1
-							&& ui.getUserCode().indexOf('++') != -1) {
+					if (typeof window[funcName[1]] === 'function'  
+						&& window[funcName[1]]() == sum
+							&& code.indexOf('while') != -1
+							&& code.indexOf('++') != -1
+							&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
 						return true;
 					} else {
 						return false;
@@ -372,12 +371,17 @@ var les = {
 				text : "Turn a while loop into a for loop",
 				check : function() {
 					var handValues = handValue();
+					var code = ui.getUserCode();
+					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
+					if (!funcName) { return false; }
 					var sum = 0;
 					for ( var i = 0; i < handValues.length; i++) {
 						sum += handValues[i];
 					}
-					if (typeof totalValue == 'function' && totalValue() == sum
-							&& ui.getUserCode().indexOf('for') != -1) {
+					if (typeof window[funcName[1]] === 'function'  
+						&& window[funcName[1]]() == sum
+						&& code.indexOf('for') != -1
+						&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
 						return true;
 					} else {
 						return false;
@@ -400,7 +404,9 @@ var les = {
 			objectives : [ {
 				text : "Bet, at the beginning of the hand only",
 				check : function() {
-					return les.lessonList['lesson8.1'].complete;
+					var code = ui.getUserCode();
+					return (les.lessonList['lesson8.1'].complete
+							&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1);
 				},
 			} ],
 			complete: false,
@@ -417,14 +423,24 @@ var les = {
 			objectives : [ {
 				text : "Ensure you won't bet more than you can afford",
 				check : function() {
+					var code = ui.getUserCode();
 					var allIn = (eg.money === 0 || eg.money === 2*les.lessonList['lesson8.2'].prevMoney);
 					les.lessonList['lesson8.2'].prevMoney = eg.money;
-					return allIn;
+					return allIn && code.indexOf('hit') != -1 && code.indexOf('stand') != -1;
 				},
 			} ],
 			prevMoney: 0,
 			prev : 'lesson8.1',
-			next : 'lesson9.1',
+			next : 'end',
+		},
+		'end' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+			},
+			objectives : [],
+			prev : 'lesson8.2',
+			next : '',
 		},
 		'lesson9.1' : {
 			action : function() {

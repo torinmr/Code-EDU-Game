@@ -75,7 +75,7 @@ h3 {
 }
 #holycow {
     position:fixed;
-    bottom:0px;
+    bottom:-208px;
     left:0px;
     display: none;
 }
@@ -175,6 +175,18 @@ h3 {
     cursor: pointer;
     float: right;
     padding: 8px;
+}
+#feedback {
+    text-align: center;
+    margin: 2em;
+}
+#feedback a {
+    text-decoration: none;
+    font-size: 16px;
+    color: blue;
+}
+#feedback a:hover {
+    text-decoration: underline;
 }
 .code {
     background-color: #cfcfcf;
