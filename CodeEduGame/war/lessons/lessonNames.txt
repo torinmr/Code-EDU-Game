@@ -1,0 +1,21 @@
+Welcome!
+Mission 1: Name Yourself — Variables and Strings
+Mission 2: Hit — Functions
+Mission 3.1: Hit or Stand — Conditional Statements
+Mission 3.2: Hit or Stand — Booleans
+Mission 3.3: Hit or Stand — Using Boolean Expressions
+Mission 4.1: Better Strategy — Introducing Functions
+Mission 4.2: Better Strategy — Writing Functions
+Mission 4.3: Better Strategy — Introduction to Arrays
+Mission 5: Organize Your Code — Comments on Commenting
+Mission 6.1: Total Value With More than Two Cards — Loop Setup
+Mission 6.2: Total Value With More than Two Cards — Make the Loop Loop
+Mission 7.1: Cleaning Up Your Code--Incrementation Shortcuts
+Mission 7.2: Cleaning Up Your Code--For Loops
+Mission 8.1: Betting--Nested Conditionals and More Functions with Parameters
+Mission 8.2: Betting--Do it Yourself: Functions with Parameters
+Mission 9.1: Double Down — Multiple If Statements in a Row
+Mission 9.2: Double Down--Elseif 
+Mission 9.3: Double Down--And and Or
+Mission 10.1: Hit or Stand Based on the Dealer's Hand — More Practice with If Statements and Boolean Expressions
+Mission 10.2: Hit or Stand Based on the Dealer's Hand — Even More Practice with If Statements and Boolean Expressions

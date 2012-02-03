@@ -1,0 +1,30 @@
+
+<style>
+
+.code, .hiddencode{
+
+background-color:#CCC;
+
+white-space:pre;
+
+font-family:"Courier New", Courier, monospace;
+
+}
+
+
+
+.objectives{
+
+background-color:#D7E5FF;
+
+}
+
+
+
+.variables{
+
+font-family:"Courier New", Courier, monospace;
+
+}
+
+</style>
