@@ -368,6 +368,8 @@ var eg = {
 			return;
 		}
 		
+		eg.evalLocked = true;
+		
 		$("#debug").html('');
 		eg.betValue = 0;
 		
@@ -406,11 +408,13 @@ var eg = {
 					cb.call('exec');
 					if (typeof name !== 'undefined' && name.match(/david/i)) {
 						$("#holycow").show();
-					} else {
-						$("#holycow").hide();
+						$("#holycow").animate({bottom:'0px'});
+					} else if($("#holycow").is(":visible")) {
+						$("#holycow").animate({bottom:'-208px'});
 					}
 					window.clearInterval(animation);
 					eg.turns = -1;
+					eg.evalLocked = false;
 					return;
 				}
 			
@@ -423,6 +427,7 @@ var eg = {
 				window.clearInterval(animation);
 				eg.turns = -1;
 				eg.inGame = false;
+				eg.evalLocked = false;
 				return;
 			}
 			eg.redrawBoard();
