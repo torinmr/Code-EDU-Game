@@ -8,9 +8,8 @@
 <p>We want the amount of money we bet to change based on the card count, so declare a variable called <span class="variables">cardCountBet</span> immediately before the <span class="variables">safeBet()</span> call and set it equal to <span class="variables">cardCount</span>. (Although you may be tempted to call it <span class="variables">betAmount</span>, don't! That's the name of the parameter in your function declaration and that would just cause confusion.) Replace the <span class="variables">safeBet() betAmount</span> parameter (the first one) with <span class="variables">cardCountBet</span>.</p>
 <p>Although you do want to bet higher when the card count is higher, you can't simply bet the value of the card count because it will sometimes be negative. (And that would be really cheap, cause then you could play to lose and gain money.) Since there are 5 cards that are assigned a card count value of -1 and there are 4 of each card in the deck, the lowest <span class="variables">cardCount</span> can possibly be is -20. So, we should add 21 to <span class="variables">cardCountBet</span> to ensure it is always a number greater than zero. This can be done by changing the declaration of <span class="variables">cardCountBet</span> to<br />
 <div class="code">cardCountBet = cardCount + 21;</div></p>
-<p>This is sufficient to make a valid bet based on the card count.</p>
-<p>This may not be the best way to do so, though. Perhaps it is betting more money than you can afford so you need to divide its value by a number. Perhaps it's not betting enough and you need to add more to it's value or multiply it by something. Remember to use parentheses in your expressions just like you would when writing mathematical expressions on paper. Experiment with what works the best, being sure to keep <span class="variables">betAmount</span> greater than zero.</p>
-<p>If you're having problems, make sure the beginning of your code looks like <a href="">this</a>.</p>
+<p>This is sufficient to make a valid bet based on the card count. Press submit to test your code. If you're having problems, make sure the beginning of your code looks like <a href="">this</a>.</p>
+<p>This may not be the best way to to bet based on your card count, however. Perhaps the program is betting more money than you can afford so you need to divide the value of <span class="variables">cardCountBet</span> by a number. Perhaps it's not betting enough and you need to add more to its value or multiply it by something. Remember to use parentheses in your expressions just like you would when writing mathematical expressions on paper. Experiment with what works the best, being sure to keep <span class="variables">betAmount</span> greater than zero.</p>
 <!--<?php
 $name = "yourname"; 
 
@@ -37,8 +36,7 @@ if($handEnd){
 	}
 }
 else if($handStart){
-	$cardCountBet = ($cardCount + 21) / 2; /*Notice the parentheses around $cardCount + 21 so the entire quantity is 
-										divided by 2.*/
+	$cardCountBet = $cardCount + 21;
 	bet($cardCountBet); 
 }
 //rest of code goes here

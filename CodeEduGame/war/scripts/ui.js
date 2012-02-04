@@ -133,7 +133,18 @@ $(document).ready(function() {
 			});
 			rem.acc('getProgress', function(p) {
 				les.progress = p;
+				for (state in p) {
+					if (p[state] === 'in progress') {
+						location.hash = state;	
+						break;
+					}
+				}
 			});
+		}
+
+		// Start the lesson!
+		if (!ui.isLoggedIn) {
+			les.loadLesson(les.currLesson);
 		}
 	}, {
 		returnURL : document.URL
@@ -159,7 +170,4 @@ $(document).ready(function() {
 		}
 		les.loadLesson(les.currLesson);
 	});
-
-	// Start the lesson!
-	les.loadLesson(les.currLesson);
 });
