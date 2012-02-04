@@ -593,19 +593,64 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('doubledown', function() {
+					les.lessonList['lesson9.3'].complete = true;
+				});
+				cb.add('exec', function() {
+					les.checkObjectives();
+				});
 			},
 			objectives : [ {
 				text : "Use an \"or\" statement",
 				check : function() {
-					return true;
+					var code = ui.getUserCode();
+					if (les.lessonList['lesson9.3'].complete
+						&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
+						les.lessonList['lesson9.3'].complete = false;
+						return true;
+					} else {
+						return false;
+					}
 				},
 			}, {
 				text : "Use a combined \"and-or\" statement",
 				check : function() {
-					return true;
+					var code = ui.getUserCode();
+					if (les.lessonList['lesson9.3'].complete
+						&& code.indexOf('&&') != -1 
+						&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
+						les.lessonList['lesson9.3'].complete = false;
+						return true;
+					} else {
+						return false;
+					}
 				},
 			} ],
+			riggedDeck : [ {
+				num : 8,
+				suit : 2
+			}, {
+				num : 14,
+				suit : 0
+			}, {
+				num : 6,
+				suit : 2
+			}, {
+				num : 7,
+				suit : 3
+			}, {
+				num : 6,
+				suit : 3
+			}, {
+				num : 5,
+				suit : 1
+			}, {
+				num : 5,
+				suit : 2
+			}, {
+				num : 10,
+				suit : 0
+			}, ],
 			prev : 'lesson9.2',
 			next : 'lesson10.1',
 		},
@@ -613,12 +658,23 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('doubledown', function() {
+					les.lessonList['lesson10.1'].complete = true;
+				});
+				cb.add('exec', function() {
+					les.checkObjectives();
+				});
 			},
 			objectives : [ {
 				text : "Factor in the dealer's up card",
 				check : function() {
-					return true;
+					var code = ui.getUserCode();
+					if (code.match(/else\s*if\s*\(.*\(\).*dealerUpCard.*\)/)
+						|| code.match(/else\s*if\s*\(.*dealerUpCard\(\).*\(\).*\)/)) {
+						return true;
+					} else {
+						return false;
+					}
 				},
 			} ],
 			prev : 'lesson9.3',
@@ -628,15 +684,171 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('hit', function() {
+					les.lessonList['lesson10.2'].complete = true;
+				});
+				cb.add('exec', les.checkObjectives);
 			},
 			objectives : [ {
 				text : "Add the second condition",
 				check : function() {
+					if (les.lessonList['lesson10.2'].complete){
+						return true;
+					} else {
+						return false;
+					}
+				},
+			} ],
+			riggedDeck : [ {
+				num : 8,
+				suit : 2
+			}, {
+				num : 11,
+				suit : 0
+			}, {
+				num : 8,
+				suit : 2
+			}, {
+				num : 13,
+				suit : 3
+			}, {
+				num : 3,
+				suit : 2
+			}, {
+				num : 5,
+				suit : 3
+			}, {
+				num : 3,
+				suit : 1
+			}, {
+				num : 10,
+				suit : 0
+			}, ],
+			prev : 'lesson10.1',
+			next : 'lesson11.1',
+		},
+		'lesson11.1' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "Set up an if statement in the appropriate location",
+				check : function() {
+					var code = ui.getUserCode();
 					return true;
 				},
 			} ],
-			prev : 'lesson10.1',
+			prev : 'lesson10.2',
+			next : 'lesson11.2',
+		},
+		'lesson11.2' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "Make an array by setting each position individually",
+				check : function() {
+					var code = ui.getUserCode();
+					return true;
+				},
+			}, {
+				text : "Make an array by setting all positions at once",
+				check : function() {
+					var code = ui.getUserCode();
+					return true;
+				},
+			}, {
+				text : "Make an array with for loops",
+				check : function() {
+					var code = ui.getUserCode();
+					return true;
+				},
+			} ],
+			prev : 'lesson11.1',
+			next : 'lesson11.3',
+		},
+		'lesson11.3' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "Adjust and keep track of your card count",
+				check : function() {
+					var code = ui.getUserCode();
+					return true;
+				},
+			} ],
+			prev : 'lesson11.2',
+			next : 'lesson11.4',
+		},
+		'lesson11.4' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "Reset your card count when the deck is reshuffled",
+				check : function() {
+					var code = ui.getUserCode();
+					return true;
+				},
+			} ],
+			prev : 'lesson11.3',
+			next : 'lesson11.5',
+		},
+		'lesson11.5' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "Bet based on your card count",
+				check : function() {
+					var code = ui.getUserCode();
+					return true;
+				},
+			} ],
+			prev : 'lesson11.4',
+			next : 'lesson11.6',
+		},
+		'lesson11.6' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "Use functions to remove duplicate code in the program",
+				check : function() {
+					var code = ui.getUserCode();
+					return true;
+				},
+			} ],
+			prev : 'lesson11.5',
+			next : 'lesson11.7',
+		},
+		'lesson11.7' : {
+			action : function() {
+				cb.clear();
+				ui.maxIns();
+				les.checkObjectives();
+			},
+			objectives : [ {
+				text : "Use more functions to remove more duplicate code in the program",
+				check : function() {
+					var code = ui.getUserCode();
+					return true;
+				},
+			} ],
+			prev : 'lesson11.6',
 			next : '',
 		},
 	},
@@ -680,6 +892,7 @@ var les = {
 			// $("#instructions").append($(ui.nextButton));
 			les.progress[les.currLesson] = "completed";
 			les.progress[les.lessonList[les.currLesson].next] = "in progress";
+			$.cookie('p', JSON.stringify(les.progress));
 			$("#continueButton").show();
 			$("#instructions").css({
 				height : '310px'
@@ -709,8 +922,8 @@ var les = {
 		les.currLesson = lesson;
 		les.hintUnlocked = false;
 		if (les.currLesson != 'lesson0' && !les.progress[les.currLesson]) {
-			location.hash = 'lesson0';
-			return;
+			//location.hash = 'lesson0';
+			//return;
 		}
 		$("#betbox").html('');
 		$("#buttons").html('');

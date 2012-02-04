@@ -59,6 +59,16 @@ var doubleDown = function() {
 	eg.doubleDown();
 };
 
+var dealerUpCard = function() {
+	if (eg.dealerHand[1].num == 14) {
+		return 11;
+	} else if (eg.dealerHand[1].num > 10) {
+		return 10;
+	} else {
+		return eg.dealerHand[1].num;
+	}
+}
+
 var handStart = function() {
 	return eg.turnNum == 0;
 };

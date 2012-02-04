@@ -1,21 +1,16 @@
 <h3>Mission 11.1: Card Counting--Simple Work With If and Elseif</h3>
-<div class="objectives">
-<h4>Objectives</h4><ol>
-<li>Set up an if statement in the appropriate location</li>
-</ol></div>
 <p>Now you have a really solid algorithm to figure out whether your program should double down, hit, or stand! However, the program still just bets the same amount of money every time. Wouldn't it be better if you could bet more when you thought you were going to win? That's right, it would be. You may have heard of something called "card counting." It's one of the many things that gets people thrown out of casinos because card counters win too much money. That's awesome. And we're not going to throw you out, so you can count all the cards you want!</p>
 <p>The basic premise behind card counting is that you will win more often when there are more high cards left in the deck. This is primarily because the dealer will bust more often, you are more likely to get a Blackjack, and your hands will be higher. We will implement a card counting method known as the "Hi-Lo" method. In this method, the lowest cards (2-6) are assigned a card counting value of 1. The highest cards (10-Ace) are assigned a value of -1. The cards in the middle (7-9) are assigned a value of 0. When a card is played, a card counter adds it to a running total in his/her head. When that total is higher, it means that more low cards have been played and therefore there are more high cards left in the deck. This is a good time to bet higher because you are more likely to win. If the number is lower, you should bet lower because you are more likely to lose. If you'd like more information on card counting, click <a href="http://www.blackjacktactics.com/blackjack/strategy/card-counting/" target="_blank">here</a>.</p>
 <p>People are, of course, imperfect and can be distracted when counting cards. They may forget their count and then will not know how much to bet. Computers, however, are perfect and will not forget, so they are ideal to use for card counting. It is going to be a long and confusing process to implement card counting, but you'll learn a lot along the way and once you're finished your program will make a lot of money!</p>
 <p>The first step is to determine when card counting should occur. The easiest way to program card counting will be to have the computer count up the values of all the cards on the field at the end of each hand, after a winner has been determined. We've made a boolean called <span class="variables">handEnd</span> that is true when it is the end of a hand. So, let's add a new if statement to the beginning of your code, right before the if statement checking to see if it's the beginning of the game, that checks to see if it's the end of the game. Don't make it do anything yet. Also, make sure you change the if statement checking if it's the beginning of the game to an else if statement so your program doesn't try to hit at the end of the game. Press submit. Your code should not behave any differently than it did before.</p> 
-<p>If you're having problems, make sure the beginning of your code looks like <a href="">this</a>.</p>
-<!--<?php
-$name = "yourname"; 
+<p>If you're having problems, make sure the beginning of your code looks like <a show="hidden-1">this</a>.</p>
+<div class="hiddencode" id="hidden-1">var name = "David"; 
 
-if($handEnd){
+if(handEnd){
 	
 }
-else if($handStart){ //if changed to else if
+else if(handStart){ //if changed to else if
 	safeBet(4, 0); 
 }
 //rest of code goes here
-?>-->
+</div>

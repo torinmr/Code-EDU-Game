@@ -133,9 +133,33 @@ $(document).ready(function() {
 			});
 			rem.acc('getProgress', function(p) {
 				les.progress = p;
+				
+				
+				if ($.cookie("p")) {
+					// Merge cookie and server data
+					var diff = false;
+					var cookieProgress = JSON.parse($.cookie("p"));
+					var serverProgress = p;
+					var mergedProgress = {};
+					// Clone cookieProgress
+					for (var i in cookieProgress) {
+						mergedProgress[i] = cookieProgress[i];
+					}
+					// Merge in serverProgress
+					for (var i in serverProgress) {
+						if (serverProgress[i] === 'completed') {
+							mergedProgress[i] = 'completed';
+						} else if (serverProgress[i] === 'in progress' && mergedProgress[i] !== 'completed') {
+							mergedProgress[i] = 'in progress';
+						}
+					}
+					
+					//$.cookie("p", cookieProgress);
+				}
 				for (state in p) {
 					if (p[state] === 'in progress') {
 						location.hash = state;	
+						les.loadLesson(state);
 						break;
 					}
 				}

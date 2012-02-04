@@ -1,43 +1,38 @@
 <h3>Mission 11.5: Card Counting--Using Variables as Parameters</h3>
-<div class="objectives">
-<h4>Objectives</h4><ol>
-<li>Bet based on your card count</li>
-</ol>
-</div>
 <p>Excellent! You now have a functioning card counting program. If you recall from way back at the beginning of the mission, the point of card counting is to know how to adjust your bet each hand. So far, you've just been betting a constant amount of money every time, say $4. It's time for that to change!</p>
 <p>We want the amount of money we bet to change based on the card count, so declare a variable called <span class="variables">cardCountBet</span> immediately before the <span class="variables">safeBet()</span> call and set it equal to <span class="variables">cardCount</span>. (Although you may be tempted to call it <span class="variables">betAmount</span>, don't! That's the name of the parameter in your function declaration and that would just cause confusion.) Replace the <span class="variables">safeBet() betAmount</span> parameter (the first one) with <span class="variables">cardCountBet</span>.</p>
 <p>Although you do want to bet higher when the card count is higher, you can't simply bet the value of the card count because it will sometimes be negative. (And that would be really cheap, cause then you could play to lose and gain money.) Since there are 5 cards that are assigned a card count value of -1 and there are 4 of each card in the deck, the lowest <span class="variables">cardCount</span> can possibly be is -20. So, we should add 21 to <span class="variables">cardCountBet</span> to ensure it is always a number greater than zero. This can be done by changing the declaration of <span class="variables">cardCountBet</span> to<br />
 <div class="code">cardCountBet = cardCount + 21;</div></p>
 <p>This is sufficient to make a valid bet based on the card count. Press submit to test your code. If you're having problems, make sure the beginning of your code looks like <a href="">this</a>.</p>
 <p>This may not be the best way to to bet based on your card count, however. Perhaps the program is betting more money than you can afford so you need to divide the value of <span class="variables">cardCountBet</span> by a number. Perhaps it's not betting enough and you need to add more to its value or multiply it by something. Remember to use parentheses in your expressions just like you would when writing mathematical expressions on paper. Experiment with what works the best, being sure to keep <span class="variables">betAmount</span> greater than zero.</p>
-<!--<?php
+<div class="hiddencode" id="hidden-1">
 $name = "yourname"; 
 
 if($handEnd){ 
-	$counter = 0;
+    $counter = 0;
     if($reshuffled){ 
-		$cardCount = 0;
+        $cardCount = 0;
         $reshuffled = false;
-	}
-	for($counter = 2; $counter <= 6; $counter++){
-		$cardCountVal[$counter] = 1;
-	}
-	for($counter = 7; $counter <= 9; $counter++){
-		$cardCountVal[$counter] = 0;
-	}
-	for($counter = 10; $counter <= 11; $counter++){
-		$cardCountVal[$counter] = -1;
-	}
-	for($counter = 0; $counter < sizeof($handValue); $counter++){
-		$cardCount += $cardCountVal[$handValue[$counter]];
-	}
-	for($counter = 0; $counter < sizeof($dealerHandValue); $counter++){
-		$cardCount += $cardCountVal[$dealerHandValue[$counter]];
-	}
+    }
+    for($counter = 2; $counter &lt;= 6; $counter++){
+        $cardCountVal[$counter] = 1;
+    }
+    for($counter = 7; $counter &lt;= 9; $counter++){
+        $cardCountVal[$counter] = 0;
+    }
+    for($counter = 10; $counter &lt;= 11; $counter++){
+        $cardCountVal[$counter] = -1;
+    }
+    for($counter = 0; $counter &lt; sizeof($handValue); $counter++){
+        $cardCount += $cardCountVal[$handValue[$counter]];
+    }
+    for($counter = 0; $counter &lt; sizeof($dealerHandValue); $counter++){
+        $cardCount += $cardCountVal[$dealerHandValue[$counter]];
+    }
 }
 else if($handStart){
-	$cardCountBet = $cardCount + 21;
-	bet($cardCountBet); 
+    $cardCountBet = $cardCount + 21;
+    bet($cardCountBet); 
 }
 //rest of code goes here
-?>-->
+</div>

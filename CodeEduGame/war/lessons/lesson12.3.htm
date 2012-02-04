@@ -22,19 +22,25 @@
 <div class="code">else if((totalValue() &lt; 17 && dealerUpCard() &gt; 6) || (dealerUpCard() &lt;= 6 && totalValue() &lt; 12)){  
 	hit();
 }</div><br />
-There are many different ways to split this list up into if-else statements and boolean expressions. It could be done with only if-else statements, one super long boolean expression, or anything in between. To say that you have an Ace, use the boolean you created that is true when you have an Ace. To say that you don't have an Ace, you can either use else statements or put an ! in front of the boolean's name. (Remember, ! stands for "not." So, <span class="variables">!boolean</span> returns the opposite value of <span class="variables">boolean</span>.) Try splitting it up yourself and press submit. Your code should now bet taking the two possible values of Aces into account!</div>    
-<p>If you're having problems, check your if-else statements against <a href="">this example</a>. Note there are many other ways this can work, too. Are you curious about the really long boolean statement solution we mentioned? It's simply a combination of the two else ifs in our example using ||. It looks like<br />
+There are many different ways to split this list up into if-else statements and boolean expressions. It could be done with only if-else statements, one super long boolean expression, or anything in between. To say that you have an Ace, use the boolean you created that is true when you have an Ace. To say that you don't have an Ace, you can either use else statements or put an ! in front of the boolean's name. (Remember, ! stands for "not." So, <span class="variables">!boolean</span> returns the opposite value of <span class="variables">boolean</span>.) Try splitting it up yourself and press submit a few times. Your code should now bet taking the two possible values of Aces into account!</div>    
+<p>Check your if-else statements against <a href="">this</a> example.
+<!--when they click "this," check off the objectives but don't flash the objective complete notification. enable the continue button. The following paragraph should show up with the hidden div.-->
+
+<p>Note there are many other ways this can work, too. Are you curious about the really long boolean statement solution we mentioned? It's simply a combination of the two else ifs in our example using ||. It looks like<br />
 <div class="code">else if((((totalValue() &lt; 17 && !$haveAce) || (highestValue() &lt; 18 && $haveAce)) && dealerUpCard() &gt; 6) || (dealerUpCard() &lt;= 6 && totalValue() &lt; 12)){ 
 	hit();
 }</div><br />
 Despite how awesome that is, you should never write anything like that in your program. It is so long and there are so many parentheses that it is very difficult to decipher.</p>
+
+
 <!--<?php
 if(dealerUpCard() < 7 && (totalValue() === 10 || totalValue() === 11)){
 	doubleDown();
 }
-/*The next else if statement handles when the dealer's card is greater than 6. In this case, two other conditions
-must be met regarding the value of the cards. They are in parentheses separated by an ||. Notice the !$haveAce
-used to represent when you do not have an Ace in your hand.*/
+/*The next else if statement handles when the dealer's card is greater than 6. In this 
+case, two other conditions must be met regarding the value of the cards. They are in 
+parentheses separated by an ||. Notice the !$haveAce used to represent when you do not 
+have an Ace in your hand.*/
 else if(dealerUpCard() > 6 && ((totalValue() < 17 && !$haveAce) || (highestValue() < 18 && $haveAce))){ 
 	hit();									
 }

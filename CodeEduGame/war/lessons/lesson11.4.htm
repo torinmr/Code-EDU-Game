@@ -1,50 +1,46 @@
 <h3>Mission 11.4: Card Counting--Using Conditionals to Fix a Problem</h3>
-<div class="objectives">
-<h4>Objectives</h4><ol>
-<li>Reset your card count when the deck is reshuffled</li>
-</ol>
-</div>
 <p>If you click submit a lot of times, keep close track of the hands that are played, and are very perceptive, you will notice that after a while your card count readout is no longer representative of the cards remaining in the deck. This is because you are playing with a 52 card deck which must be recombined and reshuffled when it runs out of cards. When the deck is recombined, the card count value must be reset to 0 and card counting must restart.</p>
 <p>Fortunately, this is an easy problem to fix. We've made a boolean called <span class="variables">reshuffled</span> that we will set to true every time the deck has been reshuffled. Just use an if statement to check if the deck has been reshuffled. If it has been reshuffled, reset <span class="variables">cardCount</span> to 0 and <span class="variables">reshuffled</span> to false so you won't reset <span class="variables">cardCount</span> again on your next turn. It's your job to figure out where this if statement should go. Once you've written your code, press submit twice to check it. We'll reshuffle the cards between the two submits.</p><!--we need to reshuffle between submits when they're on this mission. the pattern needs to be: submit reshuffle submit submit reshuffle submit submit reshuffle submit-->
-<p>If you're having problems, make sure the beginning of your code looks like <a href="">this</a>.</p>
-<!--<?php
-$name = "yourname"; 
+<p>If you're having problems, make sure the beginning of your code looks like <a show="hidden-1">this</a>.</p>
+<div class="hiddencode" id="hidden-1">var name = "yourname"; 
 
-/*The reshuffle check could occur here as well, but this would be inefficient because you don't
-need to know if the deck has been reshuffled unless it is the end of the hand.*/
-if($handEnd){ 
-	$counter = 0;
-    if($reshuffled){ //check if the deck has been reshuffled
-		$cardCount = 0; //reset the variables
-        $reshuffled = false;
-	}
-	/*Notice there is no else statement because everything else should happen whether or not
-	$cardCount is reset. In addition, the reset must occur before $cardCount is manipulated or
-	else it will be pointless. Although this would be somewhat unclear, it could be in any of the
-	spaces noted below, and more. We placed it where we did because it makes the most sense
-    visually.*/
-	for($counter = 2; $counter <= 6; $counter++){
-		$cardCountVal[$counter] = 1;
-	}
-	//Reset could occur here!
-	for($counter = 7; $counter <= 9; $counter++){
-		$cardCountVal[$counter] = 0;
-		//Or even here! (This would be very inefficient because it would happen many times.)
-	}
-	for($counter = 10; $counter <= 11; $counter++){
-		$cardCountVal[$counter] = -1;
-	}
-	/*This is the last place reset could occur becuase it is the last place before $cardCount is
-	manipulated further.*/
-	for($counter = 0; $counter < sizeof($handValue); $counter++){
-		$cardCount += $cardCountVal[$handValue[$counter]];
-	}
-	for($counter = 0; $counter < sizeof($dealerHandValue); $counter++){
-		$cardCount += $cardCountVal[$dealerHandValue[$counter]];
-	}
+/* The reshuffle check could occur here as well, but this would be 
+   inefficient because you don't need to know if the deck has been 
+   reshuffled unless it is the end of the hand. */
+if (handEnd) { 
+    var counter = 0;
+    if (reshuffled) { //check if the deck has been reshuffled
+        cardCount = 0; //reset the variables
+        reshuffled = false;
+    }
+    /* Notice there is no else statement because everything else should happen whether
+	or not cardCount is reset. In addition, the reset must occur before cardCount is 
+    manipulated or else it will be pointless. Although this would be somewhat unclear, 
+    it could be in any of the spaces noted below, and more. We placed it where we did 
+    because it makes the most sense visually.*/
+    for(counter = 2; counter &lt;= 6; counter++){
+        cardCountVal[counter] = 1;
+    }
+    //Reset could occur here!
+    for(counter = 7; counter &lt;= 9; counter++){
+        cardCountVal[counter] = 0;
+        /*Or even here! (This would be very inefficient because it would happen 
+        many times.)*/
+    }
+    for(counter = 10; counter &lt;= 11; counter++){
+        cardCountVal[counter] = -1;
+    }
+    /*This is the last place reset could occur becuase it is the last place before 
+    cardCount is manipulated further.*/
+    for(counter = 0; counter &lt; sizeof(handValue); counter++){
+        cardCount += cardCountVal[handValue[counter]];
+    }
+    for(counter = 0; counter &lt; sizeof(dealerHandValue); counter++){
+        cardCount += cardCountVal[dealerHandValue[counter]];
+    }
 }
-else if($handStart){
-	safeBet(4, 0);
+else if(handStart){
+    safeBet(4, 0);
 }
 //rest of code goes here
-?>-->
+</div>

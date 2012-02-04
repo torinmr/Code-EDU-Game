@@ -1,9 +1,4 @@
 <h3>Mission 11.7: Card Counting--Using More Functions to Eliminate More Duplicate Code</h3>
-<div class="objectives">
-<h4>Objectives</h4><ol>
-<li>Use more functions to remove more duplicate code in the program</li>
-</ol>
-</div>
 <p>Wasn't that a nice solution? The function calls replace the messy for loops, cleaning up the main part of your code. And, if you ever need to change their code, you only have to change it once, in the function declaration! There are, however, still these two horrid for loops left<br />
 <div class="code">for(counter = 0; counter &lt; handValue.length; counter++){
 	cardCount += cardCountVal[handValue[counter]];
@@ -20,6 +15,7 @@ and they're almost identical to each other as well. Write one function that can 
 <p>Now that all of your for loops have been reduced to function calls, you should comment them so you know what they do.</p>
 <p>Think about the usefulness of this function. If you were to modify this code to add more people playing Blackjack, you could use this function to check each of their hands! Once your code works, if you'd like to practice what you've learned or just want a challenge, try implementing a different card counting method, such as the <a href="http://www.blackjacktactics.com/blackjack/strategy/card-counting/hi-opt-ii/" target="_blank">Hi-Opt II method</a>.</p>
 <p>If you're having problems, make sure your new code looks like <a href="">this</a>.</p>
+
 <!--<?php
 $name = "yourname"; 
 
@@ -40,9 +36,10 @@ if($handEnd){
 
 //code in the middle goes here
 
-/*This is the new function declaration. Yours may have a different name. There is only one parameter
-because the only difference between the two for loops was the hand being searched. Both instances of
-$handValue and $dealerHandValue has been replaced by $hand. You may have used a different name.*/					
+/*This is the new function declaration. Yours may have a different name. There is 
+only one parameter because the only difference between the two for loops was the hand
+being searched. Both instances of $handValue and $dealerHandValue has been replaced by 
+$hand. You may have used a different name.*/					
 function countCards($hand){
 	$counter = 0; //initialize $counter
     for($counter = 0; $counter < sizeof($hand); $counter++){ //The length of $hand is compared to counter.

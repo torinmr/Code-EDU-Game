@@ -1,9 +1,4 @@
 <h3>Mission 11.6: Card Counting--Using Functions to Eliminate Duplicate Code</h3>
-<div class="objectives">
-<h4>Objectives</h4><ol>
-<li>Use functions to remove duplicate code in the program</li>
-</ol>
-</div>
 <p>Now you're all done writing your card counting algorithm and can seriously make some bank! But this mission's not over yet. Why, you ask? Take a look at the 5 for loops you made this past mission. The first 3 are nearly identical to each other and the last two are nearly identical to each other as well.  What a disgusting waste of space and effort! In addition, imagine if you needed to slightly change how those for loops functioned. You'd have to change every one of them in the exact same way! Ridiculous. (Depending on how you wrote your code, you may have one for loop and three if-else statements instead of the first three for loops. If that is the case, copy the for loop code below into its place so you can do this part of the mission.)</p>
 <p>This duplicate code can be eliminated through the use of functions. Recall from mission 10.2 that it is perfectly acceptable, and in fact encouraged, to call functions more than once in a program. Why not replace the first 3 for loops with 3 calls of a function? Since we can give functions parameters, we can make the parts of the for loops that are different from each other into parameters. We can make another function to replace the last two for loops. Let's analyze the first three for loops first.<br />
 <div class="code">for(counter = 2; counter <= 6; counter++){
@@ -19,6 +14,7 @@ for(counter = 10; counter &lt;= 11; counter++){
 <p>Copy one of the three for loops and paste it between the braces of the function. Replace each of the 3 values that changes with the name you gave it when declaring the parameters. Make sure you don't mix them up! (Notice there is no return statement.)</p>
 <p>Now, replace each of the first three for loops with a call of this function. Each call of the function will have unique numbers as parameters. Again, don't mix them up! Press submit. Your card counting should behave exactly as it did before.</p>
 <p>If you're having problems, make sure your new code looks like <a href="">this</a>.</p>
+
 <!--<?php
 $name = "yourname"; 
 
@@ -29,9 +25,10 @@ if($handEnd){
 		$reshuffled = false;
 	}
 	//These three method calls replace the three for loops.
-	assignCardCountVals(2, 6, 1); /*Make sure the order of these  parameters corresponds to the order
-									you gave the parameters when you defined your function. Your order 
-									may be differentthan ours.*/
+	assignCardCountVals(2, 6, 1); /*Make sure the order of these  parameters corresponds 
+    								to the order you gave the parameters when you 
+                                    defined your function. Your order may be different 
+                                    than ours.*/
 	assignCardCountVals(7, 9, 0);
 	assignCardCountVals(10, 11, -1);
 	
@@ -46,8 +43,9 @@ if($handEnd){
 
 //code in the middle goes here
 
-function assignCardCountVals($start, $end, $val){ /*The parameters represent the counter start,
-													the counter boundary, and the value to set.*/
+function assignCardCountVals($start, $end, $val){ /*The parameters represent the 
+													counter start, the counter 
+                                                    boundary, and the value to set.*/
 	$counter = 0; //initialize $counter
     for($counter = $start; $counter <= $end; $counter++){
 		$cardCountVal[$counter] = $val;

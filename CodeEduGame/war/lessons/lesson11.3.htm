@@ -1,52 +1,48 @@
 <h3>Mission 11.3: Card Counting--Arrayception</h3>
-<div class="objectives">
-<h4>Objectives</h4><ol>
-<li>Adjust and keep track of your card count</li>
-</ol>
-</div>
 <p>Now that we have an array holding the card counting values of all of the cards, we can start counting cards! At the end of the hand, the program needs to look through your cards and the dealer's cards and count up the values. Write two for loops after the loops you just created to search each hand. Some helpful hints:</p>
 <ul><li><span class="variables">handValue</span> is an array of the values of the cards in your hand.</li>
 <li><span class="variables">dealerHandValue</span> is an array of the values of the face up cards in the dealer's hand. All of the cards will be face up at the end of the hand, and this way you can't cheat by getting the value of the face down card!</li>
 <li>Remember that <span class="variables">arrayName.length</span> returns the length of an array.</li>
 <li>This loop structure will be exactly like the one created in mission 7.2!</li></ul>
 <p>Now we need to put a statement inside each loop. This is going to be some very tricky logic and syntax, so we'll work through it together. We created a variable for you called <span class="variables">cardCount</span> that will keep track of, you guessed it, the card count. (We had to create this variable for you because otherwise it would be reset every time your code ran. Because we already created it, you should not write "var" before it.) You can see the value of cardCount beneath the readout displaying how much money you have.<!--can you just make this show up starting at this lesson, Channing?-->
-<p>Within each loop, a card count value (1, 0, or -1) needs to be added to <span class="variables">cardCount</span>. For now, just represent the position in <span class="variables">cardCountValue</span> with an "X". (The X is just a placeholder. We'll replace it later.) In the loop that goes through <span class="variables">handValue</span>, type<br />
-<div class="code">cardCount += cardCountVal[X];</div><br /></p>
-<p>Now we need to figure out what to replace X with. That is, we need to figure out what position of <span class="variables">cardCountVal</span> holds the card counting value we want to add. <span class="variables">cardCountVal</span>'s positions represent different values of cards and the array <span class="variables">handValue</span> holds card values, so we need <span class="variables">handValue</span> to give the position of <span class="variables">cardCountVal</span>. For now, use Y to represent the position in <span class="variables">handValue</span>. So, replace X with <span class="variables">handValue[Y]</span>. Inside the for loop going through <span class="variables">handValue</span>, you should now have<br />
-<div class="code">cardCount += cardCountVal[handValue[Y]];</div><br /></p>
+<p>Within each loop, a card count value (1, 0, or -1) needs to be added to <span class="variables">cardCount</span>. For now, just represent the position in <span class="variables">cardCountValue</span> with an "X". (The X is just a placeholder. We'll replace it later.) In the loop that goes through <span class="variables">handValue</span>, type
+<div class="code">cardCount += cardCountVal[X];</div></p>
+<p>Now we need to figure out what to replace X with. That is, we need to figure out what position of <span class="variables">cardCountVal</span> holds the card counting value we want to add. <span class="variables">cardCountVal</span>'s positions represent different values of cards and the array <span class="variables">handValue</span> holds card values, so we need <span class="variables">handValue</span> to give the position of <span class="variables">cardCountVal</span>. For now, use Y to represent the position in <span class="variables">handValue</span>. So, replace X with <span class="variables">handValue[Y]</span>. Inside the for loop going through <span class="variables">handValue</span>, you should now have
+<div class="code">cardCount += cardCountVal[handValue[Y]];</div></p>
 <p>Check that out! We now have an array getting its position from another array! Arrayception! Pretty tight, eh [NAME]? Now to replace Y. We need to get the value of every card in <span class="variables">handValue</span>, and conveniently enough <span class="variables">counter</span> is running through <span class="variables">handValue</span>. So, replace Y with <span class="variables">counter</span> and we're all set!</p>
-<p>That's a very confusing line of code, so let's take another look at it, this time from the inside out:<br />
-<div class="code">cardCount += cardCountVal[handValue[counter]];</div><br />
+<p>That's a very confusing line of code, so let's take another look at it, this time from the inside out:
+<div class="code">cardCount += cardCountVal[handValue[counter]];</div>
 <span class="variables">counter</span> runs through <span class="variables">handValue</span>. Therefore, as the loop loops, <span class="variables">handValue[counter]</span> returns the value of every card in your hand. <span class="variables">cardCountVal</span> then goes to the position corresponding to this value and returns the corresponding card count value (1, 0, or -1). Finally, that value is added to <span class="variables">cardCount</span>. Pretty awesome!</p> 
 <p>Now that you know what's going on, do the same thing to the other for loop you made, the one that runs through <span class="variables">dealerHandValue</span>. Then press submit a few times, and watch as your card count readout on the screen changes at the end of each hand!</p>
-<p>If you're having problems, make sure the beginning of your code looks like <a href="">this</a>. Remember, it is fine if the first 3 for loops are replaced with a single for loop and 3 if-else statements.</p>
-<div style="text-align: center"><img src="arrayception.png" /></div>
-<!--<?php
-$name = "yourname"; 
+<p>If you're having problems, make sure the beginning of your code looks like <a show="hidden-1">this</a>. Remember, it is fine if the first 3 for loops are replaced with a single for loop and 3 if-else statements.</p>
+<div style="text-align: center"><img src="./img/arrayception.png" /></div>
+<div class="hiddencode" id="hidden-1">var name = "yourname"; 
 
-if($handEnd){
-	$counter = 0;
-	for($counter = 2; $counter <= 6; $counter++){
-		$cardCountVal[$counter] = 1;
+if(handEnd){
+	var counter = 0;
+	for(counter = 2; counter &lt;= 6; counter++){
+		cardCountVal[counter] = 1;
 	}
-	for($counter = 7; $counter <= 9; $counter++){
-		$cardCountVal[$counter] = 0;
+	for(counter = 7; counter &lt;= 9; counter++){
+		cardCountVal[counter] = 0;
 	}
-	for($counter = 10; $counter <= 11; $counter++){
-		$cardCountVal[$counter] = -1;
+	for(counter = 10; counter &lt;= 11; counter++){
+		cardCountVal[counter] = -1;
 	}
     
-	for($counter = 0; $counter < sizeof($handValue[]); $counter++){
-		$cardCount += $cardCountVal[$handValue[$counter]]; //Here's that lovely line we wrote!
+	for(counter = 0; counter &lt; handValue.length; counter++){
+	    //Here's that lovely line we wrote!
+		cardCount += cardCountVal[handValue[counter]];
 	}
-	/*Everything in this for loop is identical to the previous one except that $handValue has been replaced
-	by $dealerHandValue*/
-	for($counter = 0; $counter < sizeof($dealerHandValue[); $counter++){
-		$cardCount += $cardCountVal[$dealerHandValue[$counter]];
+	
+	/* Everything in this for loop is identical to the previous one except that handValue 
+	   has been replaced by dealerHandValue */
+	for(counter = 0; counter &lt; dealerHandValue.length; counter++){
+		cardCount += cardCountVal[dealerHandValue[counter]];
 	}
 }
-else if($handStart){
+else if(handStart){
 	safeBet(4, 0);
 }
 //rest of code goes here
-?>-->
+</div>

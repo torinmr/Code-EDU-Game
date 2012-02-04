@@ -13,12 +13,12 @@ if (handStart) {
        safeBet(4, 0);
 }
 else {
-       /*The only change from the last section is that the following
-       line checks both totalValue() and dealerUpCard().*/
-       if(totalValue() === 10 &amp;&amp; dealerUpCard() &gt; 6){
+       if(dealerUpCard() &lt; 7 &amp;&amp; (totalValue() === 10 || totalValue() ===11)){
                doubleDown();
        }
-       else if(totalValue() &lt; 17){
+       /*The only change from the last section is that the following
+       line checks both totalValue() and dealerUpCard().*/
+       else if(totalValue() &lt; 17 &amp;&amp; dealerUpCard() &gt;6){
                hit();
        }
        else{
