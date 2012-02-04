@@ -176,7 +176,7 @@ var les = {
 				ui.maxIns();
 				cb.add('error', function(E) {
 					var code = ui.getUserCode();
-					if (E.indexOf("totalValue") != -1
+					if (code.indexOf("totalValue") != -1
 							&& (code.match(/totalValue\(\)\s*<=?\s*\d/) || code
 									.match(/\d\s*>=?\s*totalValue\(\)/))
 							&& code.indexOf('if') != -1
@@ -679,6 +679,7 @@ var les = {
 			}
 			// $("#instructions").append($(ui.nextButton));
 			les.progress[les.currLesson] = "completed";
+			les.progress[les.lessonList[les.currLesson].next] = "in progress";
 			$("#continueButton").show();
 			$("#instructions").css({
 				height : '310px'
@@ -707,6 +708,10 @@ var les = {
 		eg.lockEval();
 		les.currLesson = lesson;
 		les.hintUnlocked = false;
+		if (les.currLesson != 'lesson0' && !les.progress[les.currLesson]) {
+			location.hash = 'lesson0';
+			return;
+		}
 		$("#betbox").html('');
 		$("#buttons").html('');
 		$("#codebox").removeAttr('disabled');
