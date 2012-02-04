@@ -2,7 +2,7 @@
 Beautiful work, [NAME]. Now let's finish this up. In the last section we said that if the dealer has a low card showing, he/she will have to hit and is likely to bust. So, modify the program so it also hits if the dealer's upcard is less than or equal to 6 and your total value is less than 12.</p>
 <p>Combining the instructions from this section and the past one, you need to make the program hit if you have a total card value of less than 17 and the dealer's upcard is higher than 6 and also hit if the dealer's upcard is less than or equal to 6 and your total value is less than 12. Here are some hints:</p>
 <ul>
-<li>Boolean expressions (and/or) will be the simplest way to make this work, although you can always use nested if-else statements and else if statements in place of boolean expressions.</li>
+<li>Boolean expressions (and/or) will be the simplest way to make this work, although you can always use nested if-else statements and elseif statements in place of boolean expressions.</li>
 <li>You can call a function more than once in one program. For example, it is okay to have <span class="variables">hit()</span> inside two different if statements.</li>
 <li>You can use different numbers than those we recommended, but make sure your ranges in this part and the last don't overlap or leave gaps.</li>
 <li>Take a look at previous missions if you've forgotten how to do something.</li>
@@ -11,7 +11,7 @@ Beautiful work, [NAME]. Now let's finish this up. In the last section we said th
 <p>If your code is not working properly, take a look at <a show="holyeffwhyistheresomucheffingcode">these</a> examples.</p>
 
 <div class="hiddencode" id="holyeffwhyistheresomucheffingcode">
-Booleans and else if:
+Booleans and elseif:
 
 name = "David";
 
@@ -28,7 +28,7 @@ else {
        }
        else if(dealerUpCard() &lt;= 6 &amp;&amp; totalValue() &lt; 12){ /*this is the same statement but
                                                with the new conditions specified in this section. Since both
-                                               statements are else ifs, only one of them will be executed.*/
+                                               statements are elseifs, only one of them will be executed.*/
                hit();  /*Notice that hit() has now been called twice in this code. This is
                                perfectly acceptable, and one of the main advantages of methods!*/
        }

@@ -5,8 +5,7 @@ var les = {
 	objComplete : false,
 	objectives : {},
 	flags : {},
-	hintUnlocked : false,
-	progress: {},
+	hintUnlocked: false,
 
 	// Invalidate code with errors
 	invalidated : false,
@@ -28,11 +27,7 @@ var les = {
 				$("#buttons").append(ui.makeButton('Stand', eg.stand));
 				// $("#buttons").append(ui.makeButton('Double', eg.doubleDown));
 				$("#previousButton").hide();
-				if (!les.progress[les.currLesson] ||  "completed" !== les.progress[les.currLesson]) {
-					$("#instructions").css({
-						height : '340px'
-					});
-				}
+				$("#instructions").css({height:'340px'});
 				$("#betbox")
 						.html(
 								'Bet:<input type="text" id="bet" maxlength="6" value="10" />');
@@ -105,15 +100,21 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('exec', les.checkObjectives);
+				cb.add('error', function(E) {
+					var hitMatch = ui.getUserCode().match(/hit/g);
+					var standMatch = ui.getUserCode().match(/stand/g);
+					if (E.indexOf("somethingtrue") != -1
+							&& ui.getUserCode().indexOf("if") != -1
+							&& hitMatch.length === 1
+							&& standMatch.length === 1) {
+						les.checkObjectives();
+					}
+				});
 			},
 			objectives : [ {
 				text : "Learn structure of if-else statement",
 				check : function() {
-					var code = ui.getUserCode();
-					return code
-							.match(/if\s*\(\s*true\s*\)\s*\{\s*hit\(\);\s*\}\s*else\s*\{\s*stand\(\);\s*\}/);
-
+					return true;
 				},
 			} ],
 			noBet : true,
@@ -128,23 +129,30 @@ var les = {
 			},
 			objectives : [
 					{
+						text : "Evaluate an if statement with a boolean",
+						check : function() {
+							var code = ui.getUserCode();
+							return ((code.indexOf('true') != -1 || code.indexOf('false') != -1)
+									&& code.indexOf('if') != -1 
+									&& code.indexOf('else') != -1);
+						},
+					},
+					{
 						text : "Evaluate an if statement with a numerical boolean expression",
 						check : function() {
 							var code = ui.getUserCode();
-							return (code
-									.match(/\d+\s*(===|==|>=|<=|>|<)\s*\d+/)
-									&& code.indexOf('if') != -1 && code
-									.indexOf('else') != -1);
+							return (code.match(/\d+\s*(===|==|>=|<=|>|<)\s*\d+/)
+									&& code.indexOf('if') != -1 
+									&& code.indexOf('else') != -1);
 						},
 					},
 					{
 						text : "Evaluate an if statement with a boolean expression using variables",
 						check : function() {
 							var code = ui.getUserCode();
-							return ((code.match(/name\s*===?\s*"/) || code
-									.match(/"\s*===?\s*name/))
-									&& code.indexOf('if') != -1 && code
-									.indexOf('else') != -1);
+							return ((code.match(/name\s*===?\s*"/) || code.match(/"\s*===?\s*name/))
+									&& code.indexOf('if') != -1 
+									&& code.indexOf('else') != -1);	
 						},
 					} ],
 			noBet : true,
@@ -162,7 +170,7 @@ var les = {
 				check : function() {
 					var code = ui.getUserCode();
 					return (code.indexOf('secondDealtCardVal') != -1
-							&& (code.indexOf('<') != -1 || code.indexOf('>') != -1)
+							&& code.indexOf('<') != -1 && code.indexOf('>') != -1 
 							&& code.indexOf('if') != -1 && code.indexOf('else') != -1);
 				},
 			} ],
@@ -176,11 +184,9 @@ var les = {
 				ui.maxIns();
 				cb.add('error', function(E) {
 					var code = ui.getUserCode();
-					if (code.indexOf("totalValue") != -1
-							&& (code.match(/totalValue\(\)\s*<=?\s*\d/) || code
-									.match(/\d\s*>=?\s*totalValue\(\)/))
-							&& code.indexOf('if') != -1
-							&& code.indexOf('else') != -1) {
+					if (E.indexOf("totalValue") != -1
+						&& (code.match(/totalValue()\s*<=?\s*\d/) || code.match(/\d\s*>=?\s*totalValue()/))
+						&& code.indexOf('if') != -1 && code.indexOf('else') != -1) {
 						les.checkObjectives();
 					}
 				});
@@ -201,50 +207,37 @@ var les = {
 				ui.maxIns();
 				cb.add('exec', les.checkObjectives);
 			},
-			objectives : [
-					{
-						text : "Write a function that returns a value",
-						check : function() {
-							var code = ui.getUserCode();
-							var funcName = code
-									.match(/function ([a-zA-Z0-9_]+)\(\)/);
-							if (!funcName) {
-								return false;
-							}
-							if (typeof window[funcName[1]] === 'function'
-									&& typeof window[funcName[1]]() === 'number'
-									&& (code.match(new RegExp(funcName[1]
-											+ '\\(\\)\\s*<=?\\s*\\d')) || code
-											.match(new RegExp('\\d\\s*>=?\\s*'
-													+ funcName[1] + '\\(\\)')))) {
-								return true;
-							} else {
-								return false;
-							}
-						},
-					},
-					{
-						text : "Evaluate a mathematical expression",
-						check : function() {
-							var code = ui.getUserCode();
-							var funcName = code
-									.match(/function ([a-zA-Z0-9_]+)\(\)/);
-							if (!funcName) {
-								return false;
-							}
-							if (code.match(/(\+|-|\*|\/|%)/)
-									&& typeof window[funcName[1]] === 'function'
-									&& typeof window[funcName[1]]() === 'number'
-									&& (code.match(new RegExp(funcName[1]
-											+ '\\(\\)\\s*<=?\\s*\\d')) || code
-											.match(new RegExp('\\d\\s*>=?\\s*'
-													+ funcName[1] + '\\(\\)')))) {
-								return true;
-							} else {
-								return false;
-							}
-						},
-					} ],
+			objectives : [ {
+				text : "Write a function that returns a value",
+				check : function() {
+					var code = ui.getUserCode();
+					var funcName = code.match(/function ([a-zA-Z0-9]+)\(\)/);
+					if (!funcName) { return false; }
+					if (typeof window[funcName[1]] === 'function' && typeof window[funcName[1]]() === 'number'
+						&& (code.match(new RegExp(funcName[1]+'\\(\\)\\s*<=?\\s*\\d')) 
+								|| code.match(new RegExp('\\d\\s*>=?\\s*' + funcName[1] + '\\(\\)')))
+								) {
+						return true;
+					} else {
+						return false;
+					}
+				},
+			}, {
+				text : "Evaluate a mathematical expression",
+				check : function() {
+					var code = ui.getUserCode();
+					var funcName = code.match(/function ([a-zA-Z0-9]+)\(\)/);
+					if (!funcName) { return false; }
+					if (code.match(/(\+|-|\*|\/|%)/)
+						&& typeof window[funcName[1]] === 'function' && typeof window[funcName[1]]() === 'number'
+								&& (code.match(new RegExp(funcName[1]+'\\(\\)\\s*<=?\\s*\\d')) 
+										|| code.match(new RegExp('\\d\\s*>=?\\s*' + funcName[1] + '\\(\\)')))) {
+						return true;
+					} else {
+						return false;
+					}
+				},
+			} ],
 			noBet : true,
 			prev : 'lesson4.1',
 			next : 'lesson4.3',
@@ -260,13 +253,10 @@ var les = {
 				check : function() {
 					var handValues = handValue();
 					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) {
-						return false;
-					}
-					if (typeof window[funcName[1]] === 'function'
-							&& window[funcName[1]]() == handValues[0]
-									+ handValues[1]) {
+					var funcName = code.match(/function ([a-zA-Z0-9]+)\(\)/);
+					if (!funcName) { return false; }
+					if (typeof window[funcName[1]] === 'function' 
+						&& window[funcName[1]]() == handValues[0] + handValues[1]) {
 						return true;
 					} else {
 						return false;
@@ -288,14 +278,11 @@ var les = {
 				check : function() {
 					var handValues = handValue();
 					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) {
-						return false;
-					}
-					if (typeof window[funcName[1]] === 'function'
-							&& window[funcName[1]]() == handValues[0]
-									+ handValues[1]
-							&& (code.match(/\/\*.*\*\//) || code.indexOf("//") != -1)) {
+					var funcName = code.match(/function ([a-zA-Z0-9]+)\(\)/);
+					if (!funcName) { return false; }
+					if (typeof window[funcName[1]] === 'function' 
+						&& window[funcName[1]]() == handValues[0] + handValues[1]
+						&& (code.match(/\/\*.*\*\//) || code.indexOf("//") != -1)) {
 						return true;
 					} else {
 						return false;
@@ -310,15 +297,12 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('error', function(E) {
-					les.checkObjectives();
-				});
+				les.checkObjectives();
 			},
 			objectives : [ {
-				text : "Set up basic while loop structure.",
+				text : "DON'T PRESS SUBMIT!",
 				check : function() {
-					var code = ui.getUserCode();
-					return code.match(/while\s*\(.*\)\s*\{\s*.*\s*\}/);
+					return true;
 				},
 			} ],
 			noBet : true,
@@ -335,22 +319,12 @@ var les = {
 				text : "Make a functional loop and return the total value",
 				check : function() {
 					var handValues = handValue();
-					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) {
-						return false;
-					}
-
 					var sum = 0;
 					for ( var i = 0; i < handValues.length; i++) {
 						sum += handValues[i];
 					}
-
-					if (typeof window[funcName[1]] === 'function'
-							&& window[funcName[1]]() == sum
-							&& code.indexOf('while') != -1
-							&& code.indexOf('hit') != -1
-							&& code.indexOf('stand') != -1) {
+					if (typeof totalValue == 'function' && totalValue() == sum
+							&& ui.getUserCode().indexOf('while') != -1) {
 						return true;
 					} else {
 						return false;
@@ -371,21 +345,13 @@ var les = {
 				text : "Simplify incrementation",
 				check : function() {
 					var handValues = handValue();
-					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) {
-						return false;
-					}
 					var sum = 0;
 					for ( var i = 0; i < handValues.length; i++) {
 						sum += handValues[i];
 					}
-					if (typeof window[funcName[1]] === 'function'
-							&& window[funcName[1]]() == sum
-							&& code.indexOf('while') != -1
-							&& code.indexOf('++') != -1
-							&& code.indexOf('hit') != -1
-							&& code.indexOf('stand') != -1) {
+					if (typeof totalValue == 'function' && totalValue() == sum
+							&& ui.getUserCode().indexOf('while') != -1
+							&& ui.getUserCode().indexOf('++') != -1) {
 						return true;
 					} else {
 						return false;
@@ -406,20 +372,12 @@ var les = {
 				text : "Turn a while loop into a for loop",
 				check : function() {
 					var handValues = handValue();
-					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) {
-						return false;
-					}
 					var sum = 0;
 					for ( var i = 0; i < handValues.length; i++) {
 						sum += handValues[i];
 					}
-					if (typeof window[funcName[1]] === 'function'
-							&& window[funcName[1]]() == sum
-							&& code.indexOf('for') != -1
-							&& code.indexOf('hit') != -1
-							&& code.indexOf('stand') != -1) {
+					if (typeof totalValue == 'function' && totalValue() == sum
+							&& ui.getUserCode().indexOf('for') != -1) {
 						return true;
 					} else {
 						return false;
@@ -442,12 +400,10 @@ var les = {
 			objectives : [ {
 				text : "Bet, at the beginning of the hand only",
 				check : function() {
-					var code = ui.getUserCode();
-					return (les.lessonList['lesson8.1'].complete
-							&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1);
+					return les.lessonList['lesson8.1'].complete;
 				},
 			} ],
-			complete : false,
+			complete: false,
 			prev : 'lesson7.2',
 			next : 'lesson8.2',
 		},
@@ -461,77 +417,28 @@ var les = {
 			objectives : [ {
 				text : "Ensure you won't bet more than you can afford",
 				check : function() {
-					var code = ui.getUserCode();
-					var allIn = (eg.money === 0 || eg.money === 2 * les.lessonList['lesson8.2'].prevMoney);
+					var allIn = (eg.money === 0 || eg.money === 2*les.lessonList['lesson8.2'].prevMoney);
 					les.lessonList['lesson8.2'].prevMoney = eg.money;
-					return allIn && code.indexOf('hit') != -1
-							&& code.indexOf('stand') != -1;
+					return allIn;
 				},
 			} ],
-			prevMoney : 0,
+			prevMoney: 0,
 			prev : 'lesson8.1',
 			next : 'lesson9.1',
-		},
-		'end' : {
-			action : function() {
-				cb.clear();
-				ui.maxIns();
-			},
-			objectives : [],
-			prev : 'lesson8.2',
-			next : '',
 		},
 		'lesson9.1' : {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('doubledown', function() {
-					les.lessonList['lesson9.1'].complete = true;
-				});
-				cb.add('error', function() {
-					les.checkObjectives();
-				});
-				cb.add('exec', function() {
-					les.checkObjectives();
-				});
+				les.checkObjectives();
 			},
 			objectives : [ {
 				text : "Add a conditional double down command",
 				check : function() {
-					if (les.lessonList['lesson9.1'].complete) {
-						les.lessonList['lesson9.1'].complete = false;
-						return true;
-					} else {
-						return false;
-					}
+					return true;
 				},
 			} ],
-			complete: false,
-			riggedDeck : [ {
-				num : 8,
-				suit : 3
-			}, {
-				num : 14,
-				suit : 1
-			}, {
-				num : 6,
-				suit : 1
-			}, {
-				num : 7,
-				suit : 0
-			}, {
-				num : 6,
-				suit : 1
-			}, {
-				num : 4,
-				suit : 0
-			}, {
-				num : 5,
-				suit : 3
-			}, {
-				num : 10,
-				suit : 2
-			}, ],
+			riggedDeck: [],
 			prev : 'lesson8.2',
 			next : 'lesson9.2',
 		},
@@ -539,53 +446,14 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('doubledown', function() {
-					les.lessonList['lesson9.2'].complete = true;
-				});
-				cb.add('exec', function() {
-					les.checkObjectives();
-				});
+				les.checkObjectives();
 			},
 			objectives : [ {
 				text : "Prevent errors and increase efficiency with else if",
 				check : function() {
-					var code = ui.getUserCode();
-					if (les.lessonList['lesson9.2'].complete
-						&& code.match(/else\s+if/)
-						&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
-						les.lessonList['lesson9.2'].complete = false;
-						return true;
-					} else {
-						return false;
-					}
+					return true;
 				},
 			} ],
-			riggedDeck : [ {
-				num : 8,
-				suit : 2
-			}, {
-				num : 14,
-				suit : 0
-			}, {
-				num : 6,
-				suit : 2
-			}, {
-				num : 7,
-				suit : 3
-			}, {
-				num : 6,
-				suit : 3
-			}, {
-				num : 4,
-				suit : 1
-			}, {
-				num : 5,
-				suit : 2
-			}, {
-				num : 10,
-				suit : 0
-			}, ],
-			complete: false,
 			prev : 'lesson9.1',
 			next : 'lesson9.3',
 		},
@@ -593,64 +461,19 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('doubledown', function() {
-					les.lessonList['lesson9.3'].complete = true;
-				});
-				cb.add('exec', function() {
-					les.checkObjectives();
-				});
+				les.checkObjectives();
 			},
 			objectives : [ {
 				text : "Use an \"or\" statement",
 				check : function() {
-					var code = ui.getUserCode();
-					if (les.lessonList['lesson9.3'].complete
-						&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
-						les.lessonList['lesson9.3'].complete = false;
-						return true;
-					} else {
-						return false;
-					}
+					return true;
 				},
 			}, {
 				text : "Use a combined \"and-or\" statement",
 				check : function() {
-					var code = ui.getUserCode();
-					if (les.lessonList['lesson9.3'].complete
-						&& code.indexOf('&&') != -1 
-						&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
-						les.lessonList['lesson9.3'].complete = false;
-						return true;
-					} else {
-						return false;
-					}
+					return true;
 				},
 			} ],
-			riggedDeck : [ {
-				num : 8,
-				suit : 2
-			}, {
-				num : 14,
-				suit : 0
-			}, {
-				num : 6,
-				suit : 2
-			}, {
-				num : 7,
-				suit : 3
-			}, {
-				num : 6,
-				suit : 3
-			}, {
-				num : 5,
-				suit : 1
-			}, {
-				num : 5,
-				suit : 2
-			}, {
-				num : 10,
-				suit : 0
-			}, ],
 			prev : 'lesson9.2',
 			next : 'lesson10.1',
 		},
@@ -658,23 +481,12 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('doubledown', function() {
-					les.lessonList['lesson10.1'].complete = true;
-				});
-				cb.add('exec', function() {
-					les.checkObjectives();
-				});
+				les.checkObjectives();
 			},
 			objectives : [ {
 				text : "Factor in the dealer's up card",
 				check : function() {
-					var code = ui.getUserCode();
-					if (code.match(/else\s*if\s*\(.*\(\).*dealerUpCard.*\)/)
-						|| code.match(/else\s*if\s*\(.*dealerUpCard\(\).*\(\).*\)/)) {
-						return true;
-					} else {
-						return false;
-					}
+					return true;
 				},
 			} ],
 			prev : 'lesson9.3',
@@ -684,171 +496,15 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				cb.add('hit', function() {
-					les.lessonList['lesson10.2'].complete = true;
-				});
-				cb.add('exec', les.checkObjectives);
+				les.checkObjectives();
 			},
 			objectives : [ {
 				text : "Add the second condition",
 				check : function() {
-					if (les.lessonList['lesson10.2'].complete){
-						return true;
-					} else {
-						return false;
-					}
+					return true;
 				},
 			} ],
-			riggedDeck : [ {
-				num : 8,
-				suit : 2
-			}, {
-				num : 11,
-				suit : 0
-			}, {
-				num : 8,
-				suit : 2
-			}, {
-				num : 13,
-				suit : 3
-			}, {
-				num : 3,
-				suit : 2
-			}, {
-				num : 5,
-				suit : 3
-			}, {
-				num : 3,
-				suit : 1
-			}, {
-				num : 10,
-				suit : 0
-			}, ],
 			prev : 'lesson10.1',
-			next : 'lesson11.1',
-		},
-		'lesson11.1' : {
-			action : function() {
-				cb.clear();
-				ui.maxIns();
-				les.checkObjectives();
-			},
-			objectives : [ {
-				text : "Set up an if statement in the appropriate location",
-				check : function() {
-					var code = ui.getUserCode();
-					return true;
-				},
-			} ],
-			prev : 'lesson10.2',
-			next : 'lesson11.2',
-		},
-		'lesson11.2' : {
-			action : function() {
-				cb.clear();
-				ui.maxIns();
-				les.checkObjectives();
-			},
-			objectives : [ {
-				text : "Make an array by setting each position individually",
-				check : function() {
-					var code = ui.getUserCode();
-					return true;
-				},
-			}, {
-				text : "Make an array by setting all positions at once",
-				check : function() {
-					var code = ui.getUserCode();
-					return true;
-				},
-			}, {
-				text : "Make an array with for loops",
-				check : function() {
-					var code = ui.getUserCode();
-					return true;
-				},
-			} ],
-			prev : 'lesson11.1',
-			next : 'lesson11.3',
-		},
-		'lesson11.3' : {
-			action : function() {
-				cb.clear();
-				ui.maxIns();
-				les.checkObjectives();
-			},
-			objectives : [ {
-				text : "Adjust and keep track of your card count",
-				check : function() {
-					var code = ui.getUserCode();
-					return true;
-				},
-			} ],
-			prev : 'lesson11.2',
-			next : 'lesson11.4',
-		},
-		'lesson11.4' : {
-			action : function() {
-				cb.clear();
-				ui.maxIns();
-				les.checkObjectives();
-			},
-			objectives : [ {
-				text : "Reset your card count when the deck is reshuffled",
-				check : function() {
-					var code = ui.getUserCode();
-					return true;
-				},
-			} ],
-			prev : 'lesson11.3',
-			next : 'lesson11.5',
-		},
-		'lesson11.5' : {
-			action : function() {
-				cb.clear();
-				ui.maxIns();
-				les.checkObjectives();
-			},
-			objectives : [ {
-				text : "Bet based on your card count",
-				check : function() {
-					var code = ui.getUserCode();
-					return true;
-				},
-			} ],
-			prev : 'lesson11.4',
-			next : 'lesson11.6',
-		},
-		'lesson11.6' : {
-			action : function() {
-				cb.clear();
-				ui.maxIns();
-				les.checkObjectives();
-			},
-			objectives : [ {
-				text : "Use functions to remove duplicate code in the program",
-				check : function() {
-					var code = ui.getUserCode();
-					return true;
-				},
-			} ],
-			prev : 'lesson11.5',
-			next : 'lesson11.7',
-		},
-		'lesson11.7' : {
-			action : function() {
-				cb.clear();
-				ui.maxIns();
-				les.checkObjectives();
-			},
-			objectives : [ {
-				text : "Use more functions to remove more duplicate code in the program",
-				check : function() {
-					var code = ui.getUserCode();
-					return true;
-				},
-			} ],
-			prev : 'lesson11.6',
 			next : '',
 		},
 	},
@@ -877,26 +533,14 @@ var les = {
 		if (allDone) {
 			if (ui.isLoggedIn) {
 				rem.acc('setLevelDone', function(n) {
-					
+
 				}, {
 					level : les.currLesson
 				});
-				if (les.progress[les.lessonList[les.currLesson].next] !== "completed") {
-					rem.acc('setLevelInProgress', function(n) {
-
-					}, {
-						level : les.lessonList[les.currLesson].next
-					});
-				}
 			}
 			// $("#instructions").append($(ui.nextButton));
-			les.progress[les.currLesson] = "completed";
-			les.progress[les.lessonList[les.currLesson].next] = "in progress";
-			$.cookie('p', JSON.stringify(les.progress));
 			$("#continueButton").show();
-			$("#instructions").css({
-				height : '310px'
-			});
+			$("#instructions").css({height:'310px'});
 			les.objComplete = true;
 		}
 	},
@@ -921,9 +565,12 @@ var les = {
 		eg.lockEval();
 		les.currLesson = lesson;
 		les.hintUnlocked = false;
-		if (les.currLesson != 'lesson0' && !les.progress[les.currLesson]) {
-			//location.hash = 'lesson0';
-			//return;
+		if (ui.isLoggedIn) {
+			rem.acc('setLevelInProgress', function(n) {
+
+			}, {
+				level : les.currLesson
+			});
 		}
 		$("#betbox").html('');
 		$("#buttons").html('');
@@ -931,9 +578,7 @@ var les = {
 		$("#eval").removeAttr('disabled');
 		$("#previousButton").show();
 		$("#continueButton").hide();
-		$("#instructions").css({
-			height : '310px'
-		});
+		$("#instructions").css({height:'310px'});
 		les.objectives = les.lessonList[les.currLesson].objectives;
 		if (les.lessonList[les.currLesson].noBet) {
 			$("#resetMoneyBox").css({
@@ -963,24 +608,13 @@ var les = {
 			$("#instructions").fadeOut().queue(
 					function() {
 						$("#instructions").html(les.lessonText);
-						
-						var checkMark = '';
-						
-						if (les.progress[les.currLesson] && "completed" === les.progress[les.currLesson]) {
-							checkMark = "<img src='./img/check.png' alt='O' />";
-							$("#continueButton").show();
-							$("#instructions").css({
-								height : '310px'
-							});
-							les.objComplete = true;
-						}
-						
+
 						if (les.objectives.length > 0) {
 							var objList = $("<ol></ol>");
 							for ( var i = 0; i < les.objectives.length; i++) {
 								objList.append($("<li></li>").addClass(
 										"objective" + i).html(
-										les.objectives[i].text + checkMark));
+										les.objectives[i].text));
 							}
 							var objBox = $("<div></div>")
 									.addClass("objectives").append(
@@ -988,8 +622,6 @@ var les = {
 											objList);
 							objBox.insertAfter($("#instructions h3"));
 						}
-						
-						
 
 						if (!ui.sideMaxed) {
 							$(".objectives").css({

@@ -3,7 +3,7 @@
     Dang, that was a real toughie! We took the training wheels off in that one, but you made it through, and now your game will be much more fun. However, take a moment and try to bet more money than you actually have. You will be left with a negative amount of money! A casino would never let you bet more money than you actually have, so we need to modify your program so it doesn't bet more money than you have. (Reset your money before continuing.)
 </p>
 <p>
-    This is going to require writing an improved bet function. We'll call it <span class="variables">safeBet()</span>. (Remember, you can call your function anything you want as long as you use the same name everywhere.) This function is going to be a bit different than the last function you wrote, <span class="variables">totalValue()</span>, in two ways. First, <span class="variables">totalValue()</span> returned something: the value of your cards. <span class="variables">safeBet()</span> is going to be a replacement for<span class="variables"> bet()</span>, so it needs to bet but not return anything.
+    This is going to require writing an improved bet function. We'll call it <span class="variables">safeBet()</span>. (Remember, you can call your function anything you want as long as you're consistent.) This function is going to be a bit different than the last function you wrote, <span class="variables">totalValue()</span>, in two ways. First, <span class="variables">totalValue()</span> returned something: the value of your cards. <span class="variables">safeBet()</span> is going to be a replacement for<span class="variables"> bet()</span>, so it needs to bet but not return anything.
 </p>
 <p>
     The second difference is that <span class="variables">totalValue()</span> does not require any parameters--nothing needs to go between its parentheses. However, <span class="variables">bet()</span> takes a parameter: the amount of money you want to bet. Therefore, <span class="variables">safeBet()</span> needs to take this parameter as well. We'll actually give <span class="variables">safeBet()</span> two parameters: one will be the amount you want to bet, the other will set the limit you don't want your total amount of money to fall below. To avoid having a negative amount of money, you can set the limit to 0. However if you need some money left over to buy dinner after your trip to the casino, you can set the limit to 10. We'll call these two parameters <span class="variables">betAmount</span> and <span class="variables">limit</span>, respectively.
@@ -22,7 +22,7 @@
 </p>
 <div class="code">safeBet(4, 0);</div>
 <p>
-    This notation assigns 4 to <span class="variables">betAmount</span> and 0 to <span class="variables">limit</span>. Press submit. The game won't start because you didn't bet anything. That's because we haven't told <span class="variables">safeBet()</span> to do anything yet. Let's start by just telling it to bet a certain amount and not worry about the limit yet. This will require using the <span class="variables">bet()</span> function inside the <span class="variables">safeBet()</span> function. Write <span class="variables">bet();</span> between the braces of the <span class="variables">safeBet()</span> declaration. We need <span class="variables">bet()</span> to bet the same amount that we told <span class="variables">safeBet()</span> to bet, so tell <span class="variables">bet()</span> to bet <span class="variables">betAmount</span>. Your function declaration should now look like
+    This notation assigns 4 to <span class="variables">betAmount</span> and 0 to <span class="variables">limit</span>. Press submit. Your code should run, but will not bet anything. That's because we haven't told <span class="variables">safeBet()</span> to do anything yet. Let's start by just telling it to bet a certain amount and not worry about the limit yet. This will require using the <span class="variables">bet()</span> function inside the <span class="variables">safeBet()</span> function. Write <span class="variables">bet();</span> between the braces of the <span class="variables">safeBet()</span> declaration. We need <span class="variables">bet()</span> to bet the same amount that we told <span class="variables">safeBet()</span> to bet, so tell <span class="variables">bet()</span> to bet <span class="variables">betAmount</span>. Your function declaration should now look like
 </p>
 <div class="code">function safeBet(betAmount, limit){
     bet(betAmount);
@@ -32,27 +32,15 @@
     Press submit, and your program should now bet $4, just like it did with <span class="variables">bet()</span>. Let's take a look at what's happening. When you call <span class="variables">safeBet(4, 0)</span>, it sets <span class="variables">betAmount</span> to 4. <span class="variables">safeBet()</span> then uses <span class="variables">bet()</span> to bet <span class="variables">betAmount</span>, so the end result is that <span class="variables">safeBet()</span> bets 4! Currently, the second variable--the limit--does nothing, so let's now make <span class="variables">safeBet()</span> take it into account.
 </p>
 <p>
-    We've created a function called <span class="variables">totalMoney()</span> that returns how much money you have. If you try to bet so much money that it would drive the amount of money you have below the limit you set, <span class="variables">safeBet()</span> needs to reduce your bet. Basically, <span class="variables">safeBet()</span> needs to adjust the value of <span class="variables">betAmount</span> <strong>if the total amount of money you have minus <span class="variables">betAmount</span> would leave you with less money than the limit you set</strong>. Delete <span class="variables">bet()</span> and replace it with an if statement that represents the conditional statement in bold. Don't put anything between the braces of the if statement yet. There will be no else statement.
+    We've created a function called <span class="variables">totalMoney()</span> that returns how much money you have. Basically, the <span class="variables">safeBet()</span> needs to adjust the value of <span class="variables">betAmount</span> if the total amount of money you have minus the amount you're betting is less than the limit you set. Add an if statement with this conditional statement before <span class="variables">bet()</span> call. Don't put anything between the braces of the if statement yet. There will be no else statement.
 </p>
 <p>
-    Now we just need to fill in the braces. If <span class="variables">betAmount</span> would drive you below the limit you set, you need to adjust <span class="variables">betAmount</span> so it puts you at the limit but not below. The simplest way to do this is to set bet amount equal to the total amount of your money minus the limit, like so
+    Now we just need to fill in the braces. If the bet amount would drive you below the limit you set, you need to adjust <span class="variables">betAmount</span> so it no longer puts you below the limit. The simplest way to do this is to set bet amount equal to the total amount of your money minus the limit, like so
 </p>
     <div class="code">betAmount = totalMoney() - limit;</div>
 <p>
-    Let's talk about the logic here. Betting <span class="variables">betAmount</span><br />
-
-will mean that the amount of money you have after the function is called is <br />
-<div class="code">totalMoney() - betAmount</div> <br />
-Since<br />
-<div class="code">betAmount = totalMoney() - limit</div><br />
-you will be left with<br />
-<div class="code">totalMoney() - (totalMoney() - limit)</div> <br />
-which equals <br />
-<div class="code">totalMoney() - totalMoney() + limit</div> <br />
-which equals <span class="variables">limit</span>!
-    Since this command will be run if <span class="variables">betAmount</span> would reduce your total money to less than <span class="variables">limit</span>, this command will reset <span class="variables">betAmount</span> so it only reduces your total money to <span class="variables">limit</span>. Nice! At the end of your function, write<br />
-<div class="code">bet(betAmount);</div><br />
-so it bets the modified <span class="variables">betAmount</span>. Then set your limit to 0, bet more money than you have, and press submit to test it out. You should be left with no money!
+    Let's talk about the logic here. Betting <span class="variables">totalMoney() - limit</span> will mean that the amount of money you have after the function is called is <span class="variables">[totalMoney() - betAmount]</span> which equals <span class="variables">[totalMoney() - (totalMoney() - limit)]</span> which equals <span class="variables">[totalMoney() - totalMoney() + limit]</span> which equals <span class="variables">limit</span>.
+    Since this command will be run if <span class="variables">betAmount</span> would reduce your total money to less than <span class="variables">limit</span>, this command will reset <span class="variables">betAmount</span> so it only reduces your total money to <span class="variables">limit</span>. Nice! Set your limit to 0, bet more money than you have, and press submit to test it out. You should be left with no money!
 </p>
 <p>
     If your code is not working properly, make sure it looks like <a show="hidden-1">this</a>.

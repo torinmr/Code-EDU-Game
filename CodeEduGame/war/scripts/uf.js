@@ -42,10 +42,10 @@ var bet = function(b) {
 	b = parseInt(b);
 	if (isNaN(b)) {
 		throw "Error: bet() must be called with an integer.";
+		return;
 	} else if (eg.turnNum != 0) {
 		throw "Error: bet() cannot be called after other actions.";
-	} else if (b <= 0) {
-		throw "Error: You need to bet() a positive amount.";
+		return;
 	} else {
 		eg.betValue = b;
 		eg.bet();
@@ -58,16 +58,6 @@ var doubleDown = function() {
 	}
 	eg.doubleDown();
 };
-
-var dealerUpCard = function() {
-	if (eg.dealerHand[1].num == 14) {
-		return 11;
-	} else if (eg.dealerHand[1].num > 10) {
-		return 10;
-	} else {
-		return eg.dealerHand[1].num;
-	}
-}
 
 var handStart = function() {
 	return eg.turnNum == 0;

@@ -134,12 +134,8 @@ var eg = {
 			eg.playerHand = new Array();
 			eg.dealerHand = new Array();
 			
-			// Make a "random" deck
-			if (les.lessonList[les.currLesson].riggedDeck) {
-				eg.deck = les.lessonList[les.currLesson].riggedDeck.slice(0);
-			} else {
-				eg.deck = cards.shuffle(cards.makeDeck());
-			}	
+			// Make a random deck
+			eg.deck = cards.shuffle(cards.makeDeck());
 	
 			// Deal two cards to each player
 			eg.dealerHand.push(eg.deck.pop());
@@ -264,7 +260,7 @@ var eg = {
 			throw "Error: you must bet first.";
 		}
 		// Some crappy AI
-		while (eg.value(eg.dealerHand) < 17) {
+		while (eg.value(eg.dealerHand) < 15) {
 			eg.dealerHand.push(eg.deck.pop());
 		}
 		eg.redrawBoard();
@@ -313,11 +309,7 @@ var eg = {
 		}
 		eg.doubled = true;
 		eg.betValue *= 2;
-		cb.call('doubledown');
 		eg.hit();
-		if (eg.turns > -1) {
-			eg.turns++;
-		}
 		eg.stand();
 	},
 	clearBoard: function() {
@@ -376,8 +368,6 @@ var eg = {
 			return;
 		}
 		
-		eg.evalLocked = true;
-		
 		$("#debug").html('');
 		eg.betValue = 0;
 		
@@ -416,13 +406,11 @@ var eg = {
 					cb.call('exec');
 					if (typeof name !== 'undefined' && name.match(/david/i)) {
 						$("#holycow").show();
-						$("#holycow").animate({bottom:'0px'});
-					} else if($("#holycow").is(":visible")) {
-						$("#holycow").animate({bottom:'-208px'});
+					} else {
+						$("#holycow").hide();
 					}
 					window.clearInterval(animation);
 					eg.turns = -1;
-					eg.evalLocked = false;
 					return;
 				}
 			
@@ -435,7 +423,6 @@ var eg = {
 				window.clearInterval(animation);
 				eg.turns = -1;
 				eg.inGame = false;
-				eg.evalLocked = false;
 				return;
 			}
 			eg.redrawBoard();

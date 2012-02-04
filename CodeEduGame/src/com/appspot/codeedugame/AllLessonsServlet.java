@@ -20,7 +20,8 @@ public class AllLessonsServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         List<String> lessonIds = getLineArray(PATH + "/lessonIds.txt");
-        List<String> lessonNames = getLineArray(PATH + "/lessonNames.txt");
+        List<String> lessonNames = new ArrayList<String>();
+        List<String> lessonContents = new ArrayList<String>();
         String lessonCss = getContents(PATH + "/lessonCss.txt");
         
         PrintWriter output;
@@ -32,12 +33,16 @@ public class AllLessonsServlet extends HttpServlet {
         output.append(lessonCss + "\n\n");
         output.append("<h2>Contents</h2>\n");
         for (int i = 0; i < lessonIds.size(); i++) {
+            lessonContents.add(getContents(PATH + "/" + lessonIds.get(i) + ".htm"));
+            lessonNames.add(getLessonTitle(lessonContents.get(i)));
+        }
+        for (int i = 0; i < lessonIds.size(); i++) {
             output.append("<li><a href=\"#" + lessonIds.get(i) + "\"> " + lessonNames.get(i) + " </a></li>\n");
         }
         for (int i = 0; i < lessonIds.size(); i++) {
             output.append(lessonBreak());
             output.append("<a name=\"" + lessonIds.get(i) + "\"></a>\n");
-            output.append(getContents(PATH + "/" + lessonIds.get(i) + ".htm"));
+            output.append(lessonContents.get(i));
         }
     }
     
@@ -63,6 +68,12 @@ public class AllLessonsServlet extends HttpServlet {
             lessons.add(s.nextLine());
         }
         return lessons;
+    }
+    
+    private String getLessonTitle(String contents) {
+        String afterH3 = contents.substring(contents.indexOf("h3"));
+        String first = afterH3.substring(afterH3.indexOf(">") + 1, afterH3.indexOf("/h3"));
+        return first.substring(0, first.lastIndexOf("<"));
     }
 
     private String lessonBreak() {
