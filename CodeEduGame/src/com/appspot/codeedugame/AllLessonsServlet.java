@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class AllLessonsServlet extends HttpServlet {
     private static final String PATH = "/lessons";
+    private static final String HIDDEN = "kjsa2q09eq09kjfdkjlbjifdiewlkjdsjfdskbfdsndslkm";
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) {
@@ -23,6 +24,7 @@ public class AllLessonsServlet extends HttpServlet {
         List<String> lessonNames = new ArrayList<String>();
         List<String> lessonContents = new ArrayList<String>();
         String lessonCss = getContents(PATH + "/lessonCss.txt");
+        boolean displayHidden = !HIDDEN.equals(req.getParameter("hidden"));
         
         PrintWriter output;
         try {
@@ -31,6 +33,10 @@ public class AllLessonsServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
         output.append(lessonCss + "\n\n");
+        if (displayHidden) {
+            output.append("If you would like a file with answers, please contact javajackdev@gmail.com and we will give you the URL.");
+            output.append(lessonBreak());
+        }
         output.append("<h2>Contents</h2>\n");
         for (int i = 0; i < lessonIds.size(); i++) {
             lessonContents.add(getContents(PATH + "/" + lessonIds.get(i) + ".htm"));
@@ -42,7 +48,11 @@ public class AllLessonsServlet extends HttpServlet {
         for (int i = 0; i < lessonIds.size(); i++) {
             output.append(lessonBreak());
             output.append("<a name=\"" + lessonIds.get(i) + "\"></a>\n");
-            output.append(lessonContents.get(i));
+            if (displayHidden) {
+                output.append(hideAnswer(lessonContents.get(i)));
+            } else {
+                output.append(lessonContents.get(i));
+            }
         }
     }
     
@@ -74,6 +84,16 @@ public class AllLessonsServlet extends HttpServlet {
         String afterH3 = contents.substring(contents.indexOf("h3"));
         String first = afterH3.substring(afterH3.indexOf(">") + 1, afterH3.indexOf("/h3"));
         return first.substring(0, first.lastIndexOf("<"));
+    }
+    
+    //assumes that hidden-1 div is at the end
+    private String hideAnswer(String contents) {
+        if (contents.lastIndexOf("hiddencode") != -1) {
+            String first = contents.substring(0, contents.lastIndexOf("hiddencode"));
+            return first.substring(0, first.lastIndexOf("<"));
+        } else {
+            return contents;
+        }
     }
 
     private String lessonBreak() {
