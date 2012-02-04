@@ -5,10 +5,6 @@ white-space:pre;
 font-family:"Courier New", Courier, monospace;
 }
 
-.objectives{
-background-color:#D7E5FF;
-}
-
 .variables{
 font-family:"Courier New", Courier, monospace;
 }
@@ -593,7 +589,7 @@ function totalValue(){
 
 <h3>Mission 9.2: Double Down--Elseif</h3>
 <p>This error is because of the way the language reads if statements. JavaScript first checks the double down if statement, and if it is true it doubles down. However, it then also checks the hit if statement following it. If the card you were given on the double down is a low card, it will also try to hit because the total value of the cards will still be less than 17. (Notice that this contradicts what we said in the previous paragraph about the second statement possibly getting skipped. Once this problem is fixed, the previous paragraph will hold true.) Since you are not allowed to double down and then hit, especially not on the same turn, you get an error. Even if you don't get this error because the card you are given in the double down is large enough, your program is being inefficient by doubling down and then still checking if it should hit.</p>
-<p>To fix this problem, we will use another piece of if-else statements called elseif. As the name suggests, elseif is similar to else but takes a conditional statement in parentheses just like if does. Replace the hit-checking if (the second if statement) with elseif, but don't delete the parentheses or conditional statement inside them. Now, the computer will read as follows: If the total value is 10, double down. It then skips over the elseif and else statements. However, if the total value is not 10, it checks to see if it's less than 17. If it is it hits and skips the final else statement. If it's not, it reads the else statement and stands. Click submit a few times and watch the program double down occasionally and not get errors. (Because it won't double down unless the total value is 10, it may take a while before you see this occur.)</p>
+<p>To fix this problem, we will use another piece of if-else statements called else if. As the name suggests, else if is similar to else but takes a conditional statement in parentheses just like if does. Replace the hit-checking if (the second if statement) with else if, but don't delete the parentheses or conditional statement inside them. Now, the computer will read as follows: If the total value is 10, double down. It then skips over the else if and else statements. However, if the total value is not 10, it checks to see if it's less than 17. If it is it hits and skips the final else statement. If it's not, it reads the else statement and stands. Click submit a few times and watch the program double down occasionally and not get errors. (Because it won't double down unless the total value is 10, it may take a while before you see this occur.)</p>
 <p>If your code is not working properly, make sure it looks like <a href="">this</a>.</p>
 
 <div class="hiddencode" id="hidden-1">
@@ -637,7 +633,7 @@ function totalValue(){
 <a name="lesson9.3"></a>
 
 <h3>Mission 9.3: Double Down--And and Or</h3>
-<p>So now you have a functional and reasonable way for the computer to double down. But the computer's strategy isn't ideal. Recall that we said you'll want to double down if the value of your cards is 10 or 11, not just 10. How do we do that? One way would be to add another elseif statement after the if statement checking to see if the total value is 11. But that's a lot of writing, and programmers are lazy. So, we have a boolean "or" operator. It looks like this: || (The vertical line can be typed by pressing shift and \. \ is located above your return/enter key.)</p>
+<p>So now you have a functional and reasonable way for the computer to double down. But the computer's strategy isn't ideal. Recall that we said you'll want to double down if the value of your cards is 10 or 11, not just 10. How do we do that? One way would be to add another else if statement after the if statement checking to see if the total value is 11. But that's a lot of writing, and programmers are lazy. So, we have a boolean "or" operator. It looks like this: || (The vertical line can be typed by pressing shift and \. \ is located above your return/enter key.)</p>
 <p>So, we need to add an or statement to<br />
 <div class="code">if(totalValue() === 10){</div><br />
 so it reads<br />
@@ -710,7 +706,7 @@ function totalValue(){
 Beautiful work, [NAME]. Now let's finish this up. In the last section we said that if the dealer has a low card showing, he/she will have to hit and is likely to bust. So, modify the program so it also hits if the dealer's upcard is less than or equal to 6 and your total value is less than 12.</p>
 <p>Combining the instructions from this section and the past one, you need to make the program hit if you have a total card value of less than 17 and the dealer's upcard is higher than 6 and also hit if the dealer's upcard is less than or equal to 6 and your total value is less than 12. Here are some hints:</p>
 <ul>
-<li>Boolean expressions (and/or) will be the simplest way to make this work, although you can always use nested if-else statements and elseif statements in place of boolean expressions.</li>
+<li>Boolean expressions (and/or) will be the simplest way to make this work, although you can always use nested if-else statements and else if statements in place of boolean expressions.</li>
 <li>You can call a function more than once in one program. For example, it is okay to have <span class="variables">hit()</span> inside two different if statements.</li>
 <li>You can use different numbers than those we recommended, but make sure your ranges in this part and the last don't overlap or leave gaps.</li>
 <li>Take a look at previous missions if you've forgotten how to do something.</li>
@@ -719,7 +715,7 @@ Beautiful work, [NAME]. Now let's finish this up. In the last section we said th
 <p>If your code is not working properly, take a look at <a show="holyeffwhyistheresomucheffingcode">these</a> examples.</p>
 
 <div class="hiddencode" id="holyeffwhyistheresomucheffingcode">
-Booleans and elseif:
+Booleans and else if:
 
 name = "David";
 
@@ -736,7 +732,7 @@ else {
        }
        else if(dealerUpCard() &lt;= 6 &amp;&amp; totalValue() &lt; 12){ /*this is the same statement but
                                                with the new conditions specified in this section. Since both
-                                               statements are elseifs, only one of them will be executed.*/
+                                               statements are else ifs, only one of them will be executed.*/
                hit();  /*Notice that hit() has now been called twice in this code. This is
                                perfectly acceptable, and one of the main advantages of methods!*/
        }

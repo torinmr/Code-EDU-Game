@@ -1,15 +1,16 @@
 <h3>Mission 9.3: Double Down--And and Or</h3>
-<p>So now you have a functional and reasonable way for the computer to double down. But the computer's strategy isn't ideal. Recall that we said you'll want to double down if the value of your cards is 10 or 11, not just 10. How do we do that? One way would be to add another elseif statement after the if statement checking to see if the total value is 11. But that's a lot of writing, and programmers are lazy. So, we have a boolean "or" operator. It looks like this: || (The vertical line can be typed by pressing shift and \. \ is located above your return/enter key.)</p>
-<p>So, we need to add an or statement to<br />
-<div class="code">if(totalValue() === 10){</div><br />
-so it reads<br />
-<div class="code">if(totalValue() === 10 || totalValue() === 11){</div><br />
-This just means that the code contained in the if statement will be run if the total value is 10 or 11. Try it!</p>
-<p>The logic for when to double down is still imperfect. If the dealer has a high card showing, the chances of you beating the dealer on a double down are slim. So, we need to check to see if the value of the dealer's up card is less than 7 AND your total value is either a 10 or 11. Just like there is an "or" operator, there is an "and" or. It is &amp;&amp;. We have also written a function for you that returns the value of the dealers up card, called <span class="variables">dealerUpCard()</span>. So, change the if statement to read<br />
-<div class="code">if(dealerUpCard() &lt; 7 &amp;&amp; (totalValue() === 10 || totalValue() === 11)){</div><br />
-Note the parentheses around the two components of the or statement. This groups the or statement and compares it with the <span class="variables">dealerUpCard()</span> expression using &amp;&amp; to insure that the dealer's up card is less than 7 and your total card value is either 10 or 11. To better understand how these parentheses work, observe that if they were placed like<br />
-<div class="code">if((dealerUpCard() &lt; 7 &amp;&amp; totalValue() === 10) || totalValue() === 11){</div><br />
-either your total value would have to equal 10 and the dealers up card would have to be less than 7, or your total value would have to equal 11 and the dealer's up card could be anything. If there were no internal parentheses,<br />
-<div class="code">if(dealerUpCard() &lt; 7 &amp;&amp; totalValue() === 10 || totalValue() === 11){</div><br />
-the code would be evaluated from left to right, which would do the same thing as the previous parenthetical placement. This makes no sense for our purposes, so arrange the parentheses as we had them initially (around the two components of the or statement).</p>
-<p>Click submit a few times. Now your program will double down very infrequently, but when it does it will have a good chance of winning. This insures that you make double the money when you can and don't risk losing double the money very often. Nice.</p>
+<p>So now you have a functional and reasonable way for the computer to double down. But the computer's strategy isn't ideal. Recall that we said you'll want to double down if the value of your cards is 10 or 11, not just 10. How do we do that? One way would be to add another else if statement after the if statement checking to see if the total value is 11. But that's a lot of writing, and programmers are lazy. So, we have a boolean "or" operator. It looks like this: || (The vertical line can be typed by pressing shift and \. \ is located above your return/enter key.)</p>
+<p>So, we need to add an or statement to</p>
+<div class="code">if(totalValue() === 10){</div>
+<p>so it reads</p>
+<div class="code">if(totalValue() === 10 || totalValue() === 11){</div>
+<p>This just means that the code contained in the if statement will be run if the total value is 10 or 11. Try it!</p>
+<p>The logic for when to double down is still imperfect. If the dealer has a high card showing, the chances of you beating the dealer on a double down are slim. So, we need to check to see if the value of the dealer's up card is less than 7 AND your total value is either a 10 or 11. Just like there is an "or" operator, there is an "and" or. It is &amp;&amp;. We have also written a function for you that returns the value of the dealers up card, called <span class="variables">dealerUpCard()</span>. So, change the if statement to read</p>
+<div class="code">if(dealerUpCard() &lt; 7 &amp;&amp; (totalValue() === 10 || totalValue() === 11)){</div>
+<p>Note the parentheses around the two components of the or statement. This groups the or statement and compares it with the <span class="variables">dealerUpCard()</span> expression using &amp;&amp; to insure that the dealer's up card is less than 7 and your total card value is either 10 or 11. To better understand how these parentheses work, observe that if they were placed like</p>
+<div class="code">if((dealerUpCard() &lt; 7 &amp;&amp; totalValue() === 10) || totalValue() === 11){</div>
+<p>either your total value would have to equal 10 and the dealers up card would have to be less than 7, or your total value would have to equal 11 and the dealer's up card could be anything. If there were no internal parentheses,</p>
+<div class="code">if(dealerUpCard() &lt; 7 &amp;&amp; totalValue() === 10 || totalValue() === 11){</div>
+<p>the code would be evaluated from left to right, which would do the same thing as the previous parenthetical placement. This makes no sense for our purposes, so arrange the parentheses as we had them initially (around the two components of the or statement).</p>
+<p>Click submit a few times. Now your program will double down very infrequently, but when it does it will have a good chance of winning. This ensures that you make double the money when you can and don't risk losing double the money very often. Nice.</p>
+<p>(You may have noticed you've been getting an awful lot of double down situations this mission. Yes, we rigged the deck. We'll stop doing that next mission.)</p>

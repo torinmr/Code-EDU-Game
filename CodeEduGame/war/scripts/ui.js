@@ -119,13 +119,25 @@ $(document).ready(function() {
 		eg.money = eg.defaultMoney;
 		$("#money").html("Money: " + eg.money);
 	});
-	/*
-	 * rem.acc('getLogin', function(l) { if (!l.isLoggedIn) {
-	 * $("#log").attr('href', l.URL); $("#log").html('Login'); } else {
-	 * ui.isLoggedIn = true; $("#log").html('Logout'); $("#log").attr('href',
-	 * l.URL); rem.acc('getName', function(n) { $("#accName").html(n.name); }); }
-	 * },{returnURL : document.URL});
-	 */
+
+	rem.acc('getLogin', function(l) {
+		if (!l.isLoggedIn) {
+			$("#log").attr('href', l.URL);
+			$("#log").html('Login');
+		} else {
+			ui.isLoggedIn = true;
+			$("#log").html('Logout');
+			$("#log").attr('href', l.URL);
+			rem.acc('getName', function(n) {
+				$("#accName").html(n.name);
+			});
+			rem.acc('getProgress', function(p) {
+				les.progress = p;
+			});
+		}
+	}, {
+		returnURL : document.URL
+	});
 
 	var toggle = $("#toggleIns");
 	toggle.bind('click', ui.toggleIns);

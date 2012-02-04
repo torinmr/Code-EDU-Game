@@ -5,7 +5,8 @@ var les = {
 	objComplete : false,
 	objectives : {},
 	flags : {},
-	hintUnlocked: false,
+	hintUnlocked : false,
+	progress: {},
 
 	// Invalidate code with errors
 	invalidated : false,
@@ -27,7 +28,11 @@ var les = {
 				$("#buttons").append(ui.makeButton('Stand', eg.stand));
 				// $("#buttons").append(ui.makeButton('Double', eg.doubleDown));
 				$("#previousButton").hide();
-				$("#instructions").css({height:'340px'});
+				if (!les.progress[les.currLesson] ||  "completed" !== les.progress[les.currLesson]) {
+					$("#instructions").css({
+						height : '340px'
+					});
+				}
 				$("#betbox")
 						.html(
 								'Bet:<input type="text" id="bet" maxlength="6" value="10" />');
@@ -106,8 +111,9 @@ var les = {
 				text : "Learn structure of if-else statement",
 				check : function() {
 					var code = ui.getUserCode();
-					 return code.match(/if\s*\(\s*true\s*\)\s*\{\s*hit\(\);\s*\}\s*else\s*\{\s*stand\(\);\s*\}/);
-					 
+					return code
+							.match(/if\s*\(\s*true\s*\)\s*\{\s*hit\(\);\s*\}\s*else\s*\{\s*stand\(\);\s*\}/);
+
 				},
 			} ],
 			noBet : true,
@@ -125,18 +131,20 @@ var les = {
 						text : "Evaluate an if statement with a numerical boolean expression",
 						check : function() {
 							var code = ui.getUserCode();
-							return (code.match(/\d+\s*(===|==|>=|<=|>|<)\s*\d+/)
-									&& code.indexOf('if') != -1 
-									&& code.indexOf('else') != -1);
+							return (code
+									.match(/\d+\s*(===|==|>=|<=|>|<)\s*\d+/)
+									&& code.indexOf('if') != -1 && code
+									.indexOf('else') != -1);
 						},
 					},
 					{
 						text : "Evaluate an if statement with a boolean expression using variables",
 						check : function() {
 							var code = ui.getUserCode();
-							return ((code.match(/name\s*===?\s*"/) || code.match(/"\s*===?\s*name/))
-									&& code.indexOf('if') != -1 
-									&& code.indexOf('else') != -1);	
+							return ((code.match(/name\s*===?\s*"/) || code
+									.match(/"\s*===?\s*name/))
+									&& code.indexOf('if') != -1 && code
+									.indexOf('else') != -1);
 						},
 					} ],
 			noBet : true,
@@ -154,7 +162,7 @@ var les = {
 				check : function() {
 					var code = ui.getUserCode();
 					return (code.indexOf('secondDealtCardVal') != -1
-							&& (code.indexOf('<') != -1 || code.indexOf('>') != -1) 
+							&& (code.indexOf('<') != -1 || code.indexOf('>') != -1)
 							&& code.indexOf('if') != -1 && code.indexOf('else') != -1);
 				},
 			} ],
@@ -169,8 +177,10 @@ var les = {
 				cb.add('error', function(E) {
 					var code = ui.getUserCode();
 					if (E.indexOf("totalValue") != -1
-						&& (code.match(/totalValue\(\)\s*<=?\s*\d/) || code.match(/\d\s*>=?\s*totalValue\(\)/))
-						&& code.indexOf('if') != -1 && code.indexOf('else') != -1) {
+							&& (code.match(/totalValue\(\)\s*<=?\s*\d/) || code
+									.match(/\d\s*>=?\s*totalValue\(\)/))
+							&& code.indexOf('if') != -1
+							&& code.indexOf('else') != -1) {
 						les.checkObjectives();
 					}
 				});
@@ -191,37 +201,50 @@ var les = {
 				ui.maxIns();
 				cb.add('exec', les.checkObjectives);
 			},
-			objectives : [ {
-				text : "Write a function that returns a value",
-				check : function() {
-					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) { return false; }
-					if (typeof window[funcName[1]] === 'function' && typeof window[funcName[1]]() === 'number'
-						&& (code.match(new RegExp(funcName[1]+'\\(\\)\\s*<=?\\s*\\d')) 
-								|| code.match(new RegExp('\\d\\s*>=?\\s*' + funcName[1] + '\\(\\)')))
-								) {
-						return true;
-					} else {
-						return false;
-					}
-				},
-			}, {
-				text : "Evaluate a mathematical expression",
-				check : function() {
-					var code = ui.getUserCode();
-					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) { return false; }
-					if (code.match(/(\+|-|\*|\/|%)/)
-						&& typeof window[funcName[1]] === 'function' && typeof window[funcName[1]]() === 'number'
-								&& (code.match(new RegExp(funcName[1]+'\\(\\)\\s*<=?\\s*\\d')) 
-										|| code.match(new RegExp('\\d\\s*>=?\\s*' + funcName[1] + '\\(\\)')))) {
-						return true;
-					} else {
-						return false;
-					}
-				},
-			} ],
+			objectives : [
+					{
+						text : "Write a function that returns a value",
+						check : function() {
+							var code = ui.getUserCode();
+							var funcName = code
+									.match(/function ([a-zA-Z0-9_]+)\(\)/);
+							if (!funcName) {
+								return false;
+							}
+							if (typeof window[funcName[1]] === 'function'
+									&& typeof window[funcName[1]]() === 'number'
+									&& (code.match(new RegExp(funcName[1]
+											+ '\\(\\)\\s*<=?\\s*\\d')) || code
+											.match(new RegExp('\\d\\s*>=?\\s*'
+													+ funcName[1] + '\\(\\)')))) {
+								return true;
+							} else {
+								return false;
+							}
+						},
+					},
+					{
+						text : "Evaluate a mathematical expression",
+						check : function() {
+							var code = ui.getUserCode();
+							var funcName = code
+									.match(/function ([a-zA-Z0-9_]+)\(\)/);
+							if (!funcName) {
+								return false;
+							}
+							if (code.match(/(\+|-|\*|\/|%)/)
+									&& typeof window[funcName[1]] === 'function'
+									&& typeof window[funcName[1]]() === 'number'
+									&& (code.match(new RegExp(funcName[1]
+											+ '\\(\\)\\s*<=?\\s*\\d')) || code
+											.match(new RegExp('\\d\\s*>=?\\s*'
+													+ funcName[1] + '\\(\\)')))) {
+								return true;
+							} else {
+								return false;
+							}
+						},
+					} ],
 			noBet : true,
 			prev : 'lesson4.1',
 			next : 'lesson4.3',
@@ -238,9 +261,12 @@ var les = {
 					var handValues = handValue();
 					var code = ui.getUserCode();
 					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) { return false; }
-					if (typeof window[funcName[1]] === 'function' 
-						&& window[funcName[1]]() == handValues[0] + handValues[1]) {
+					if (!funcName) {
+						return false;
+					}
+					if (typeof window[funcName[1]] === 'function'
+							&& window[funcName[1]]() == handValues[0]
+									+ handValues[1]) {
 						return true;
 					} else {
 						return false;
@@ -263,10 +289,13 @@ var les = {
 					var handValues = handValue();
 					var code = ui.getUserCode();
 					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) { return false; }
-					if (typeof window[funcName[1]] === 'function' 
-						&& window[funcName[1]]() == handValues[0] + handValues[1]
-						&& (code.match(/\/\*.*\*\//) || code.indexOf("//") != -1)) {
+					if (!funcName) {
+						return false;
+					}
+					if (typeof window[funcName[1]] === 'function'
+							&& window[funcName[1]]() == handValues[0]
+									+ handValues[1]
+							&& (code.match(/\/\*.*\*\//) || code.indexOf("//") != -1)) {
 						return true;
 					} else {
 						return false;
@@ -308,17 +337,20 @@ var les = {
 					var handValues = handValue();
 					var code = ui.getUserCode();
 					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) { return false; }
-					
+					if (!funcName) {
+						return false;
+					}
+
 					var sum = 0;
 					for ( var i = 0; i < handValues.length; i++) {
 						sum += handValues[i];
 					}
-					
-					if (typeof window[funcName[1]] === 'function'  
+
+					if (typeof window[funcName[1]] === 'function'
 							&& window[funcName[1]]() == sum
 							&& code.indexOf('while') != -1
-							&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
+							&& code.indexOf('hit') != -1
+							&& code.indexOf('stand') != -1) {
 						return true;
 					} else {
 						return false;
@@ -341,16 +373,19 @@ var les = {
 					var handValues = handValue();
 					var code = ui.getUserCode();
 					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) { return false; }
+					if (!funcName) {
+						return false;
+					}
 					var sum = 0;
 					for ( var i = 0; i < handValues.length; i++) {
 						sum += handValues[i];
 					}
-					if (typeof window[funcName[1]] === 'function'  
-						&& window[funcName[1]]() == sum
+					if (typeof window[funcName[1]] === 'function'
+							&& window[funcName[1]]() == sum
 							&& code.indexOf('while') != -1
 							&& code.indexOf('++') != -1
-							&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
+							&& code.indexOf('hit') != -1
+							&& code.indexOf('stand') != -1) {
 						return true;
 					} else {
 						return false;
@@ -373,15 +408,18 @@ var les = {
 					var handValues = handValue();
 					var code = ui.getUserCode();
 					var funcName = code.match(/function ([a-zA-Z0-9_]+)\(\)/);
-					if (!funcName) { return false; }
+					if (!funcName) {
+						return false;
+					}
 					var sum = 0;
 					for ( var i = 0; i < handValues.length; i++) {
 						sum += handValues[i];
 					}
-					if (typeof window[funcName[1]] === 'function'  
-						&& window[funcName[1]]() == sum
-						&& code.indexOf('for') != -1
-						&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
+					if (typeof window[funcName[1]] === 'function'
+							&& window[funcName[1]]() == sum
+							&& code.indexOf('for') != -1
+							&& code.indexOf('hit') != -1
+							&& code.indexOf('stand') != -1) {
 						return true;
 					} else {
 						return false;
@@ -409,7 +447,7 @@ var les = {
 							&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1);
 				},
 			} ],
-			complete: false,
+			complete : false,
 			prev : 'lesson7.2',
 			next : 'lesson8.2',
 		},
@@ -424,14 +462,15 @@ var les = {
 				text : "Ensure you won't bet more than you can afford",
 				check : function() {
 					var code = ui.getUserCode();
-					var allIn = (eg.money === 0 || eg.money === 2*les.lessonList['lesson8.2'].prevMoney);
+					var allIn = (eg.money === 0 || eg.money === 2 * les.lessonList['lesson8.2'].prevMoney);
 					les.lessonList['lesson8.2'].prevMoney = eg.money;
-					return allIn && code.indexOf('hit') != -1 && code.indexOf('stand') != -1;
+					return allIn && code.indexOf('hit') != -1
+							&& code.indexOf('stand') != -1;
 				},
 			} ],
-			prevMoney: 0,
+			prevMoney : 0,
 			prev : 'lesson8.1',
-			next : 'end',
+			next : 'lesson9.1',
 		},
 		'end' : {
 			action : function() {
@@ -446,15 +485,53 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('doubledown', function() {
+					les.lessonList['lesson9.1'].complete = true;
+				});
+				cb.add('error', function() {
+					les.checkObjectives();
+				});
+				cb.add('exec', function() {
+					les.checkObjectives();
+				});
 			},
 			objectives : [ {
 				text : "Add a conditional double down command",
 				check : function() {
-					return true;
+					if (les.lessonList['lesson9.1'].complete) {
+						les.lessonList['lesson9.1'].complete = false;
+						return true;
+					} else {
+						return false;
+					}
 				},
 			} ],
-			riggedDeck: [],
+			complete: false,
+			riggedDeck : [ {
+				num : 8,
+				suit : 3
+			}, {
+				num : 14,
+				suit : 1
+			}, {
+				num : 6,
+				suit : 1
+			}, {
+				num : 7,
+				suit : 0
+			}, {
+				num : 6,
+				suit : 1
+			}, {
+				num : 4,
+				suit : 0
+			}, {
+				num : 5,
+				suit : 3
+			}, {
+				num : 10,
+				suit : 2
+			}, ],
 			prev : 'lesson8.2',
 			next : 'lesson9.2',
 		},
@@ -462,14 +539,53 @@ var les = {
 			action : function() {
 				cb.clear();
 				ui.maxIns();
-				les.checkObjectives();
+				cb.add('doubledown', function() {
+					les.lessonList['lesson9.2'].complete = true;
+				});
+				cb.add('exec', function() {
+					les.checkObjectives();
+				});
 			},
 			objectives : [ {
 				text : "Prevent errors and increase efficiency with else if",
 				check : function() {
-					return true;
+					var code = ui.getUserCode();
+					if (les.lessonList['lesson9.2'].complete
+						&& code.match(/else\s+if/)
+						&& code.indexOf('hit') != -1 && code.indexOf('stand') != -1) {
+						les.lessonList['lesson9.2'].complete = false;
+						return true;
+					} else {
+						return false;
+					}
 				},
 			} ],
+			riggedDeck : [ {
+				num : 8,
+				suit : 2
+			}, {
+				num : 14,
+				suit : 0
+			}, {
+				num : 6,
+				suit : 2
+			}, {
+				num : 7,
+				suit : 3
+			}, {
+				num : 6,
+				suit : 3
+			}, {
+				num : 4,
+				suit : 1
+			}, {
+				num : 5,
+				suit : 2
+			}, {
+				num : 10,
+				suit : 0
+			}, ],
+			complete: false,
 			prev : 'lesson9.1',
 			next : 'lesson9.3',
 		},
@@ -549,14 +665,24 @@ var les = {
 		if (allDone) {
 			if (ui.isLoggedIn) {
 				rem.acc('setLevelDone', function(n) {
-
+					
 				}, {
 					level : les.currLesson
 				});
+				if (les.progress[les.lessonList[les.currLesson].next] !== "completed") {
+					rem.acc('setLevelInProgress', function(n) {
+
+					}, {
+						level : les.lessonList[les.currLesson].next
+					});
+				}
 			}
 			// $("#instructions").append($(ui.nextButton));
+			les.progress[les.currLesson] = "completed";
 			$("#continueButton").show();
-			$("#instructions").css({height:'310px'});
+			$("#instructions").css({
+				height : '310px'
+			});
 			les.objComplete = true;
 		}
 	},
@@ -581,20 +707,15 @@ var les = {
 		eg.lockEval();
 		les.currLesson = lesson;
 		les.hintUnlocked = false;
-		if (ui.isLoggedIn) {
-			rem.acc('setLevelInProgress', function(n) {
-
-			}, {
-				level : les.currLesson
-			});
-		}
 		$("#betbox").html('');
 		$("#buttons").html('');
 		$("#codebox").removeAttr('disabled');
 		$("#eval").removeAttr('disabled');
 		$("#previousButton").show();
 		$("#continueButton").hide();
-		$("#instructions").css({height:'310px'});
+		$("#instructions").css({
+			height : '310px'
+		});
 		les.objectives = les.lessonList[les.currLesson].objectives;
 		if (les.lessonList[les.currLesson].noBet) {
 			$("#resetMoneyBox").css({
@@ -624,13 +745,24 @@ var les = {
 			$("#instructions").fadeOut().queue(
 					function() {
 						$("#instructions").html(les.lessonText);
-
+						
+						var checkMark = '';
+						
+						if (les.progress[les.currLesson] && "completed" === les.progress[les.currLesson]) {
+							checkMark = "<img src='./img/check.png' alt='O' />";
+							$("#continueButton").show();
+							$("#instructions").css({
+								height : '310px'
+							});
+							les.objComplete = true;
+						}
+						
 						if (les.objectives.length > 0) {
 							var objList = $("<ol></ol>");
 							for ( var i = 0; i < les.objectives.length; i++) {
 								objList.append($("<li></li>").addClass(
 										"objective" + i).html(
-										les.objectives[i].text));
+										les.objectives[i].text + checkMark));
 							}
 							var objBox = $("<div></div>")
 									.addClass("objectives").append(
@@ -638,6 +770,8 @@ var les = {
 											objList);
 							objBox.insertAfter($("#instructions h3"));
 						}
+						
+						
 
 						if (!ui.sideMaxed) {
 							$(".objectives").css({

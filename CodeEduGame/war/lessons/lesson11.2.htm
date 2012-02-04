@@ -1,0 +1,82 @@
+<h3>Mission 11.2: Card Counting--Making Arrays</h3>
+<div class="objectives">
+<h4>Objectives</h4><ol>
+<li>Make an array by setting each position individually</li>
+<li>Make an array by setting all positions at once</li>
+<li>Make an array with for loops</li>
+</ol>
+</div>
+<p>Remember arrays? Back in mission 4.3 you used an array we made called <span class="variables">handValue</span> to read the values of the cards in your hands. Hopefully you enjoyed that, because card counting is going to use a lot of arrays! (In case you did forget, arrays are just lists of data.) The first array we will make (let's call it <span class="variables">cardCountVal</span>) will keep track of the card counting values (-1, 0, or 1) for each card value (2-11, because all face cards are worth 10). Recall that arrays have numbered positions, starting at 0, and data is stored at each position. Since the values of the cards are consecutive from 2-11, for convenience we will start using <span class="variables">cardCountVal</span> at position 2 and use the positions to represent the card values. We will set each position to its the appropriate card counting value. We will effectively ignore positions 0 and 1.</p>
+<p>There are many different ways to create arrays. The first follows the form<br />
+<div class="code">arrayName[position] = value;</div><br />
+So, to set position 2 of <span class="variables">cardCountVal</span> to the value 1, its appropriate value according to the Hi-Lo card counting method, you type<br />
+<div class="code">cardCountVal[2] = 1;</div><br />
+To set multiple values in an array, you must repeat this statement form for each position. Inside the if statement you just created, set all positions to their corresponding value and press submit. An objective complete message should appear.</p>
+<p>Wasn't that horrible having to type all those lines? That's right, it was. Fortunately, there's a shortcut of the form<br />
+<div class="code">arrayName = array(value1, value2, value3, ...)</div>
+where each value is the value given to that position. Delete the long list of commands you just wrote and recreate the array in this method. Keep in mind, the positions start at 0. We don't need positions 0 and 1, so you can set them to anything you want. We'd recommend being boring and setting them to 0, like this<br />
+<div class="code">cardCountVal = array(0, 0, 1, 1, 1, 1, 1, 0, 0, 0, -1, -1)</div><br />
+ Press submit. Wasn't that nice?</p>
+ <p>Try not to get too mad at us here, but we're now going to suggest recreating this array in a more complicated manner, using for loops. Although it's not a time saver in this case, imagine if you had an array with 1000 items in it. That would be really annoying to declare using the above method, and the chance of you making a mistake would be very high! So, write some for loops to go through the array and set each position to its appropriate value. Here are some helpful hints:</p>
+ <ul><li>You will need to use the first method of assigning values we discussed in this method.</li>
+ <li>Since there are 3 different values to be set, you will either need 3 for loops, 1 for each type of value, or 1 for loop with a series of 3 if-else statements for each value.</li>
+ <li>Either way, your for loop will be of a very similar structure to the one you made in mission 7.2 when you added array values to a variable.</li></ul>
+<p>When you're done, press submit to check your work, but notice that your code still won't do anything. Also, note that every time you reach the end of the hand, your code will recreate this same array. That's very inefficient and a terrible programming practice, but we're not going to worry about that here.</p>
+<p>If you're having problems, make sure the beginning of your code looks like one of <a href="">these</a> examples. Both examples accomplish the exact same thing.</p> 
+
+<!--3 for loops:
+<?php
+$name = "yourname"; 
+
+if($handEnd){
+	$counter = 0; /*declare counter. It is okay that this counter has the same name
+					as the counter in totalValue() because totalValue() is a function.
+                    Anything in a function's code only exists when the function is called.
+                    Think of it as, "What happens in vegas() stays in vegas(), where
+                    vegas() is a function.*/
+	for($counter = 2; $counter <= 6; $counter++){ //positions 2-6 get value 1
+		$cardCountVal[$counter] = 1; /*remember, you are setting the value at a 
+									position equal to the current value of $counter*/
+	}
+	for($counter = 7; $counter <= 9; $counter++){ //positions 7-9 get value 0
+		$cardCountVal[$counter] = 0;
+	}
+	for($counter = 10; $counter <= 11; $counter++){ //positions 10-11 get value -1
+		$cardCountVal[$counter] = -1;
+	}
+}
+else if($handStart){ 
+	safeBet(4, 0); 
+}
+//rest of code goes here
+?>
+
+1 for loop and 3 if-else statements:
+<?php
+$name = "yourname"; 
+
+if($handEnd){
+	$counter = 0; /*declare counter. It is okay that this coounter has the same name
+					as the counter in totalValue() because totalValue() is a function.*/
+	for($counter = 2; $counter <= 11; $counter++){ //Here, the for loop runs through the entire array
+		if(2 <= $counter && $counter <= 6){ //and if statements set the value appropriately
+			$cardCountVal[$counter] = 1;
+		}
+		else if(7 <= $counter && $counter <= 9){ /*Notice you cannot write 7 <= $counter <= 9 as you do 
+												on paper. Also, this statement uses else if.*/
+			$cardCountVal[$counter] = 0;
+		}
+		else if(10 <= $counter && $counter <= 11){ /*This line could simply read "else" since it is the
+													last statement in a series, but using another else if
+													and providing boolean statements is clearer to a
+													person reading the code.*/
+			$cardCountVal[$counter] = -1;
+		}
+	}
+}
+else if($handStart){ 
+	safeBet(4, 0);
+}
+//rest of code goes here
+?>
+-->

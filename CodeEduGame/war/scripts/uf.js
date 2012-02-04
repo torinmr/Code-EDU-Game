@@ -42,10 +42,10 @@ var bet = function(b) {
 	b = parseInt(b);
 	if (isNaN(b)) {
 		throw "Error: bet() must be called with an integer.";
-		return;
 	} else if (eg.turnNum != 0) {
 		throw "Error: bet() cannot be called after other actions.";
-		return;
+	} else if (b <= 0) {
+		throw "Error: You need to bet() a positive amount.";
 	} else {
 		eg.betValue = b;
 		eg.bet();

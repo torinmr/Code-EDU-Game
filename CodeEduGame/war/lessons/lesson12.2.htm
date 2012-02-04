@@ -1,0 +1,51 @@
+<h3>Mission 12.2: Ace as 11 or 1--Preparing to Implement Advanced Logic</h3>
+<div class="objectives">
+<h4>Objectives</h4><ol>
+<li>Set a boolean to true if there is at least one Ace in your hand</li>
+<li>Write a method to find the highest value of a hand with Aces that doesn't bust</li>
+<li>Set the value of this method to a variable</li>
+</ol>
+</div>
+<p>Now, on the first line inside the first else statement (the one that surrounds the code determing whether the program should hit), declare a variable that you will set to true if you have an Ace and false if you don't. Then, write an if statement that takes the value returned by the counter function you just wrote and uses it to determine whether this variable should be set to true or false. Press submit to check your code. You should see an objective complete notification.</p>
+<p>Next we need to know what the highest value (without busting) of a hand with Aces in it is. This will require writing another function that takes a parameter that is the number of Aces in the hand. Remember, we will find the highest value of the hand by subtracting 10 from the total value until the value is less than or equal to 21. You cannot subtract ten more times than the number of Aces in your hand. The function should return the highest value. Write this function. Set its value to a variable below where you set a variable for the number of Aces in the hand. Press submit to check your code. You should see an objective complete notification.</p>
+<p>If you're having problems, make sure your code looks like <a href="">this</a>.</p>
+<!--<?
+//earlier code
+
+else{	
+	$haveAce = false; //initialize variable to false
+	$numberOfAces = aceCount($handVal); //counts Aces in your hand
+    $highValue = highestValue($numberOfAces);
+	if($numberOfAces > 0){ //if there's an Ace
+		$haveAce = true; //set variable to true
+	}
+	//otherwise variable will remain false
+	
+	if(dealerUpCard() < 7 && (totalValue() === 10 || totalValue() === 11)){
+		doubleDown();
+	}
+	else if((totalValue() < 17 && dealerUpCard() > 6) || (dealerUpCard() <= 6 && totalValue() < 12)){  
+		hit();
+	}
+	else{
+		stand();
+	}
+}
+
+//find the highest value of a hand with Aces that does not bust
+function highestValue($aces){
+	$highestValue = totalValue(); //start with counting Aces as 11
+    $counter = 0;
+	for($counter = 1; $counter <= $aces; $counter++){ /*to ensure that 10 won't be subtracted more
+														times than the number of Aces*/
+		if($highestValue > 21){ 
+			$highestValue -= 10; //count Ace as a 1
+		}
+	}
+	return $highestValue; /*Notice that if there are no Aces in the hand, this will return the same
+							thing as totalValue(). If there are not enough Aces, it will return a number
+							greater than 21 and you will bust.*/
+}
+
+//later code
+?>-->

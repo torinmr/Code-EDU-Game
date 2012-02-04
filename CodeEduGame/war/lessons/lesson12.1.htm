@@ -1,0 +1,50 @@
+<h3>Mission 12.1: Ace as 11 or 1--Advanced Logic</h3>
+<div class="objectives">
+<h4>Objectives</h4><ol>
+<li>Understand the logic of needed to count an Ace as 11 or 1</li><!--I guess just check this off when they click submit for the first time-->
+<li>Write a method to count the number of Aces in a hand</li>
+</ol>
+</div>
+<p>There is just one remaining problem with your program! You may have even forgotten about it for the past few missions. In Blackjack, an Ace can count as either an 11 or 1. This whole time, our game engine has been doing this when adding up both players' points and determining the winner. But the program you've written doesn't account for this in the logic it uses to determine what move it should make. We now need to modify your code so it does.</p>
+<p>"Holy cow!" you may say. "That's going to be horrible!" That's what we thought at first too, but it's actually not that bad. It just requires analyzing the game and then looking through your code to figure out what needs to be changed. Let's walk through this logic together.</p>
+<p>The card counting algorithm doesn't need to be changed because card counting methods don't care what value an Ace had when it was played; They only care about the impact an Ace being in the deck has on your probability of winning a hand. As a result, the dual nature of the Ace has no impact on how much you should bet. Therefore, nothing needs to be changed in the first if or else if statements!</p>
+<p>Now for the else statement containing the double down, hit, and stand logic. The first part of the conditional for <span class="variables">doubleDown()</span> checks to see if the value of the dealer's up card is less than 7. Currently, you evaluate an Ace as an 11 so this statement would return false and you would not double down. There's no way you would want to double down if the dealer had an Ace showing because it gives the dealer two chances to win, so the current logic is fine. Nothing needs to be changed with that half of the expression.</p>
+<p>The second half of the <span class="variables">doubleDown()</span> conditional checks to see if the total value of your cards is 10 or 11, counting the Ace as an 11. So, with the current logic, you will never double down if you have an Ace. This is still perfect as well. If you counted the Ace as 1 and the total value of your cards was 10 or 11, that would mean your other card was a 9 or 10. This would mean that the total value of your cards counting the Ace as 11 would be 20 or 21, a Blackjack. (In case you forgot, double downing makes you draw one more card and then stand.) So, there is no reason to count your Ace as a 1 and double down. Still no changes! So, the entire if statement surrounding <span class="variables">doubleDown()</span> can stay how it is.</p>
+<p>Now we need to check the logic to decide if you should hit. Remember, the instructions for this statement were to make the program hit if you have a total card value of less than 17 and the dealer's upcard is higher than 6 and also hit if the dealer's upcard is less than or equal to 6 and your total value is less than 12. Blackjack experts advise that if you have an Ace you can afford to be a bit riskier because even if you "bust" with an Ace worth 11 you can say it's worth 1 and try again. So, in addition to the previously mentioned instructions, you can also afford to hit if you have an Ace as long as the highest possible value of your cards that is not a bust is less than 18 and the dealer's upcard is higher than 6. Holy foobar! That's more complicated than an "it's complicated" Facebok relationship status! Let's split this up into a list of conditions for when you want to hit.</p>
+<ul><li>If the dealer's up card is greater than 6
+		<ul><li>and you have an Ace
+    			<ul><li>hit if the highest value of your cards without busting is less than 18.</li></ul>
+     	    </li>
+       	 	<li>and you don't have an Ace
+        		<ul><li>hit if the total value of your cards is less than 17.</li></ul>
+        	</li>
+        </ul>    
+    </li>
+    <li>If the dealer's up card is less than 6
+    	<ul><li>hit if the total value of your cards is less than 12.</li></ul>
+    </li>
+</ul>
+
+
+
+<p>Alas, we actually have to make a change.</p>
+<p>To carry out this logic, we need to know two new things: whether you have an Ace and what the highest value of your cards is if you do. Let's tackle the second thing first. The highest possible value of your hand will be given by <span class="variables">totalValue()</span>, but this may be higher than 21 if you have Aces. If it is higher than 21, count an Ace as a 1 instead of 11. If you have multiple Aces and the total value is still higher than 21, count another Ace as a 1. Repeat this until the total value is under 21.</p> 
+<p>Notice that each time you count an Ace as 1 instead of 11, you are effectively subtracting 10 from the value of your hand. So, to calculate the highest value of your hand that is less than or equal to 21, you need to subtract 10 from the total value until it is below 21. You can only subtract 10 as many times as the number of Aces you have.</p>
+<p>So, we first need a function to count the number of Aces in your hand. Notice that this will also take care of the first thing we need to know: If the function returns 0, there are no Aces in your hand. Write a function that runs through an array, counts the Aces, and returns the number of Aces. This array will need to be a parameter so you can pass the function the <span class="variables">handValue</span> array later. Remember, Aces are the only cards assigned a value of 11 in the <span class="variables">handValue</span> array, so checking the card values will be the best way to determine if there are Aces. Press submit to check your code. You should see an objective complete notification.</p>
+
+<p>If you're having problems, make sure your function looks like <a href="">this</a>.</p>
+
+<!--<?
+//function to count Aces in a hand
+function aceCount($hand){
+	$aces = 0; //stores the number of aces
+    $counter = 0;
+	for($counter = 0; $counter < sizeof($hand); $counter++){ //run through the hand
+		if($hand[counter] === 11){ //if the card is an Ace
+			$aces++;	//count the Ace
+		}
+	}
+	return $aces; //return the number of Aces
+}
+?>
+-->

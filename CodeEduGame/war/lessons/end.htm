@@ -1,3 +1,127 @@
-<h3>The End (For Now)</h3>
-<p>JavaJack is a work in progress, and this is as far as we've gotten. Thank you very much for testing it out! We hope you had fun and learned something too. Check back in a few days to see the completed product and learn even more about programming!</p>
-<p>We would really appreciate it if you could provide us with some feedback by filling out this <a href="https://docs.google.com/spreadsheet/viewform?formkey=dG1xb2gzb29KVFU5RzNHRUc2YWxnWFE6MQ" target="_blank">super short survey</a>. Thanks again, and have a wonderful day!</p>
+<h3>The End!</h3>
+<div class="objectives">
+<h4>Objectives</h4><ol>
+<li>Play Blackjack</li>
+<li>Get a job</li><!--how are you gonna check this one off, Channing?!-->
+</ol>
+</div>
+<p>Congratulations! You've completed our tutorial. You now have an awesome Blackjack-playing computer program, written by you, as well as lots of knowledge about programming.</p>
+<p>Think about all the stuff you've learned: You can use if-else statements to make the computer do different things under different circumstances. You can use loops to make it repeat tasks. You can make it do math. You can store information. You can write functions to make all your programming easier. And best of all, you've learned how to think about everyday problems and figure out how to make a computer solve them.</p>
+<p>So what do you do now? If you'd like to keep playing around with this Blackjack program, there is always more that can be done! You can tweak the numbers in your code to change how your program hits, stands, bets, and doubles down to figure out what will make you the most money. You can try implementing more complicated and better card counting methods such as the <a href="http://www.blackjacktactics.com/blackjack/strategy/card-counting/hi-opt-ii/" target="_blank">Hi-Opt II method</a> that we suggested earlier. You can also try implementing different types of betting strategies, such as the <a href="http://www.onlineblackjackguru.com/Martingale-Blackjack-Strategy.html" target="_blank">Martingale strategy</a>. You'll notice that most of these strategies require knowing if you won the last hand. We'll set a boolean called <span class="variables">wonLastHand</span> to true when you win a hand and to false when you lose. You know everything you need to to make this strategy work! Have fun! (And comment your code!)</p>
+<p>The entire program that we wrote during this tutorial can be seen if you click <a href="">here</a>. If you ever accidentally mess something up and your program stops working, take a look at this code to fix it.</p>
+<p>If you're sick of Blackjack, there are many other programming tutorials on the Internet that will give you more practice and teach you more advanced concepts. You now know a lot about JavaScript, but that doesn't mean you have to keep using JavaScript! There are many different programming languages around, such as Python, Ruby, Java, C, and PHP, that you could also learn. The syntax will be different, but the theory and logic behind them is still the same.</p>
+<p>Thanks for playing, and happy coding!</p>
+<!--enable Blackjacks-->
+<!--<?php
+$name = "yourname"; 
+
+//card counting
+if($handEnd){ 
+	
+	//reset card count when deck is reshuffled
+	if($reshuffled){ 
+		$cardCount = 0; 
+		$reshuffled = false;
+	}
+	//make array of card counting values
+	assignCardCountVals(2, 6, 1); 
+	assignCardCountVals(7, 9, 0);
+	assignCardCountVals(10, 11, -1);
+	
+	//count the cards
+	countCards($handValue);
+	countCards($dealerHandValue);
+}
+//bet
+else if($handStart){
+	safeBet(4, 0); 
+}
+else{	
+	//account for Aces being 1 or 11
+	$haveAce = false; 
+	$numberOfAces = aceCount($handVal);
+	$highValue = highestValue($numberOfAces);
+	if(aceCount($handVal) > 0){ 
+		$haveAce = true; 
+	}
+	//see if you should double down
+	if(dealerUpCard() < 7 && (totalValue() === 10 || totalValue() === 11)){
+		doubleDown();
+	}
+	//see if you should hit
+	else if(dealerUpCard() > 6 && ((totalValue() < 17 && !$haveAce) || (highestValue() < 18 && $haveAce))){ 
+		hit();									
+	}
+	//see if you should hit part 2
+	else if(dealerUpCard() <= 6 && totalValue() < 12){ 
+		hit();
+	}
+	//otherwise, stand
+	else{
+		stand();
+	}
+}
+//returns the highest non-busting value of a hand with Aces
+//takes the number of Aces in your hand as a parameter
+//could rewrite to take totalValue() as a parameter so it could check other hands
+function highestValue($aces){
+	$highestValue = totalValue(); 
+	$counter = 0;
+	for($counter = 1; $counter <= $aces; $counter++){ 
+		if($highestValue > 21){ 
+			$highestValue -= 10; 
+		}
+	}
+	return $highestValue; 
+}
+//returns the number of Aces in a hand
+//takes the hand as a parameter
+function aceCount($hand){
+	$aces = 0;
+	$counter = 0;
+	for($counter = 0; $counter < sizeof($hand); $counter++){ 
+		if($hand[counter] === 11){ 
+			$aces++;	
+		}
+	}
+	return $aces; 
+}
+//returns the total value of all the cards in your hand
+//could rewrite to take $handValue as a parameter so it could find the value of other hands
+function totalValue(){
+	$length = sizeof($handValue[]); 
+	$sum = 0;
+    $counter = 0;
+	for($counter = 0; $counter < $length; $counter++){
+		$sum += $handValue[$counter]; 
+	}
+	return $sum;
+}
+//bets an amount of money that won't make your total money fall below a certain value
+//parameter $betAmount is the amount you want to bet, &limit is the value you don't want to fall below
+//the amount bet will be $betAmount minus some value so you don't fall below $limit
+function safeBet($betAmount, $limit){
+	if(totalMoney() - $betAmount < $limit){ 
+		$betAmount = totalMoney() - $limit;
+	}
+	bet($betAmount);
+}
+//creates an array of card count values for every card in the deck
+//parameter $start is the first card you want to assign to a particular value, $end is
+	//the last, and $val is the value to assign
+function assignCardCountVals($start, $end, $val){ 
+	$counter = 0;
+	for($counter = $start; $counter <= $end; $counter++){
+		$cardCountVal[$counter] = $val;
+	}
+}
+//counts the cards in a particular hand based off the $cardCountVal array
+//parameter $hand is the hand you want to count			
+function countCards($hand){
+	$counter = 0;
+	for($counter = 0; $counter < sizeof($hand); $counter++){ 
+		$cardCount += $cardCountVal[$hand[$counter]]; 
+	}
+}					
+
+?>-->

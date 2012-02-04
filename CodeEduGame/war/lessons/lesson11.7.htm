@@ -1,0 +1,53 @@
+<h3>Mission 11.7: Card Counting--Using More Functions to Eliminate More Duplicate Code</h3>
+<div class="objectives">
+<h4>Objectives</h4><ol>
+<li>Use more functions to remove more duplicate code in the program</li>
+</ol>
+</div>
+<p>Wasn't that a nice solution? The function calls replace the messy for loops, cleaning up the main part of your code. And, if you ever need to change their code, you only have to change it once, in the function declaration! There are, however, still these two horrid for loops left<br />
+<div class="code">for(counter = 0; counter &lt; handValue.length; counter++){
+	cardCount += cardCountVal[handValue[counter]];
+}
+for(counter = 0; counter &lt; dealerHandValue.length; counter++){
+	cardCount += cardCountVal[dealerHandValue[counter]];
+}</div><br />
+and they're almost identical to each other as well. Write one function that can replace each of them using parameters. Some helpful hints:</p>
+<ul><li>Identify the variable(s) that change and make them parameters.</li>
+<li>Assign the appropriate values to the parameter(s) in the function calls.</li>
+<li>Come up with good function and parameter names.</li>
+<li>This function will be simpler than the last one we made!</li>
+</ul>
+<p>Now that all of your for loops have been reduced to function calls, you should comment them so you know what they do.</p>
+<p>Think about the usefulness of this function. If you were to modify this code to add more people playing Blackjack, you could use this function to check each of their hands! Once your code works, if you'd like to practice what you've learned or just want a challenge, try implementing a different card counting method, such as the <a href="http://www.blackjacktactics.com/blackjack/strategy/card-counting/hi-opt-ii/" target="_blank">Hi-Opt II method</a>.</p>
+<p>If you're having problems, make sure your new code looks like <a href="">this</a>.</p>
+<!--<?php
+$name = "yourname"; 
+
+if($handEnd){ 
+	//$counter no longer needs to be initialized here because it is done in the functions
+	if($reshuffled){ 
+		$cardCount = 0; 
+		$reshuffled = false;
+	}
+	assignCardCountVals(2, 6, 1); 
+	assignCardCountVals(7, 9, 0);
+	assignCardCountVals(10, 11, -1);
+	
+	//These are the new methods that replaced the two for loops. Pretty, huh?
+	countCards($handValue);
+	countCards($dealerHandValue);
+}
+
+//code in the middle goes here
+
+/*This is the new function declaration. Yours may have a different name. There is only one parameter
+because the only difference between the two for loops was the hand being searched. Both instances of
+$handValue and $dealerHandValue has been replaced by $hand. You may have used a different name.*/					
+function countCards($hand){
+	$counter = 0; //initialize $counter
+    for($counter = 0; $counter < sizeof($hand); $counter++){ //The length of $hand is compared to counter.
+		$cardCount += $cardCountVal[$hand[$counter]]; //The value of a card in $hand is added to $cardCount.
+	}
+}					
+
+?>-->
