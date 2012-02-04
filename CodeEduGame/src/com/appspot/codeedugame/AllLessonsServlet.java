@@ -34,7 +34,7 @@ public class AllLessonsServlet extends HttpServlet {
         }
         output.append(lessonCss + "\n\n");
         if (displayHidden) {
-            output.append("If you would like a file with answers, please contact javajackdev@gmail.com and we will give you the URL.");
+            output.append("If you're a teacher and would like a file with solutions for teaching purposes, please contact jsjackdev@gmail.com and we will give you the URL.");
             output.append(lessonBreak());
         }
         output.append("<h2>Contents</h2>\n");
